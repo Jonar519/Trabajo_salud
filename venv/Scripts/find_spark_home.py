@@ -1,4 +1,4 @@
-#!C:\Users\Luis Cajigas\Trabajo_salud\venv\Scripts\python.exe
+#!C:\Users\dirki\Desktop\SextoSemestre\Base_de_Datos\Trabajo_salud\venv\Scripts\python.exe
 
 #
 # Licensed to the Apache Software Foundation (ASF) under one or more
