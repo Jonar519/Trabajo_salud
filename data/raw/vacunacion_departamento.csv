@@ -1,0 +1,661 @@
+﻿coddepto,departamento,a_o,biol_gico,cobertura_de_vacunaci_n,indicator1_statename,indicator1,indicator1_1,indicator1_2,indicator1_3,indicator1_4,indicator1_5
+05,Antioquia,2019,BCG - Antituberculosa ReciÃ©n Nacido,0.9389,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+08,AtlÃ¡ntico,2019,BCG - Antituberculosa ReciÃ©n Nacido,10379,IndicatorState3,0,49.99,80,89.99,90,94.99
+11,BogotÃ¡  D.C.,2019,BCG - Antituberculosa ReciÃ©n Nacido,10105,IndicatorState3,0,49.99,80,89.99,90,94.99
+13,BolÃ­var,2019,BCG - Antituberculosa ReciÃ©n Nacido,0.717,IndicatorState1,0,49.99,80,89.99,90,94.99
+15,BoyacÃ¡,2019,BCG - Antituberculosa ReciÃ©n Nacido,0.9409,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+17,Caldas,2019,BCG - Antituberculosa ReciÃ©n Nacido,0.9001,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+18,CaquetÃ¡,2019,BCG - Antituberculosa ReciÃ©n Nacido,0.9563,IndicatorState2,0,49.99,80,89.99,90,94.99
+19,Cauca,2019,BCG - Antituberculosa ReciÃ©n Nacido,0.7223,IndicatorState1,0,49.99,80,89.99,90,94.99
+20,Cesar,2019,BCG - Antituberculosa ReciÃ©n Nacido,0.9548,IndicatorState2,0,49.99,80,89.99,90,94.99
+23,CÃ³rdoba,2019,BCG - Antituberculosa ReciÃ©n Nacido,0.7965,IndicatorState1,0,49.99,80,89.99,90,94.99
+25,Cundinamarca,2019,BCG - Antituberculosa ReciÃ©n Nacido,0.5633,IndicatorState1,0,49.99,80,89.99,90,94.99
+27,ChocÃ³,2019,BCG - Antituberculosa ReciÃ©n Nacido,0.7949,IndicatorState1,0,49.99,80,89.99,90,94.99
+41,Huila,2019,BCG - Antituberculosa ReciÃ©n Nacido,0.9253,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+44,La Guajira,2019,BCG - Antituberculosa ReciÃ©n Nacido,11051,IndicatorState3,0,49.99,80,89.99,90,94.99
+47,Magdalena,2019,BCG - Antituberculosa ReciÃ©n Nacido,0.8603,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+50,Meta,2019,BCG - Antituberculosa ReciÃ©n Nacido,0.9874,IndicatorState2,0,49.99,80,89.99,90,94.99
+52,NariÃ±o,2019,BCG - Antituberculosa ReciÃ©n Nacido,0.856,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+54,Norte de Santander,2019,BCG - Antituberculosa ReciÃ©n Nacido,0.8762,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+63,Quindio,2019,BCG - Antituberculosa ReciÃ©n Nacido,0.9739,IndicatorState2,0,49.99,80,89.99,90,94.99
+66,Risaralda,2019,BCG - Antituberculosa ReciÃ©n Nacido,10422,IndicatorState3,0,49.99,80,89.99,90,94.99
+68,Santander,2019,BCG - Antituberculosa ReciÃ©n Nacido,0.8387,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+70,Sucre,2019,BCG - Antituberculosa ReciÃ©n Nacido,10013,IndicatorState3,0,49.99,80,89.99,90,94.99
+73,Tolima,2019,BCG - Antituberculosa ReciÃ©n Nacido,0.8438,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+76,Valle del Cauca,2019,BCG - Antituberculosa ReciÃ©n Nacido,0.8722,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+81,Arauca,2019,BCG - Antituberculosa ReciÃ©n Nacido,11367,IndicatorState3,0,49.99,80,89.99,90,94.99
+85,Casanare,2019,BCG - Antituberculosa ReciÃ©n Nacido,0.9773,IndicatorState2,0,49.99,80,89.99,90,94.99
+86,Putumayo,2019,BCG - Antituberculosa ReciÃ©n Nacido,0.873,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+88,ArchipiÃ©lago de San AndrÃ©s Providencia y Santa Catalina,2019,BCG - Antituberculosa ReciÃ©n Nacido,0.8593,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+91,Amazonas,2019,BCG - Antituberculosa ReciÃ©n Nacido,0.8399,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+94,GuainÃ­a,2019,BCG - Antituberculosa ReciÃ©n Nacido,12357,IndicatorState3,0,49.99,80,89.99,90,94.99
+95,Guaviare,2019,BCG - Antituberculosa ReciÃ©n Nacido,0.9962,IndicatorState2,0,49.99,80,89.99,90,94.99
+97,VaupÃ©s,2019,BCG - Antituberculosa ReciÃ©n Nacido,0.9632,IndicatorState2,0,49.99,80,89.99,90,94.99
+99,Vichada,2019,BCG - Antituberculosa ReciÃ©n Nacido,0.8613,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+05,Antioquia,2019,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.9511,IndicatorState2,0,49.99,80,89.99,90,94.99
+08,AtlÃ¡ntico,2019,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.9845,IndicatorState2,0,49.99,80,89.99,90,94.99
+11,BogotÃ¡  D.C.,2019,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.8932,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+13,BolÃ­var,2019,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.873,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+15,BoyacÃ¡,2019,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.9797,IndicatorState2,0,49.99,80,89.99,90,94.99
+17,Caldas,2019,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.9624,IndicatorState2,0,49.99,80,89.99,90,94.99
+18,CaquetÃ¡,2019,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.9084,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+19,Cauca,2019,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.903,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+20,Cesar,2019,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,10143,IndicatorState3,0,49.99,80,89.99,90,94.99
+23,CÃ³rdoba,2019,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.8704,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+25,Cundinamarca,2019,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.971,IndicatorState2,0,49.99,80,89.99,90,94.99
+27,ChocÃ³,2019,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.8286,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+41,Huila,2019,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.923,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+44,La Guajira,2019,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.9573,IndicatorState2,0,49.99,80,89.99,90,94.99
+47,Magdalena,2019,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.9478,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+50,Meta,2019,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.9204,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+52,NariÃ±o,2019,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.8603,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+54,Norte de Santander,2019,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.9984,IndicatorState2,0,49.99,80,89.99,90,94.99
+63,Quindio,2019,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.9234,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+66,Risaralda,2019,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.9875,IndicatorState2,0,49.99,80,89.99,90,94.99
+68,Santander,2019,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.8642,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+70,Sucre,2019,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,10213,IndicatorState3,0,49.99,80,89.99,90,94.99
+73,Tolima,2019,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.9452,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+76,Valle del Cauca,2019,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.9649,IndicatorState2,0,49.99,80,89.99,90,94.99
+81,Arauca,2019,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,11514,IndicatorState3,0,49.99,80,89.99,90,94.99
+85,Casanare,2019,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.9655,IndicatorState2,0,49.99,80,89.99,90,94.99
+86,Putumayo,2019,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.9805,IndicatorState2,0,49.99,80,89.99,90,94.99
+88,ArchipiÃ©lago de San AndrÃ©s Providencia y Santa Catalina,2019,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.8933,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+91,Amazonas,2019,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.9106,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+94,GuainÃ­a,2019,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,10923,IndicatorState3,0,49.99,80,89.99,90,94.99
+95,Guaviare,2019,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,10289,IndicatorState3,0,49.99,80,89.99,90,94.99
+97,VaupÃ©s,2019,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.7668,IndicatorState1,0,49.99,80,89.99,90,94.99
+99,Vichada,2019,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.6898,IndicatorState1,0,49.99,80,89.99,90,94.99
+05,Antioquia,2019,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+08,AtlÃ¡ntico,2019,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+11,BogotÃ¡  D.C.,2019,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+13,BolÃ­var,2019,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+15,BoyacÃ¡,2019,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+17,Caldas,2019,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+18,CaquetÃ¡,2019,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+19,Cauca,2019,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+20,Cesar,2019,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+23,CÃ³rdoba,2019,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+25,Cundinamarca,2019,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+27,ChocÃ³,2019,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+41,Huila,2019,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+44,La Guajira,2019,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+47,Magdalena,2019,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+50,Meta,2019,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+52,NariÃ±o,2019,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+54,Norte de Santander,2019,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+63,Quindio,2019,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+66,Risaralda,2019,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+68,Santander,2019,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+70,Sucre,2019,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+73,Tolima,2019,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+76,Valle del Cauca,2019,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+81,Arauca,2019,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+85,Casanare,2019,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+86,Putumayo,2019,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+88,ArchipiÃ©lago de San AndrÃ©s Providencia y Santa Catalina,2019,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+91,Amazonas,2019,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+94,GuainÃ­a,2019,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+95,Guaviare,2019,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+97,VaupÃ©s,2019,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+99,Vichada,2019,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+05,Antioquia,2019,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.9511,IndicatorState2,0,49.99,80,89.99,90,94.99
+08,AtlÃ¡ntico,2019,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.988,IndicatorState2,0,49.99,80,89.99,90,94.99
+11,BogotÃ¡  D.C.,2019,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.9257,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+13,BolÃ­var,2019,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.9015,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+15,BoyacÃ¡,2019,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.9311,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+17,Caldas,2019,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.9652,IndicatorState2,0,49.99,80,89.99,90,94.99
+18,CaquetÃ¡,2019,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.9384,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+19,Cauca,2019,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.905,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+20,Cesar,2019,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.988,IndicatorState2,0,49.99,80,89.99,90,94.99
+23,CÃ³rdoba,2019,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.8859,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+25,Cundinamarca,2019,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.9668,IndicatorState2,0,49.99,80,89.99,90,94.99
+27,ChocÃ³,2019,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.8615,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+41,Huila,2019,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.9306,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+44,La Guajira,2019,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.9904,IndicatorState2,0,49.99,80,89.99,90,94.99
+47,Magdalena,2019,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.9386,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+50,Meta,2019,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.9567,IndicatorState2,0,49.99,80,89.99,90,94.99
+52,NariÃ±o,2019,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.8855,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+54,Norte de Santander,2019,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.9777,IndicatorState2,0,49.99,80,89.99,90,94.99
+63,Quindio,2019,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.9549,IndicatorState2,0,49.99,80,89.99,90,94.99
+66,Risaralda,2019,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.9905,IndicatorState2,0,49.99,80,89.99,90,94.99
+68,Santander,2019,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.893,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+70,Sucre,2019,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.9997,IndicatorState2,0,49.99,80,89.99,90,94.99
+73,Tolima,2019,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.9732,IndicatorState2,0,49.99,80,89.99,90,94.99
+76,Valle del Cauca,2019,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.9606,IndicatorState2,0,49.99,80,89.99,90,94.99
+81,Arauca,2019,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,10873,IndicatorState3,0,49.99,80,89.99,90,94.99
+85,Casanare,2019,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.9698,IndicatorState2,0,49.99,80,89.99,90,94.99
+86,Putumayo,2019,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.9605,IndicatorState2,0,49.99,80,89.99,90,94.99
+88,ArchipiÃ©lago de San AndrÃ©s Providencia y Santa Catalina,2019,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.9047,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+91,Amazonas,2019,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.9263,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+94,GuainÃ­a,2019,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.9835,IndicatorState2,0,49.99,80,89.99,90,94.99
+95,Guaviare,2019,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,10136,IndicatorState3,0,49.99,80,89.99,90,94.99
+97,VaupÃ©s,2019,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.8996,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+99,Vichada,2019,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.931,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+05,Antioquia,2019,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.8871,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+08,AtlÃ¡ntico,2019,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.9386,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+11,BogotÃ¡  D.C.,2019,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.9466,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+13,BolÃ­var,2019,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.8185,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+15,BoyacÃ¡,2019,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.9293,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+17,Caldas,2019,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.9275,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+18,CaquetÃ¡,2019,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.8597,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+19,Cauca,2019,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.893,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+20,Cesar,2019,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.8789,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+23,CÃ³rdoba,2019,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.8552,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+25,Cundinamarca,2019,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.9538,IndicatorState2,0,49.99,80,89.99,90,94.99
+27,ChocÃ³,2019,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.6418,IndicatorState1,0,49.99,80,89.99,90,94.99
+41,Huila,2019,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.9444,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+44,La Guajira,2019,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.8321,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+47,Magdalena,2019,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.8341,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+50,Meta,2019,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.8829,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+52,NariÃ±o,2019,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.859,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+54,Norte de Santander,2019,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.8816,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+63,Quindio,2019,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.8901,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+66,Risaralda,2019,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.8955,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+68,Santander,2019,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.8493,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+70,Sucre,2019,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.8862,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+73,Tolima,2019,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.9024,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+76,Valle del Cauca,2019,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.9216,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+81,Arauca,2019,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.905,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+85,Casanare,2019,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.9616,IndicatorState2,0,49.99,80,89.99,90,94.99
+86,Putumayo,2019,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.9154,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+88,ArchipiÃ©lago de San AndrÃ©s Providencia y Santa Catalina,2019,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.8514,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+91,Amazonas,2019,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.8465,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+94,GuainÃ­a,2019,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.9202,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+95,Guaviare,2019,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.7805,IndicatorState1,0,49.99,80,89.99,90,94.99
+97,VaupÃ©s,2019,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.758,IndicatorState1,0,49.99,80,89.99,90,94.99
+99,Vichada,2019,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.6983,IndicatorState1,0,49.99,80,89.99,90,94.99
+05,Antioquia,2020,BCG - Antituberculosa ReciÃ©n Nacido,0.7312,IndicatorState1,0,49.99,80,89.99,90,94.99
+08,AtlÃ¡ntico,2020,BCG - Antituberculosa ReciÃ©n Nacido,0.9728,IndicatorState2,0,49.99,80,89.99,90,94.99
+11,BogotÃ¡  D.C.,2020,BCG - Antituberculosa ReciÃ©n Nacido,0.9199,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+13,BolÃ­var,2020,BCG - Antituberculosa ReciÃ©n Nacido,0.7279,IndicatorState1,0,49.99,80,89.99,90,94.99
+15,BoyacÃ¡,2020,BCG - Antituberculosa ReciÃ©n Nacido,0.7424,IndicatorState1,0,49.99,80,89.99,90,94.99
+17,Caldas,2020,BCG - Antituberculosa ReciÃ©n Nacido,0.6083,IndicatorState1,0,49.99,80,89.99,90,94.99
+18,CaquetÃ¡,2020,BCG - Antituberculosa ReciÃ©n Nacido,0.8283,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+19,Cauca,2020,BCG - Antituberculosa ReciÃ©n Nacido,0.6653,IndicatorState1,0,49.99,80,89.99,90,94.99
+20,Cesar,2020,BCG - Antituberculosa ReciÃ©n Nacido,0.8289,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+23,CÃ³rdoba,2020,BCG - Antituberculosa ReciÃ©n Nacido,0.7345,IndicatorState1,0,49.99,80,89.99,90,94.99
+25,Cundinamarca,2020,BCG - Antituberculosa ReciÃ©n Nacido,0.3881,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+27,ChocÃ³,2020,BCG - Antituberculosa ReciÃ©n Nacido,0.7502,IndicatorState1,0,49.99,80,89.99,90,94.99
+41,Huila,2020,BCG - Antituberculosa ReciÃ©n Nacido,0.8308,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+44,La Guajira,2020,BCG - Antituberculosa ReciÃ©n Nacido,0.9388,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+47,Magdalena,2020,BCG - Antituberculosa ReciÃ©n Nacido,0.865,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+50,Meta,2020,BCG - Antituberculosa ReciÃ©n Nacido,0.8812,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+52,NariÃ±o,2020,BCG - Antituberculosa ReciÃ©n Nacido,0.672,IndicatorState1,0,49.99,80,89.99,90,94.99
+54,Norte de Santander,2020,BCG - Antituberculosa ReciÃ©n Nacido,0.9303,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+63,Quindio,2020,BCG - Antituberculosa ReciÃ©n Nacido,0.8574,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+66,Risaralda,2020,BCG - Antituberculosa ReciÃ©n Nacido,0.8199,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+68,Santander,2020,BCG - Antituberculosa ReciÃ©n Nacido,0.754,IndicatorState1,0,49.99,80,89.99,90,94.99
+70,Sucre,2020,BCG - Antituberculosa ReciÃ©n Nacido,0.8226,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+73,Tolima,2020,BCG - Antituberculosa ReciÃ©n Nacido,0.8208,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+76,Valle del Cauca,2020,BCG - Antituberculosa ReciÃ©n Nacido,0.7144,IndicatorState1,0,49.99,80,89.99,90,94.99
+81,Arauca,2020,BCG - Antituberculosa ReciÃ©n Nacido,0.922,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+85,Casanare,2020,BCG - Antituberculosa ReciÃ©n Nacido,0.8102,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+86,Putumayo,2020,BCG - Antituberculosa ReciÃ©n Nacido,0.6604,IndicatorState1,0,49.99,80,89.99,90,94.99
+88,ArchipiÃ©lago de San AndrÃ©s Providencia y Santa Catalina,2020,BCG - Antituberculosa ReciÃ©n Nacido,0.7399,IndicatorState1,0,49.99,80,89.99,90,94.99
+91,Amazonas,2020,BCG - Antituberculosa ReciÃ©n Nacido,0.6169,IndicatorState1,0,49.99,80,89.99,90,94.99
+94,GuainÃ­a,2020,BCG - Antituberculosa ReciÃ©n Nacido,0.6698,IndicatorState1,0,49.99,80,89.99,90,94.99
+95,Guaviare,2020,BCG - Antituberculosa ReciÃ©n Nacido,0.7053,IndicatorState1,0,49.99,80,89.99,90,94.99
+97,VaupÃ©s,2020,BCG - Antituberculosa ReciÃ©n Nacido,0.5049,IndicatorState1,0,49.99,80,89.99,90,94.99
+99,Vichada,2020,BCG - Antituberculosa ReciÃ©n Nacido,0.4509,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+05,Antioquia,2020,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.6897,IndicatorState1,0,49.99,80,89.99,90,94.99
+08,AtlÃ¡ntico,2020,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.899,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+11,BogotÃ¡  D.C.,2020,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.7906,IndicatorState1,0,49.99,80,89.99,90,94.99
+13,BolÃ­var,2020,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.7979,IndicatorState1,0,49.99,80,89.99,90,94.99
+15,BoyacÃ¡,2020,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.7503,IndicatorState1,0,49.99,80,89.99,90,94.99
+17,Caldas,2020,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.6242,IndicatorState1,0,49.99,80,89.99,90,94.99
+18,CaquetÃ¡,2020,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.7094,IndicatorState1,0,49.99,80,89.99,90,94.99
+19,Cauca,2020,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.7536,IndicatorState1,0,49.99,80,89.99,90,94.99
+20,Cesar,2020,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.8379,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+23,CÃ³rdoba,2020,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.7531,IndicatorState1,0,49.99,80,89.99,90,94.99
+25,Cundinamarca,2020,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.6872,IndicatorState1,0,49.99,80,89.99,90,94.99
+27,ChocÃ³,2020,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.5899,IndicatorState1,0,49.99,80,89.99,90,94.99
+41,Huila,2020,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.793,IndicatorState1,0,49.99,80,89.99,90,94.99
+44,La Guajira,2020,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.8986,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+47,Magdalena,2020,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.8816,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+50,Meta,2020,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.7755,IndicatorState1,0,49.99,80,89.99,90,94.99
+52,NariÃ±o,2020,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.6483,IndicatorState1,0,49.99,80,89.99,90,94.99
+54,Norte de Santander,2020,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.7921,IndicatorState1,0,49.99,80,89.99,90,94.99
+63,Quindio,2020,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.7666,IndicatorState1,0,49.99,80,89.99,90,94.99
+66,Risaralda,2020,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.7459,IndicatorState1,0,49.99,80,89.99,90,94.99
+68,Santander,2020,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.7499,IndicatorState1,0,49.99,80,89.99,90,94.99
+70,Sucre,2020,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.8277,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+73,Tolima,2020,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.8633,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+76,Valle del Cauca,2020,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.7763,IndicatorState1,0,49.99,80,89.99,90,94.99
+81,Arauca,2020,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.857,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+85,Casanare,2020,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.8065,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+86,Putumayo,2020,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.6665,IndicatorState1,0,49.99,80,89.99,90,94.99
+88,ArchipiÃ©lago de San AndrÃ©s Providencia y Santa Catalina,2020,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.7109,IndicatorState1,0,49.99,80,89.99,90,94.99
+91,Amazonas,2020,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.6138,IndicatorState1,0,49.99,80,89.99,90,94.99
+94,GuainÃ­a,2020,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.5029,IndicatorState1,0,49.99,80,89.99,90,94.99
+95,Guaviare,2020,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.6418,IndicatorState1,0,49.99,80,89.99,90,94.99
+97,VaupÃ©s,2020,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.3715,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+99,Vichada,2020,PENTA3 - Pentavalente Menor a 1 AÃ±o 3a. Dosis,0.3541,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+05,Antioquia,2020,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+08,AtlÃ¡ntico,2020,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+11,BogotÃ¡  D.C.,2020,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+13,BolÃ­var,2020,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+15,BoyacÃ¡,2020,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+17,Caldas,2020,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+18,CaquetÃ¡,2020,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+19,Cauca,2020,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+20,Cesar,2020,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+23,CÃ³rdoba,2020,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+25,Cundinamarca,2020,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+27,ChocÃ³,2020,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+41,Huila,2020,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+44,La Guajira,2020,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+47,Magdalena,2020,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+50,Meta,2020,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+52,NariÃ±o,2020,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+54,Norte de Santander,2020,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+63,Quindio,2020,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+41,Huila,2022,PENTA3,0.8905,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+66,Risaralda,2020,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+68,Santander,2020,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+70,Sucre,2020,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+73,Tolima,2020,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+76,Valle del Cauca,2020,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+81,Arauca,2020,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+85,Casanare,2020,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+86,Putumayo,2020,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+88,ArchipiÃ©lago de San AndrÃ©s Providencia y Santa Catalina,2020,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+91,Amazonas,2020,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+94,GuainÃ­a,2020,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+95,Guaviare,2020,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+97,VaupÃ©s,2020,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+99,Vichada,2020,N2D - Neumococo Mayor a 1 AÃ±o 2a. Dosis,0,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+05,Antioquia,2020,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.7438,IndicatorState1,0,49.99,80,89.99,90,94.99
+08,AtlÃ¡ntico,2020,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.9187,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+11,BogotÃ¡  D.C.,2020,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.8441,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+13,BolÃ­var,2020,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.8672,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+15,BoyacÃ¡,2020,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.7583,IndicatorState1,0,49.99,80,89.99,90,94.99
+17,Caldas,2020,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.6544,IndicatorState1,0,49.99,80,89.99,90,94.99
+18,CaquetÃ¡,2020,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.8169,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+19,Cauca,2020,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.7874,IndicatorState1,0,49.99,80,89.99,90,94.99
+20,Cesar,2020,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.8897,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+23,CÃ³rdoba,2020,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.7725,IndicatorState1,0,49.99,80,89.99,90,94.99
+25,Cundinamarca,2020,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.693,IndicatorState1,0,49.99,80,89.99,90,94.99
+27,ChocÃ³,2020,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.8087,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+41,Huila,2020,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.8193,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+44,La Guajira,2020,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.9457,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+47,Magdalena,2020,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.9399,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+50,Meta,2020,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.8117,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+52,NariÃ±o,2020,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.6907,IndicatorState1,0,49.99,80,89.99,90,94.99
+54,Norte de Santander,2020,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.8093,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+63,Quindio,2020,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.778,IndicatorState1,0,49.99,80,89.99,90,94.99
+66,Risaralda,2020,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.7701,IndicatorState1,0,49.99,80,89.99,90,94.99
+68,Santander,2020,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.778,IndicatorState1,0,49.99,80,89.99,90,94.99
+70,Sucre,2020,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.8743,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+73,Tolima,2020,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.8998,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+76,Valle del Cauca,2020,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.7986,IndicatorState1,0,49.99,80,89.99,90,94.99
+81,Arauca,2020,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.8927,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+85,Casanare,2020,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.8027,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+86,Putumayo,2020,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.7225,IndicatorState1,0,49.99,80,89.99,90,94.99
+88,ArchipiÃ©lago de San AndrÃ©s Providencia y Santa Catalina,2020,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.7561,IndicatorState1,0,49.99,80,89.99,90,94.99
+91,Amazonas,2020,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.7329,IndicatorState1,0,49.99,80,89.99,90,94.99
+94,GuainÃ­a,2020,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.7291,IndicatorState1,0,49.99,80,89.99,90,94.99
+95,Guaviare,2020,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.7362,IndicatorState1,0,49.99,80,89.99,90,94.99
+97,VaupÃ©s,2020,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.5304,IndicatorState1,0,49.99,80,89.99,90,94.99
+99,Vichada,2020,TV - SarampiÃ³n-RubÃ©ola-Paperas (TV) 1 AÃ±o Ãšnica Dosis,0.5865,IndicatorState1,0,49.99,80,89.99,90,94.99
+05,Antioquia,2020,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.7584,IndicatorState1,0,49.99,80,89.99,90,94.99
+08,AtlÃ¡ntico,2020,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.9176,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+11,BogotÃ¡  D.C.,2020,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.9696,IndicatorState2,0,49.99,80,89.99,90,94.99
+13,BolÃ­var,2020,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.8293,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+15,BoyacÃ¡,2020,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.8751,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+17,Caldas,2020,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.7238,IndicatorState1,0,49.99,80,89.99,90,94.99
+18,CaquetÃ¡,2020,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.7482,IndicatorState1,0,49.99,80,89.99,90,94.99
+19,Cauca,2020,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.8221,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+20,Cesar,2020,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.8084,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+23,CÃ³rdoba,2020,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.7773,IndicatorState1,0,49.99,80,89.99,90,94.99
+25,Cundinamarca,2020,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.7543,IndicatorState1,0,49.99,80,89.99,90,94.99
+27,ChocÃ³,2020,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.6511,IndicatorState1,0,49.99,80,89.99,90,94.99
+41,Huila,2020,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.8891,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+44,La Guajira,2020,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.747,IndicatorState1,0,49.99,80,89.99,90,94.99
+47,Magdalena,2020,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.8251,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+50,Meta,2020,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.8188,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+52,NariÃ±o,2020,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.7395,IndicatorState1,0,49.99,80,89.99,90,94.99
+54,Norte de Santander,2020,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.7091,IndicatorState1,0,49.99,80,89.99,90,94.99
+63,Quindio,2020,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.8647,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+66,Risaralda,2020,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.828,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+68,Santander,2020,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.8047,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+70,Sucre,2020,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.8527,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+73,Tolima,2020,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.9018,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+76,Valle del Cauca,2020,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.8053,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+81,Arauca,2020,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.7726,IndicatorState1,0,49.99,80,89.99,90,94.99
+85,Casanare,2020,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.8576,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+86,Putumayo,2020,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.7401,IndicatorState1,0,49.99,80,89.99,90,94.99
+44,La Guajira,2022,PENTA3,0.9681,IndicatorState2,0,49.99,80,89.99,90,94.99
+47,Magdalena,2022,PENTA3,0.9263,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+50,Meta,2022,PENTA3,0.8559,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+52,Nariño,2022,PENTA3,0.7952,IndicatorState1,0,49.99,80,89.99,90,94.99
+88,ArchipiÃ©lago de San AndrÃ©s Providencia y Santa Catalina,2020,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.7528,IndicatorState1,0,49.99,80,89.99,90,94.99
+91,Amazonas,2020,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.8029,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+94,GuainÃ­a,2020,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.6083,IndicatorState1,0,49.99,80,89.99,90,94.99
+95,Guaviare,2020,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.6674,IndicatorState1,0,49.99,80,89.99,90,94.99
+97,VaupÃ©s,2020,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.4502,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+99,Vichada,2020,TV.R - SarampiÃ³n-RubÃ©ola-Paperas (TV) 5 AÃ±os Refuerzo,0.4555,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+05,Antioquia,2021,BCG - Antituberculosa Recién Nacido,0.8956,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+08,Atlántico,2021,BCG - Antituberculosa Recién Nacido,0.9949,IndicatorState2,0,49.99,80,89.99,90,94.99
+11,Bogotá  D.C.,2021,BCG - Antituberculosa Recién Nacido,0.8377,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+13,Bolívar,2021,BCG - Antituberculosa Recién Nacido,0.7566,IndicatorState1,0,49.99,80,89.99,90,94.99
+15,Boyacá,2021,BCG - Antituberculosa Recién Nacido,0.8898,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+17,Caldas,2021,BCG - Antituberculosa Recién Nacido,0.8496,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+18,Caquetá,2021,BCG - Antituberculosa Recién Nacido,1.0146,IndicatorState3,0,49.99,80,89.99,90,94.99
+19,Cauca,2021,BCG - Antituberculosa Recién Nacido,0.784,IndicatorState1,0,49.99,80,89.99,90,94.99
+20,Cesar,2021,BCG - Antituberculosa Recién Nacido,0.9877,IndicatorState2,0,49.99,80,89.99,90,94.99
+23,Córdoba,2021,BCG - Antituberculosa Recién Nacido,0.8749,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+25,Cundinamarca,2021,BCG - Antituberculosa Recién Nacido,0.3857,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+27,Chocó,2021,BCG - Antituberculosa Recién Nacido,0.9512,IndicatorState2,0,49.99,80,89.99,90,94.99
+41,Huila,2021,BCG - Antituberculosa Recién Nacido,0.9842,IndicatorState2,0,49.99,80,89.99,90,94.99
+44,La Guajira,2021,BCG - Antituberculosa Recién Nacido,1.1342,IndicatorState3,0,49.99,80,89.99,90,94.99
+47,Magdalena,2021,BCG - Antituberculosa Recién Nacido,0.9246,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+50,Meta,2021,BCG - Antituberculosa Recién Nacido,0.9918,IndicatorState2,0,49.99,80,89.99,90,94.99
+52,Nariño,2021,BCG - Antituberculosa Recién Nacido,0.8541,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+54,Norte de Santander,2021,BCG - Antituberculosa Recién Nacido,0.958,IndicatorState2,0,49.99,80,89.99,90,94.99
+63,Quindio,2021,BCG - Antituberculosa Recién Nacido,1.0268,IndicatorState3,0,49.99,80,89.99,90,94.99
+66,Risaralda,2021,BCG - Antituberculosa Recién Nacido,0.9875,IndicatorState2,0,49.99,80,89.99,90,94.99
+68,Santander,2021,BCG - Antituberculosa Recién Nacido,0.849,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+70,Sucre,2021,BCG - Antituberculosa Recién Nacido,0.9987,IndicatorState2,0,49.99,80,89.99,90,94.99
+73,Tolima,2021,BCG - Antituberculosa Recién Nacido,0.8522,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+76,Valle del Cauca,2021,BCG - Antituberculosa Recién Nacido,0.7975,IndicatorState1,0,49.99,80,89.99,90,94.99
+81,Arauca,2021,BCG - Antituberculosa Recién Nacido,1.1094,IndicatorState3,0,49.99,80,89.99,90,94.99
+85,Casanare,2021,BCG - Antituberculosa Recién Nacido,0.9467,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+86,Putumayo,2021,BCG - Antituberculosa Recién Nacido,0.8992,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+88,Archipiélago de San Andrés  Providencia y Santa Catalina,2021,BCG - Antituberculosa Recién Nacido,0.7953,IndicatorState1,0,49.99,80,89.99,90,94.99
+91,Amazonas,2021,BCG - Antituberculosa Recién Nacido,0.687,IndicatorState1,0,49.99,80,89.99,90,94.99
+94,Guainía,2021,BCG - Antituberculosa Recién Nacido,1.4046,IndicatorState3,0,49.99,80,89.99,90,94.99
+95,Guaviare,2021,BCG - Antituberculosa Recién Nacido,0.9725,IndicatorState2,0,49.99,80,89.99,90,94.99
+97,Vaupés,2021,BCG - Antituberculosa Recién Nacido,1.0249,IndicatorState3,0,49.99,80,89.99,90,94.99
+99,Vichada,2021,BCG - Antituberculosa Recién Nacido,0.7945,IndicatorState1,0,49.99,80,89.99,90,94.99
+05,Antioquia,2021,PENTA3 - Pentavalente Menor a 1 Año 3a. Dosis,0.8535,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+08,Atlántico,2021,PENTA3 - Pentavalente Menor a 1 Año 3a. Dosis,0.9844,IndicatorState2,0,49.99,80,89.99,90,94.99
+11,Bogotá D.C.,2021,PENTA3 - Pentavalente Menor a 1 Año 3a. Dosis,0.7367,IndicatorState1,0,49.99,80,89.99,90,94.99
+13,Bolívar,2021,PENTA3 - Pentavalente Menor a 1 Año 3a. Dosis,0.9012,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+15,Boyacá,2021,PENTA3 - Pentavalente Menor a 1 Año 3a. Dosis,0.8932,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+17,Caldas,2021,PENTA3 - Pentavalente Menor a 1 Año 3a. Dosis,0.8521,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+18,Caquetá,2021,PENTA3 - Pentavalente Menor a 1 Año 3a. Dosis,0.8864,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+19,Cauca,2021,PENTA3 - Pentavalente Menor a 1 Año 3a. Dosis,0.8916,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+20,Cesar,2021,PENTA3 - Pentavalente Menor a 1 Año 3a. Dosis,0.9309,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+23,Córdoba,2021,PENTA3 - Pentavalente Menor a 1 Año 3a. Dosis,0.8837,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+25,Cundinamarca,2021,PENTA3 - Pentavalente Menor a 1 Año 3a. Dosis,0.9015,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+27,Chocó,2021,PENTA3 - Pentavalente Menor a 1 Año 3a. Dosis,0.797,IndicatorState1,0,49.99,80,89.99,90,94.99
+41,Huila,2021,PENTA3 - Pentavalente Menor a 1 Año 3a. Dosis,0.8834,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+44,La Guajira,2021,PENTA3 - Pentavalente Menor a 1 Año 3a. Dosis,0.904,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+47,Magdalena,2021,PENTA3 - Pentavalente Menor a 1 Año 3a. Dosis,0.9402,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+50,Meta,2021,PENTA3 - Pentavalente Menor a 1 Año 3a. Dosis,0.8844,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+52,Nariño,2021,PENTA3 - Pentavalente Menor a 1 Año 3a. Dosis,0.8295,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+54,Norte de Santander,2021,PENTA3 - Pentavalente Menor a 1 Año 3a. Dosis,0.9157,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+63,Quindio,2021,PENTA3 - Pentavalente Menor a 1 Año 3a. Dosis,0.9068,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+66,Risaralda,2021,PENTA3 - Pentavalente Menor a 1 Año 3a. Dosis,0.9312,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+68,Santander,2021,PENTA3 - Pentavalente Menor a 1 Año 3a. Dosis,0.8391,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+70,Sucre,2021,PENTA3 - Pentavalente Menor a 1 Año 3a. Dosis,0.969,IndicatorState2,0,49.99,80,89.99,90,94.99
+73,Tolima,2021,PENTA3 - Pentavalente Menor a 1 Año 3a. Dosis,0.9052,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+76,Valle del Cauca,2021,PENTA3 - Pentavalente Menor a 1 Año 3a. Dosis,0.7846,IndicatorState1,0,49.99,80,89.99,90,94.99
+81,Arauca,2021,PENTA3 - Pentavalente Menor a 1 Año 3a. Dosis,0.9673,IndicatorState2,0,49.99,80,89.99,90,94.99
+85,Casanare,2021,PENTA3 - Pentavalente Menor a 1 Año 3a. Dosis,1.0162,IndicatorState3,0,49.99,80,89.99,90,94.99
+86,Putumayo,2021,PENTA3 - Pentavalente Menor a 1 Año 3a. Dosis,1.0006,IndicatorState3,0,49.99,80,89.99,90,94.99
+88,Archipiélago de San Andrés  Providencia y Santa Catalina,2021,PENTA3 - Pentavalente Menor a 1 Año 3a. Dosis,0.807,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+91,Amazonas,2021,PENTA3 - Pentavalente Menor a 1 Año 3a. Dosis,0.6778,IndicatorState1,0,49.99,80,89.99,90,94.99
+94,Guainía,2021,PENTA3 - Pentavalente Menor a 1 Año 3a. Dosis,0.96,IndicatorState2,0,49.99,80,89.99,90,94.99
+95,Guaviare,2021,PENTA3 - Pentavalente Menor a 1 Año 3a. Dosis,0.8824,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+97,Vaupés,2021,PENTA3 - Pentavalente Menor a 1 Año 3a. Dosis,0.7334,IndicatorState1,0,49.99,80,89.99,90,94.99
+99,Vichada,2021,PENTA3 - Pentavalente Menor a 1 Año 3a. Dosis,0.5847,IndicatorState1,0,49.99,80,89.99,90,94.99
+05,Antioquia,2021,N2D - Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+08,Atlántico,2021,N2D - Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+11,Bogotá  D.C.,2021,N2D - Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+13,Bolívar,2021,N2D - Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+15,Boyacá,2021,N2D - Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+17,Caldas,2021,N2D - Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+18,Caquetá,2021,N2D - Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+19,Cauca,2021,N2D - Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+20,Cesar,2021,N2D - Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+23,Córdoba,2021,N2D - Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+25,Cundinamarca,2021,N2D - Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+27,Chocó,2021,N2D - Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+41,Huila,2021,N2D - Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+44,La Guajira,2021,N2D - Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+47,Magdalena,2021,N2D - Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+50,Meta,2021,N2D - Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+52,Nariño,2021,N2D - Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+54,Norte de Santander,2021,N2D - Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+63,Quindio,2021,N2D - Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+66,Risaralda,2021,N2D - Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+68,Santander,2021,N2D - Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+70,Sucre,2021,N2D - Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+73,Tolima,2021,N2D - Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+76,Valle del Cauca,2021,N2D - Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+81,Arauca,2021,N2D - Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+85,Casanare,2021,N2D - Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+86,Putumayo,2021,N2D - Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+88,Archipiélago de San Andrés  Providencia y Santa Catalina,2021,N2D - Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+91,Amazonas,2021,N2D - Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+94,Guainía,2021,N2D - Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+95,Guaviare,2021,N2D - Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+97,Vaupés,2021,N2D - Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+99,Vichada,2021,N2D - Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+05,Antioquia,2021,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.841,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+08,Atlántico,2021,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.9575,IndicatorState2,0,49.99,80,89.99,90,94.99
+11,Bogotá  D.C.,2021,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.7791,IndicatorState1,0,49.99,80,89.99,90,94.99
+13,Bolívar,2021,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.8637,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+15,Boyacá,2021,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.8914,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+17,Caldas,2021,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.7875,IndicatorState1,0,49.99,80,89.99,90,94.99
+18,Caquetá,2021,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.8713,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+19,Cauca,2021,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.8725,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+20,Cesar,2021,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.9214,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+23,Córdoba,2021,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.8645,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+25,Cundinamarca,2021,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.8946,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+27,Chocó,2021,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.9253,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+41,Huila,2021,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.8691,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+44,La Guajira,2021,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.9473,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+47,Magdalena,2021,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.936,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+50,Meta,2021,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.9018,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+52,Nariño,2021,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.8394,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+54,Norte de Santander,2021,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.9272,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+63,Quindio,2021,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.8849,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+66,Risaralda,2021,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.8987,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+68,Santander,2021,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.8485,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+70,Sucre,2021,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.8989,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+73,Tolima,2021,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.8831,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+76,Valle del Cauca,2021,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.7941,IndicatorState1,0,49.99,80,89.99,90,94.99
+81,Arauca,2021,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.9455,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+85,Casanare,2021,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.9582,IndicatorState2,0,49.99,80,89.99,90,94.99
+86,Putumayo,2021,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.9504,IndicatorState2,0,49.99,80,89.99,90,94.99
+88,Archipiélago de San Andrés  Providencia y Santa Catalina,2021,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.8272,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+91,Amazonas,2021,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.6551,IndicatorState1,0,49.99,80,89.99,90,94.99
+94,Guainía,2021,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.9299,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+95,Guaviare,2021,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.9106,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+97,Vaupés,2021,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.7908,IndicatorState1,0,49.99,80,89.99,90,94.99
+99,Vichada,2021,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.7388,IndicatorState1,0,49.99,80,89.99,90,94.99
+05,Antioquia,2021,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.8022,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+08,Atlántico,2021,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.9159,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+11,Bogotá  D.C.,2021,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.9259,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+13,Bolívar,2021,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.8082,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+15,Boyacá,2021,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.9256,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+17,Caldas,2021,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.8734,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+18,Caquetá,2021,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.8325,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+19,Cauca,2021,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.869,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+20,Cesar,2021,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.8225,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+23,Córdoba,2021,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.8661,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+25,Cundinamarca,2021,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.9382,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+27,Chocó,2021,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.715,IndicatorState1,0,49.99,80,89.99,90,94.99
+41,Huila,2021,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.939,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+44,La Guajira,2021,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.7101,IndicatorState1,0,49.99,80,89.99,90,94.99
+47,Magdalena,2021,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.8706,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+50,Meta,2021,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.8358,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+52,Nariño,2021,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.8465,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+54,Norte de Santander,2021,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.8673,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+63,Quindio,2021,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.8759,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+66,Risaralda,2021,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.8691,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+68,Santander,2021,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.8507,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+70,Sucre,2021,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.8924,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+73,Tolima,2021,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.8892,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+76,Valle del Cauca,2021,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.768,IndicatorState1,0,49.99,80,89.99,90,94.99
+81,Arauca,2021,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.9146,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+85,Casanare,2021,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.9059,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+86,Putumayo,2021,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.8792,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+88,Archipiélago de San Andrés  Providencia y Santa Catalina,2021,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.9139,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+91,Amazonas,2021,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.7134,IndicatorState1,0,49.99,80,89.99,90,94.99
+94,Guainía,2021,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.8002,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+95,Guaviare,2021,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.8279,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+97,Vaupés,2021,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.6315,IndicatorState1,0,49.99,80,89.99,90,94.99
+99,Vichada,2021,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.6035,IndicatorState1,0,49.99,80,89.99,90,94.99
+05,Antioquia,2022,BCG - Antituberculosa Recién Nacido,0.9059,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+08,Atlántico,2022,BCG - Antituberculosa Recién Nacido,1.0156,IndicatorState3,0,49.99,80,89.99,90,94.99
+11,Bogotá  D.C.,2022,BCG - Antituberculosa Recién Nacido,0.8508,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+13,Bolívar,2022,BCG - Antituberculosa Recién Nacido,0.8829,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+15,Boyacá,2022,BCG - Antituberculosa Recién Nacido,0.8943,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+17,Caldas,2022,BCG - Antituberculosa Recién Nacido,0.8784,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+18,Caquetá,2022,BCG - Antituberculosa Recién Nacido,0.9093,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+19,Cauca,2022,BCG - Antituberculosa Recién Nacido,0.7481,IndicatorState1,0,49.99,80,89.99,90,94.99
+20,Cesar,2022,BCG - Antituberculosa Recién Nacido,0.9677,IndicatorState2,0,49.99,80,89.99,90,94.99
+23,Córdoba,2022,BCG - Antituberculosa Recién Nacido,0.8577,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+25,Cundinamarca,2022,BCG - Antituberculosa Recién Nacido,0.4902,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+27,Chocó,2022,BCG - Antituberculosa Recién Nacido,0.8617,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+41,Huila,2022,BCG - Antituberculosa Recién Nacido,0.9222,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+44,La Guajira,2022,BCG - Antituberculosa Recién Nacido,1.0818,IndicatorState3,0,49.99,80,89.99,90,94.99
+47,Magdalena,2022,BCG - Antituberculosa Recién Nacido,0.8936,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+50,Meta,2022,BCG - Antituberculosa Recién Nacido,0.9836,IndicatorState2,0,49.99,80,89.99,90,94.99
+52,Nariño,2022,BCG - Antituberculosa Recién Nacido,0.7735,IndicatorState1,0,49.99,80,89.99,90,94.99
+54,Norte de Santander,2022,BCG - Antituberculosa Recién Nacido,0.8653,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+63,Quindio,2022,BCG - Antituberculosa Recién Nacido,0.9421,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+66,Risaralda,2022,BCG - Antituberculosa Recién Nacido,0.9533,IndicatorState2,0,49.99,80,89.99,90,94.99
+68,Santander,2022,BCG - Antituberculosa Recién Nacido,0.8746,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+70,Sucre,2022,BCG - Antituberculosa Recién Nacido,0.9438,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+73,Tolima,2022,BCG - Antituberculosa Recién Nacido,0.8319,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+76,Valle del Cauca,2022,BCG - Antituberculosa Recién Nacido,0.7849,IndicatorState1,0,49.99,80,89.99,90,94.99
+81,Arauca,2022,BCG - Antituberculosa Recién Nacido,0.9016,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+85,Casanare,2022,BCG - Antituberculosa Recién Nacido,0.906,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+86,Putumayo,2022,BCG - Antituberculosa Recién Nacido,0.9107,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+88,Archipiélago de San Andrés Providencia y Santa Catalina,2022,BCG - Antituberculosa Recién Nacido,0.8666,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+91,Amazonas,2022,BCG - Antituberculosa Recién Nacido,0.7366,IndicatorState1,0,49.99,80,89.99,90,94.99
+94,Guainía,2022,BCG - Antituberculosa Recién Nacido,1.4111,IndicatorState3,0,49.99,80,89.99,90,94.99
+95,Guaviare,2022,BCG - Antituberculosa Recién Nacido,0.9607,IndicatorState2,0,49.99,80,89.99,90,94.99
+97,Vaupés,2022,BCG - Antituberculosa Recién Nacido,1.1443,IndicatorState3,0,49.99,80,89.99,90,94.99
+99,Vichada,2022,BCG - Antituberculosa Recién Nacido,1.0619,IndicatorState3,0,49.99,80,89.99,90,94.99
+05,Antioquia,2022,PENTA3,0.8753,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+08,Atlántico,2022,PENTA3,0.9997,IndicatorState2,0,49.99,80,89.99,90,94.99
+11,Bogotá  D.C.,2022,PENTA3,0.7094,IndicatorState1,0,49.99,80,89.99,90,94.99
+13,Bolívar,2022,PENTA3,0.9435,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+15,Boyacá,2022,PENTA3,0.8974,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+17,Caldas,2022,PENTA3,0.8738,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+18,Caquetá,2022,PENTA3,0.8391,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+19,Cauca,2022,PENTA3,0.9393,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+20,Cesar,2022,PENTA3,0.9158,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+23,Córdoba,2022,PENTA3,0.9297,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+25,Cundinamarca,2022,PENTA3,0.8494,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+27,Chocó,2022,PENTA3,0.7756,IndicatorState1,0,49.99,80,89.99,90,94.99
+54,Norte de Santander,2022,PENTA3,0.9033,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+63,Quindio,2022,PENTA3,0.863,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+66,Risaralda,2022,PENTA3,0.9014,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+68,Santander,2022,PENTA3,0.83,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+70,Sucre,2022,PENTA3,0.8619,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+73,Tolima,2022,PENTA3,0.8926,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+76,Valle del Cauca,2022,PENTA3,0.9386,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+81,Arauca,2022,PENTA3,0.9076,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+85,Casanare,2022,PENTA3,0.9334,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+86,Putumayo,2022,PENTA3,0.9763,IndicatorState2,0,49.99,80,89.99,90,94.99
+88,Archipiélago de San Andrés Providencia y Santa Catalina,2022,PENTA3,0.8941,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+91,Amazonas,2022,PENTA3,0.7813,IndicatorState1,0,49.99,80,89.99,90,94.99
+94,Guainía,2022,PENTA3,0.8644,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+95,Guaviare,2022,PENTA3,0.9673,IndicatorState2,0,49.99,80,89.99,90,94.99
+97,Vaupés,2022,PENTA3,0.8857,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+99,Vichada,2022,PENTA3,0.712,IndicatorState1,0,49.99,80,89.99,90,94.99
+05,Antioquia,2022,N2D  Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+08,Atlántico,2022,N2D  Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+11,Bogotá  D.C.,2022,N2D  Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+13,Bolívar,2022,N2D  Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+15,Boyacá,2022,N2D  Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+17,Caldas,2022,N2D  Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+18,Caquetá,2022,N2D  Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+19,Cauca,2022,N2D  Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+20,Cesar,2022,N2D  Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+23,Córdoba,2022,N2D  Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+25,Cundinamarca,2022,N2D  Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+27,Chocó,2022,N2D  Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+41,Huila,2022,N2D  Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+44,La Guajira,2022,N2D  Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+47,Magdalena,2022,N2D  Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+50,Meta,2022,N2D  Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+52,Nariño,2022,N2D  Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+54,Norte de Santander,2022,N2D  Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+63,Quindio,2022,N2D  Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+66,Risaralda,2022,N2D  Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+68,Santander,2022,N2D  Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+70,Sucre,2022,N2D  Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+73,Tolima,2022,N2D  Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+76,Valle del Cauca,2022,N2D  Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+81,Arauca,2022,N2D  Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+85,Casanare,2022,N2D  Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+86,Putumayo,2022,N2D  Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+88,Archipiélago de San Andrés Providencia y Santa Catalina,2022,N2D  Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+91,Amazonas,2022,N2D  Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+94,Guainía,2022,N2D  Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+95,Guaviare,2022,N2D  Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+97,Vaupés,2022,N2D  Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+99,Vichada,2022,N2D  Neumococo Mayor a 1 Año 2a. Dosis,0.00,ThreeSymbolUnCircledCross,0,49.99,80,89.99,90,94.99
+05,Antioquia,2022,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.9064,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+08,Atlántico,2022,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.9468,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+11,Bogotá D.C.,2022,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.6935,IndicatorState1,0,49.99,80,89.99,90,94.99
+13,Bolívar,2022,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.9127,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+15,Boyacá,2022,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.8545,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+17,Caldas,2022,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.8511,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+18,Caquetá,2022,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.9192,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+19,Cauca,2022,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.9371,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+20,Cesar,2022,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.9674,IndicatorState2,0,49.99,80,89.99,90,94.99
+23,Córdoba,2022,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.949,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+25,Cundinamarca,2022,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.8327,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+27,Chocó,2022,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.9809,IndicatorState2,0,49.99,80,89.99,90,94.99
+41,Huila,2022,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.9129,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+44,La Guajira,2022,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,1.0085,IndicatorState3,0,49.99,80,89.99,90,94.99
+47,Magdalena,2022,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.9749,IndicatorState2,0,49.99,80,89.99,90,94.99
+50,Meta,2022,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.891,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+52,Nariño,2022,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.8487,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+54,Norte de Santander,2022,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.9057,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+63,Quindio,2022,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.8355,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+66,Risaralda,2022,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.9054,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+68,Santander,2022,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.8425,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+70,Sucre,2022,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.9163,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+73,Tolima,2022,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.8744,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+76,Valle del Cauca,2022,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.9435,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+81,Arauca,2022,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.9376,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+85,Casanare,2022,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.9463,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+86,Putumayo,2022,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.9937,IndicatorState2,0,49.99,80,89.99,90,94.99
+88,Archipiélago de San Andrés Providencia y Santa Catalina,2022,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.8639,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+91,Amazonas,2022,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.7711,IndicatorState1,0,49.99,80,89.99,90,94.99
+94,Guainía,2022,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.9519,IndicatorState2,0,49.99,80,89.99,90,94.99
+95,Guaviare,2022,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.9679,IndicatorState2,0,49.99,80,89.99,90,94.99
+97,Vaupés,2022,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,1.0429,IndicatorState3,0,49.99,80,89.99,90,94.99
+99,Vichada,2022,TV - Sarampión-Rubéola-Paperas (TV) 1 Año Única Dosis,0.9918,IndicatorState2,0,49.99,80,89.99,90,94.99
+05,Antioquia,2022,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.8388,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+08,Atlántico,2022,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.8947,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+11,Bogotá D.C.,2022,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.8282,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+13,Bolívar,2022,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.8018,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+15,Boyacá,2022,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.9432,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+17,Caldas,2022,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.8935,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+18,Caquetá,2022,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.827,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+19,Cauca,2022,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,1.0215,IndicatorState3,0,49.99,80,89.99,90,94.99
+20,Cesar,2022,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.7929,IndicatorState1,0,49.99,80,89.99,90,94.99
+23,Córdoba,2022,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.8973,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+25,Cundinamarca,2022,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.8693,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+27,Chocó,2022,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.7084,IndicatorState1,0,49.99,80,89.99,90,94.99
+41,Huila,2022,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.8847,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+44,La Guajira,2022,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.7327,IndicatorState1,0,49.99,80,89.99,90,94.99
+47,Magdalena,2022,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.8303,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+50,Meta,2022,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.7886,IndicatorState1,0,49.99,80,89.99,90,94.99
+52,Nariño,2022,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.8392,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+54,Norte de Santander,2022,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.791,IndicatorState1,0,49.99,80,89.99,90,94.99
+63,Quindio,2022,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.8385,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+66,Risaralda,2022,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.8107,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+68,Santander,2022,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.7839,IndicatorState1,0,49.99,80,89.99,90,94.99
+70,Sucre,2022,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.8606,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+73,Tolima,2022,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.8148,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+76,Valle del Cauca,2022,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.9024,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+81,Arauca,2022,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.8788,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+85,Casanare,2022,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.8915,ThreeSymbolUnCircledExclamation,0,49.99,80,89.99,90,94.99
+86,Putumayo,2022,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.9422,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+88,Archipiélago de San Andrés Providencia y Santa Catalina,2022,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.7407,IndicatorState1,0,49.99,80,89.99,90,94.99
+91,Amazonas,2022,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.7298,IndicatorState1,0,49.99,80,89.99,90,94.99
+94,Guainía,2022,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.6621,IndicatorState1,0,49.99,80,89.99,90,94.99
+95,Guaviare,2022,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.9422,ThreeSymbolUnCircledCheck,0,49.99,80,89.99,90,94.99
+97,Vaupés,2022,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.6316,IndicatorState1,0,49.99,80,89.99,90,94.99
+99,Vichada,2022,TV.R - Sarampión-Rubéola-Paperas (TV) 5 Años Refuerzo,0.6011,IndicatorState1,0,49.99,80,89.99,90,94.99

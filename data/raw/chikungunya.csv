@@ -1,4 +1,4 @@
-id,semana,edad_,uni_med_,sexo_,nombre_barrio,comuna,tipo_ss_,cod_ase_,fec_con_,ini_sin_,tip_cas_,pac_hos_,cod_dpto_r,cod_mpio_r,cod_dpto_o,cod_mpio_o,evento,year_
+﻿id,semana,edad_,uni_med_,sexo_,nombre_barrio,comuna,tipo_ss_,cod_ase_,fec_con_,ini_sin_,tip_cas_,pac_hos_,cod_dpto_r,cod_mpio_r,cod_dpto_o,cod_mpio_o,evento,year_
 1,47,63,1,M,Los Balsos No.1,El Poblado,C,13-18,25/11/2014,18/11/2014,1,2,5,1,5,0,CHIKUNGUNYA,2014
 2,47,49,1,F,Kennedy,Doce de Octubre,C,EPS037,18/11/2014,16/11/2014,1,2,5,1,14,1,CHIKUNGUNYA,2014
 3,47,35,1,M,Castropol,El Poblado,C,EPS010,24/11/2014,20/11/2014,1,2,5,1,70,708,CHIKUNGUNYA,2014

@@ -1,4 +1,4 @@
-id,semana,edad_,uni_med_,sexo_,nombre_barrio,comuna,tipo_ss_,cod_ase_,fec_con_,ini_sin_,tip_cas_,pac_hos_,cod_dpto_r,cod_mpio_r,cod_dpto_o,cod_mpio_o,evento,year_
+﻿id,semana,edad_,uni_med_,sexo_,nombre_barrio,comuna,tipo_ss_,cod_ase_,fec_con_,ini_sin_,tip_cas_,pac_hos_,cod_dpto_r,cod_mpio_r,cod_dpto_o,cod_mpio_o,evento,year_
 1,46,35,1,M,Campo Valdes No.2,Manrique,C,EPS010,13/11/2015,09/11/2015,3,2,5,1,5,1,ZIKA,2015
 2,36,25,1,M,Belencito,San Javier,C,EPS037,16/09/2015,12/09/2015,3,1,5,1,5,1,ZIKA,2015
 3,37,21,1,F,La Loma,Corregimiento de San Cristobal,C,ESS065,19/09/2015,14/09/2015,3,2,5,1,5,1,ZIKA,2015

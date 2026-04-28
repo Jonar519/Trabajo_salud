@@ -1,4 +1,4 @@
-periodo,par_metro,c_digo,categoria,estaci_n,municipio,departamento,ao,altitud_m,longitud,latitud,ene,feb,mar,abr,may,jun,jul,ago,sep,oct,nov,dic,anual
+﻿periodo,par_metro,c_digo,categoria,estaci_n,municipio,departamento,ao,altitud_m,longitud,latitud,ene,feb,mar,abr,may,jun,jul,ago,sep,oct,nov,dic,anual
 1961-1990,PRECIPITACIÓN,48015050,SP,Aeropuerto Vasquez Cobo,Leticia,Amazonas,11,84,-69.94,-4.19,348.7,326.2,343.4,363.7,278.2,201.8,165.2,163.1,225.9,284.6,284.5,290.1,3275.3
 1961-1990,PRECIPITACIÓN,26180160,PM,Abejorral,Abejorral,Antioquia,1,2450,-75.43,5.79,105.1,108.2,190.4,247.6,264.9,157.9,128.3,194.9,269.3,304.3,260.7,176.9,2408.3
 1961-1990,PRECIPITACIÓN,26180090,PG,El Buey,Abejorral,Antioquia,1,2110,-75.45,5.92,61.7,69.5,115.9,192.9,236.2,172.8,128.7,174.2,210.2,276.2,223.0,96.4,1957.8
