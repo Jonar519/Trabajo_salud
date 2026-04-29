@@ -1,10 +1,22 @@
 import os
 import sys
 import re
+import json
+import argparse
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from urllib.parse import urlparse, parse_qs
 from pathlib import Path
-from pyspark.sql import SparkSession
-from pyspark.sql import functions as F
-from pyspark.sql.window import Window
+
+try:
+    from pyspark.sql import SparkSession
+    from pyspark.sql import functions as F
+    from pyspark.sql.window import Window
+    _PYSPARK_IMPORT_ERROR = None
+except Exception as e:
+    SparkSession = None
+    F = None
+    Window = None
+    _PYSPARK_IMPORT_ERROR = e
 
 
 # ─────────────────────────────────────────────
@@ -64,6 +76,14 @@ def create_spark_session():
         .config("spark.sql.broadcastTimeout",           "300")
         .getOrCreate()
     )
+
+def _require_pyspark():
+    if SparkSession is None or F is None or Window is None:
+        raise RuntimeError(
+            "PySpark no está disponible en este entorno. "
+            "Instala dependencias (requirements.txt) y asegúrate de tener Java configurado. "
+            f"Detalle: {_PYSPARK_IMPORT_ERROR}"
+        )
 
 
 # ─────────────────────────────────────────────
@@ -245,6 +265,7 @@ def validate_dataframe(df, name, key_cols):
 # ─────────────────────────────────────────────
 
 def process_vigilancia(spark, path):
+    _require_pyspark()
     """
     Source  : vigilancia_salud_publica.csv
     Granularity: year + week + municipality + disease
@@ -285,6 +306,7 @@ def process_vigilancia(spark, path):
 
 
 def process_clima(spark, path):
+    _require_pyspark()
     """
     Source  : normales_climatologicas.csv
     Granularity: week + municipality (Averaged across all historical periods 'ao')
@@ -367,6 +389,7 @@ def process_clima(spark, path):
 
 
 def process_calidad_aire(spark, path):
+    _require_pyspark()
     """
     Source  : calidad_aire_promedio_anual.csv
     Granularity: annual → expanded to 52 weeks
@@ -440,6 +463,7 @@ def process_calidad_aire(spark, path):
 
 
 def process_prestadores(spark, path):
+    _require_pyspark()
     """
     Source  : prestadores_sedes.csv
     Granularity: static (no year/week) — joined only on (departamento, municipio)
@@ -470,6 +494,7 @@ def process_prestadores(spark, path):
 # ─────────────────────────────────────────────
 
 def create_brote_column(master_df, df_vsp):
+    _require_pyspark()
     """
     Creates the binary target column 'brote':
       brote = 1  if casos_totales > p75 (historic, per disease + municipality)
@@ -499,6 +524,7 @@ def create_brote_column(master_df, df_vsp):
 # ─────────────────────────────────────────────
 
 def apply_sanity_filters(df):
+    _require_pyspark()
     """
     Removes rows with values that are physically impossible or highly 
     unlikely for the Colombian context (outlier cleaning).
@@ -529,6 +555,7 @@ def apply_sanity_filters(df):
 # ─────────────────────────────────────────────
 
 def main():
+    _require_pyspark()
     spark = create_spark_session()
 
     # Build absolute paths relative to this script's location so the pipeline
@@ -785,6 +812,1118 @@ def main():
     print("\n  Pipeline completed successfully.\n")
     spark.stop()
 
+def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
+    import pandas as pd
+
+    src_dir = Path(__file__).resolve().parent
+    project_root = src_dir.parent
+    default_csv = project_root / "data" / "processed" / "dataset_maestro_epidemiologico.csv"
+    csv_file = Path(csv_path) if csv_path else default_csv
+
+    if not csv_file.exists():
+        raise FileNotFoundError(
+            f"No se encontró el CSV del dataset maestro en: {csv_file}\n"
+            "Ejecuta primero el pipeline para generarlo."
+        )
+
+    df = pd.read_csv(csv_file)
+    columns = list(df.columns)
+
+    def html_escape(value):
+        s = "" if value is None else str(value)
+        return (
+            s.replace("&", "&amp;")
+            .replace("<", "&lt;")
+            .replace(">", "&gt;")
+            .replace('"', "&quot;")
+            .replace("'", "&#39;")
+        )
+
+    sources = [
+        {
+            "archivo": "vigilancia_salud_publica.csv",
+            "tipo": "Vigilancia en salud pública",
+            "nivel": "año + semana + municipio + enfermedad",
+            "salidas": ["ano", "semana", "departamento", "municipio", "enfermedad", "casos_totales"],
+        },
+        {
+            "archivo": "normales_climatologicas.csv",
+            "tipo": "Clima (normales climatológicas)",
+            "nivel": "semana + municipio (derivado de meses ene–dic)",
+            "salidas": ["semana", "departamento", "municipio", "temperatura_promedio", "precipitacion_promedio", "latitud", "longitud"],
+        },
+        {
+            "archivo": "calidad_aire_promedio_anual.csv",
+            "tipo": "Calidad del aire (promedio anual)",
+            "nivel": "anual → expandido a 52 semanas",
+            "salidas": ["ano", "semana", "departamento", "municipio", "calidad_aire_promedio", "latitud", "longitud"],
+        },
+        {
+            "archivo": "prestadores_sedes.csv",
+            "tipo": "Prestadores/sedes de salud",
+            "nivel": "estático por municipio",
+            "salidas": ["departamento", "municipio", "cantidad_hospitales"],
+        },
+        {
+            "archivo": "vacunacion_departamento.csv",
+            "tipo": "Vacunación (no usada en el modelo actual)",
+            "nivel": "departamento",
+            "salidas": ["vacunacion (NO_REPORTA)"],
+        },
+    ]
+
+    def to_json_bytes(payload, status=200):
+        data = json.dumps(payload, ensure_ascii=False).encode("utf-8")
+        return status, data
+
+    def parse_int(value, default):
+        try:
+            return int(value)
+        except Exception:
+            return default
+
+    def apply_filters(df_in, params):
+        df_out = df_in
+
+        q = (params.get("q") or "").strip()
+        if q:
+            q_upper = q.upper()
+            mask = pd.Series(False, index=df_out.index)
+            for col in ["departamento", "municipio", "enfermedad"]:
+                if col in df_out.columns:
+                    mask = mask | df_out[col].astype(str).str.upper().str.contains(q_upper, na=False)
+            df_out = df_out[mask]
+
+        for col in ["departamento", "municipio", "enfermedad", "brote"]:
+            v = (params.get(col) or "").strip()
+            if v and col in df_out.columns:
+                df_out = df_out[df_out[col].astype(str).str.upper() == v.upper()]
+
+        ano = (params.get("ano") or "").strip()
+        if ano and "ano" in df_out.columns:
+            df_out = df_out[df_out["ano"] == parse_int(ano, -1)]
+
+        semana = (params.get("semana") or "").strip()
+        if semana and "semana" in df_out.columns:
+            df_out = df_out[df_out["semana"] == parse_int(semana, -1)]
+
+        return df_out
+
+    def get_values():
+        payload = {}
+        if "departamento" in df.columns:
+            payload["departamentos"] = sorted([x for x in df["departamento"].dropna().astype(str).unique().tolist() if x.strip()])
+        else:
+            payload["departamentos"] = []
+
+        if "enfermedad" in df.columns:
+            payload["enfermedades"] = sorted([x for x in df["enfermedad"].dropna().astype(str).unique().tolist() if x.strip()])
+        else:
+            payload["enfermedades"] = []
+
+        if "ano" in df.columns:
+            anos = sorted([int(x) for x in df["ano"].dropna().unique().tolist() if str(x).strip().isdigit()])
+            payload["anos"] = anos
+        else:
+            payload["anos"] = []
+
+        if "brote" in df.columns:
+            payload["brotes"] = sorted([x for x in df["brote"].dropna().astype(str).unique().tolist() if x.strip()])
+        else:
+            payload["brotes"] = ["SI", "NO"]
+
+        return payload
+
+    def build_summary(df_filtered):
+        total_rows = int(len(df_filtered))
+        total_cases = int(df_filtered["casos_totales"].fillna(0).sum()) if "casos_totales" in df_filtered.columns else 0
+        municipios = int(df_filtered["municipio"].nunique()) if "municipio" in df_filtered.columns else 0
+
+        brote_counts = {}
+        if "brote" in df_filtered.columns and total_rows:
+            brote_counts = df_filtered["brote"].astype(str).value_counts(dropna=False).to_dict()
+
+        disease_stats = []
+        if "enfermedad" in df_filtered.columns and total_rows:
+            agg = (
+                df_filtered.groupby("enfermedad", dropna=False)
+                .agg(casos=("casos_totales", "sum"), filas=("enfermedad", "size"))
+                .reset_index()
+                .sort_values("casos", ascending=False)
+            )
+            for _, row in agg.iterrows():
+                disease_stats.append({"enfermedad": str(row["enfermedad"]), "casos": int(row["casos"]), "filas": int(row["filas"])})
+
+        weekly = []
+        if {"ano", "semana", "casos_totales"}.issubset(df_filtered.columns) and total_rows:
+            w = (
+                df_filtered.groupby(["ano", "semana"], dropna=False)["casos_totales"]
+                .sum()
+                .reset_index()
+                .sort_values(["ano", "semana"])
+            )
+            w = w.tail(52)
+            for _, row in w.iterrows():
+                label = f"{int(row['ano'])}-W{int(row['semana']):02d}"
+                weekly.append({"label": label, "casos": int(row["casos_totales"])})
+
+        top_munis = []
+        if {"departamento", "municipio", "casos_totales"}.issubset(df_filtered.columns) and total_rows:
+            m = (
+                df_filtered.groupby(["departamento", "municipio"], dropna=False)["casos_totales"]
+                .sum()
+                .reset_index()
+                .sort_values("casos_totales", ascending=False)
+                .head(10)
+            )
+            for _, row in m.iterrows():
+                top_munis.append(
+                    {
+                        "departamento": str(row["departamento"]),
+                        "municipio": str(row["municipio"]),
+                        "casos": int(row["casos_totales"]),
+                    }
+                )
+
+        def mean_or_none(col):
+            if col not in df_filtered.columns or not total_rows:
+                return None
+            s = pd.to_numeric(df_filtered[col], errors="coerce")
+            v = float(s.mean()) if s.notna().any() else None
+            return None if v is None else round(v, 2)
+
+        metrics = {
+            "temperatura_promedio": mean_or_none("temperatura_promedio"),
+            "precipitacion_promedio": mean_or_none("precipitacion_promedio"),
+            "calidad_aire_promedio": mean_or_none("calidad_aire_promedio"),
+            "cantidad_hospitales": mean_or_none("cantidad_hospitales"),
+        }
+
+        return {
+            "filtered_total_rows": total_rows,
+            "total_cases": total_cases,
+            "municipios": municipios,
+            "brote_counts": brote_counts,
+            "disease_stats": disease_stats,
+            "weekly_cases": weekly,
+            "top_municipios": top_munis,
+            "metrics": metrics,
+        }
+
+    html = """<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dataset Maestro Epidemiológico</title>
+  <style>
+    :root {
+      --bg: #0b1220;
+      --panel: rgba(255,255,255,0.06);
+      --panel-2: rgba(255,255,255,0.09);
+      --text: rgba(255,255,255,0.92);
+      --muted: rgba(255,255,255,0.65);
+      --border: rgba(255,255,255,0.12);
+      --accent: #60a5fa;
+      --accent-2: #34d399;
+      --warn: #fbbf24;
+      --danger: #fb7185;
+      --shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(1000px 700px at 20% 10%, rgba(96,165,250,0.20), transparent 60%),
+        radial-gradient(900px 600px at 80% 0%, rgba(52,211,153,0.18), transparent 60%),
+        radial-gradient(900px 600px at 50% 90%, rgba(251,113,133,0.10), transparent 60%),
+        var(--bg);
+      min-height: 100vh;
+    }
+    a { color: inherit; }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(10px);
+      background: rgba(11,18,32,0.55);
+      border-bottom: 1px solid var(--border);
+    }
+    .topbar-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px 16px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(96,165,250,0.9), rgba(52,211,153,0.9));
+      box-shadow: var(--shadow);
+    }
+    .title {
+      line-height: 1.1;
+    }
+    .title h1 {
+      font-size: 16px;
+      margin: 0;
+      letter-spacing: 0.2px;
+    }
+    .title .sub {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 58vw;
+    }
+    .actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .btn {
+      appearance: none;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      padding: 9px 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: transform 0.08s ease, background 0.08s ease, border-color 0.08s ease;
+      font-size: 13px;
+    }
+    .btn:hover { background: rgba(255,255,255,0.09); border-color: rgba(255,255,255,0.18); }
+    .btn:active { transform: translateY(1px); }
+    .btn.primary {
+      border-color: rgba(96,165,250,0.45);
+      background: rgba(96,165,250,0.16);
+    }
+    .container {
+      max-width: 100%;
+      margin: 0 auto;
+      padding: 14px 14px 22px;
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 14px;
+      align-items: start;
+    }
+    @media (max-width: 980px) {
+      .container { grid-template-columns: 1fr; }
+      .title .sub { max-width: 90vw; }
+    }
+    .panel {
+      border: 1px solid var(--border);
+      background: var(--panel);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+    }
+    .panel .hd {
+      padding: 14px 14px 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .panel .hd h2 {
+      margin: 0;
+      font-size: 13px;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.88);
+    }
+    .panel .hd .hint {
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .panel .bd { padding: 14px; }
+    .field { margin-bottom: 10px; }
+    .field label {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(11,18,32,0.45);
+      color: var(--text);
+      outline: none;
+    }
+    input::placeholder { color: rgba(255,255,255,0.45); }
+    .row { display: flex; gap: 10px; }
+    .row .field { flex: 1; }
+    .pill {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.80);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    .muted { color: var(--muted); font-size: 12px; }
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+    @media (max-width: 980px) { .kpis { grid-template-columns: repeat(2, 1fr); } }
+    .kpi {
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.06);
+      border-radius: 16px;
+      padding: 12px;
+      min-height: 88px;
+    }
+    .kpi .label { color: var(--muted); font-size: 12px; margin-bottom: 8px; }
+    .kpi .value { font-size: 22px; letter-spacing: 0.2px; }
+    .kpi .delta { font-size: 12px; color: rgba(255,255,255,0.72); margin-top: 6px; }
+    .grid2 {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+    @media (max-width: 980px) { .grid2 { grid-template-columns: 1fr; } }
+    .chart {
+      padding: 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.06);
+    }
+    .chart h3 { margin: 0 0 10px; font-size: 13px; color: rgba(255,255,255,0.86); }
+    canvas { width: 100%; height: 240px; display: block; }
+    .table-wrap { overflow: auto; max-height: 70vh; border-radius: 14px; border: 1px solid rgba(255,255,255,0.10); }
+    table { border-collapse: collapse; width: 100%; min-width: 860px; background: rgba(11,18,32,0.32); }
+    th, td { padding: 10px 10px; text-align: left; font-size: 12.5px; border-bottom: 1px solid rgba(255,255,255,0.06); vertical-align: top; }
+    th { position: sticky; top: 0; z-index: 2; background: rgba(11,18,32,0.86); color: rgba(255,255,255,0.86); font-size: 12px; }
+    tbody tr:nth-child(even) { background: rgba(255,255,255,0.03); }
+    .toast {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.35);
+      color: rgba(255,255,255,0.92);
+      box-shadow: var(--shadow);
+      display: none;
+      max-width: 420px;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="logo"></div>
+        <div class="title">
+          <h1>Dataset Maestro Epidemiológico</h1>
+          <div class="sub">Archivo: __CSV_PATH__</div>
+        </div>
+      </div>
+      <div class="actions">
+        <span class="pill" id="pillStatus">Listo</span>
+        <a class="btn" href="/download">Descargar CSV</a>
+        <button class="btn primary" id="btnApply">Aplicar filtros</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="panel">
+      <div class="hd">
+        <h2>Filtros</h2>
+        <div class="hint">Usa filtros para gráficos y tabla</div>
+      </div>
+      <div class="bd">
+        <div class="field">
+          <label>Buscar (departamento / municipio / enfermedad)</label>
+          <input id="q" placeholder="Ej: BOGOTA, MEDELLIN, DENGUE" />
+        </div>
+        <div class="field">
+          <label>Departamento</label>
+          <select id="departamento">
+            <option value="">(cualquiera)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Municipio (texto exacto)</label>
+          <input id="municipio" placeholder="Ej: BOGOTA" />
+        </div>
+        <div class="row">
+          <div class="field">
+            <label>Enfermedad</label>
+            <select id="enfermedad">
+              <option value="">(cualquiera)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Brote</label>
+            <select id="brote">
+              <option value="">(cualquiera)</option>
+              <option value="SI">SI</option>
+              <option value="NO">NO</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label>Año</label>
+            <select id="ano">
+              <option value="">(cualquiera)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Semana</label>
+            <input id="semana" placeholder="1–52" />
+          </div>
+        </div>
+        <div class="row">
+          <button class="btn" id="btnReset" style="flex:1;">Reset</button>
+          <button class="btn primary" id="btnApply2" style="flex:1;">Aplicar</button>
+        </div>
+        <div class="muted" style="margin-top: 12px; line-height: 1.5;">
+          <div class="pill" style="margin-bottom: 8px;">Definiciones</div>
+          <div><span class="pill">brote</span> "SI" si casos_totales supera el percentil 75 histórico (por enfermedad + municipio).</div>
+          <div style="margin-top: 6px;"><span class="pill">imputación</span> si falta clima/aire, se usa el municipio más cercano (≤ 50 km) con datos.</div>
+          <div style="margin-top: 6px;"><span class="pill">vacunación</span> se muestra como "NO_REPORTA" en este pipeline.</div>
+        </div>
+        <div class="muted" style="margin-top: 10px;">
+          <div id="meta">Cargando metadatos…</div>
+          <div id="sources" style="margin-top: 8px;"></div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="panel">
+        <div class="hd">
+          <h2>Resumen</h2>
+          <div class="hint">KPIs + métricas promedio</div>
+        </div>
+        <div class="bd">
+          <div class="kpis">
+            <div class="kpi">
+              <div class="label">Filas (filtradas)</div>
+              <div class="value" id="kpiRows">—</div>
+              <div class="delta" id="kpiCols">—</div>
+            </div>
+            <div class="kpi">
+              <div class="label">Casos totales</div>
+              <div class="value" id="kpiCases">—</div>
+              <div class="delta" id="kpiCasesHint">Sum(casos_totales)</div>
+            </div>
+            <div class="kpi">
+              <div class="label">Municipios</div>
+              <div class="value" id="kpiMunis">—</div>
+              <div class="delta" id="kpiBrote">Brote SI: —</div>
+            </div>
+            <div class="kpi">
+              <div class="label">Promedios</div>
+              <div class="value" id="kpiTemp">—</div>
+              <div class="delta" id="kpiAire">—</div>
+            </div>
+          </div>
+
+          <div class="grid2">
+            <div class="chart">
+              <h3>Casos por semana (últimas 52)</h3>
+              <canvas id="chartTrend"></canvas>
+            </div>
+            <div class="chart">
+              <h3>Brote (distribución)</h3>
+              <canvas id="chartBrote"></canvas>
+            </div>
+          </div>
+
+          <div class="grid2" style="grid-template-columns: 1fr 1fr; margin-top: 12px;">
+            <div class="chart">
+              <h3>Casos por enfermedad</h3>
+              <canvas id="chartDisease"></canvas>
+            </div>
+            <div class="chart">
+              <h3>Top municipios por casos</h3>
+              <canvas id="chartTopMuni"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top: 14px;">
+        <div class="hd">
+          <h2>Tabla</h2>
+          <div class="hint">
+            <span class="pill" id="pillCount">Filas: —</span>
+          </div>
+        </div>
+        <div class="bd">
+          <div class="row" style="align-items:center; margin-bottom: 12px;">
+            <div class="field" style="max-width: 140px; margin:0;">
+              <label>Por página</label>
+              <input id="limit" value="100" />
+            </div>
+            <button class="btn" id="btnPrev">Anterior</button>
+            <button class="btn" id="btnNext">Siguiente</button>
+            <div class="muted" id="pageInfo" style="margin-left:auto;">—</div>
+          </div>
+
+          <div class="table-wrap">
+            <table id="table">
+              <thead><tr id="thead"></tr></thead>
+              <tbody id="tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    let offset = 0;
+    let total = 0;
+    let columns = [];
+    let lastSummary = null;
+
+    function qs(id) { return document.getElementById(id); }
+
+    function setStatus(text) {
+      qs('pillStatus').textContent = text;
+    }
+
+    function toast(msg) {
+      const el = qs('toast');
+      el.textContent = msg;
+      el.style.display = 'block';
+      setTimeout(function() { el.style.display = 'none'; }, 4000);
+    }
+
+    async function fetchJSON(url) {
+      const res = await fetch(url);
+      const txt = await res.text();
+      try {
+        return JSON.parse(txt);
+      } catch (e) {
+        throw new Error('Respuesta inválida del servidor: ' + txt.slice(0, 200));
+      }
+    }
+
+    function getParams() {
+      return {
+        q: qs('q').value.trim(),
+        departamento: (qs('departamento').value || '').trim(),
+        municipio: qs('municipio').value.trim(),
+        enfermedad: (qs('enfermedad').value || '').trim(),
+        ano: (qs('ano').value || '').trim(),
+        semana: qs('semana').value.trim(),
+        brote: (qs('brote').value || '').trim(),
+      };
+    }
+
+    async function loadMeta() {
+      const meta = await fetchJSON('/api/meta');
+      columns = meta.columns || [];
+      total = meta.total_rows || 0;
+      qs('pillCount').textContent = 'Filas: ' + total.toLocaleString();
+      qs('kpiCols').textContent = 'Columnas: ' + columns.length;
+      qs('meta').textContent = 'Columnas (' + columns.length + '): ' + columns.join(', ');
+
+      const sourcesDiv = qs('sources');
+      sourcesDiv.innerHTML = '';
+      const title = document.createElement('div');
+      title.innerHTML = '<strong>Fuentes integradas</strong>';
+      sourcesDiv.appendChild(title);
+      (meta.sources || []).forEach(s => {
+        const el = document.createElement('div');
+        el.style.marginTop = '6px';
+        el.innerHTML = '<span class="pill">' + s.archivo + '</span> <span class="muted">' + s.tipo + ' — ' + s.nivel + '</span>';
+        sourcesDiv.appendChild(el);
+      });
+
+      const thead = qs('thead');
+      thead.innerHTML = '';
+      columns.forEach(c => {
+        const th = document.createElement('th');
+        th.textContent = c;
+        thead.appendChild(th);
+      });
+    }
+
+    async function loadValues() {
+      const data = await fetchJSON('/api/values');
+      const dep = qs('departamento');
+      const enf = qs('enfermedad');
+      const ano = qs('ano');
+
+      function fillSelect(el, values) {
+        const keep = el.value || '';
+        const first = el.querySelector('option');
+        el.innerHTML = '';
+        el.appendChild(first);
+        (values || []).forEach(v => {
+          const opt = document.createElement('option');
+          opt.value = v;
+          opt.textContent = v;
+          el.appendChild(opt);
+        });
+        el.value = keep;
+      }
+
+      fillSelect(dep, data.departamentos || []);
+      fillSelect(enf, data.enfermedades || []);
+
+      const anoKeep = ano.value || '';
+      const firstAno = ano.querySelector('option');
+      ano.innerHTML = '';
+      ano.appendChild(firstAno);
+      (data.anos || []).forEach(v => {
+        const opt = document.createElement('option');
+        opt.value = String(v);
+        opt.textContent = String(v);
+        ano.appendChild(opt);
+      });
+      ano.value = anoKeep;
+    }
+
+    function setPageInfo(limit) {
+      const start = Math.min(offset + 1, total);
+      const end = Math.min(offset + limit, total);
+      qs('pageInfo').textContent = start.toLocaleString() + '–' + end.toLocaleString() + ' de ' + total.toLocaleString();
+    }
+
+    async function loadData() {
+      const limit = Math.max(1, parseInt(qs('limit').value || '100', 10));
+      const p = getParams();
+      p.offset = String(offset);
+      p.limit = String(limit);
+      const params = new URLSearchParams(p);
+      const payload = await fetchJSON('/api/data?' + params.toString());
+
+      const rows = payload.rows || [];
+      const filteredTotal = payload.filtered_total ?? total;
+      qs('pillCount').textContent = 'Filas: ' + filteredTotal.toLocaleString();
+      total = filteredTotal;
+      setPageInfo(limit);
+
+      const tbody = qs('tbody');
+      tbody.innerHTML = '';
+      rows.forEach(r => {
+        const tr = document.createElement('tr');
+        columns.forEach(c => {
+          const td = document.createElement('td');
+          const v = r[c];
+          td.textContent = (v === null || v === undefined) ? '' : String(v);
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+    }
+
+    function fmt(n) {
+      if (n === null || n === undefined) return '—';
+      const x = Number(n);
+      if (!isFinite(x)) return '—';
+      return x.toLocaleString();
+    }
+
+    function canvasSize(canvas, height) {
+      const dpr = window.devicePixelRatio || 1;
+      const w = canvas.clientWidth;
+      const h = height;
+      canvas.width = Math.floor(w * dpr);
+      canvas.height = Math.floor(h * dpr);
+      const ctx = canvas.getContext('2d');
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      return ctx;
+    }
+
+    function clearCanvas(ctx, w, h) {
+      ctx.clearRect(0, 0, w, h);
+    }
+
+    function drawCardLine(ctx, text, x, y, color) {
+      ctx.fillStyle = color;
+      ctx.fillText(text, x, y);
+    }
+
+    function drawLineChart(canvas, labels, values, color) {
+      const ctx = canvasSize(canvas, 240);
+      const w = canvas.clientWidth;
+      const h = 240;
+      clearCanvas(ctx, w, h);
+
+      ctx.font = '12px ui-sans-serif, system-ui, Segoe UI, Roboto, Arial';
+      ctx.strokeStyle = 'rgba(255,255,255,0.14)';
+      ctx.fillStyle = 'rgba(255,255,255,0.75)';
+
+      const padL = 38, padR = 12, padT = 10, padB = 24;
+      const iw = w - padL - padR;
+      const ih = h - padT - padB;
+
+      const maxV = Math.max(1, ...values);
+      const minV = 0;
+
+      ctx.beginPath();
+      ctx.moveTo(padL, padT);
+      ctx.lineTo(padL, padT + ih);
+      ctx.lineTo(padL + iw, padT + ih);
+      ctx.stroke();
+
+      const ticks = 4;
+      for (let i = 0; i <= ticks; i++) {
+        const t = i / ticks;
+        const y = padT + ih - t * ih;
+        ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+        ctx.beginPath();
+        ctx.moveTo(padL, y);
+        ctx.lineTo(padL + iw, y);
+        ctx.stroke();
+        ctx.fillStyle = 'rgba(255,255,255,0.55)';
+        ctx.fillText(Math.round(minV + t * (maxV - minV)).toLocaleString(), 0, y + 4);
+      }
+
+      if (!values.length) return;
+
+      ctx.strokeStyle = color || 'rgba(96,165,250,0.95)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      for (let i = 0; i < values.length; i++) {
+        const x = padL + (i / Math.max(1, values.length - 1)) * iw;
+        const v = values[i];
+        const y = padT + ih - ((v - minV) / (maxV - minV)) * ih;
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+
+      ctx.fillStyle = 'rgba(255,255,255,0.65)';
+      const last = labels[labels.length - 1] || '';
+      ctx.fillText(last, padL, h - 8);
+    }
+
+    function drawBarChart(canvas, items, color) {
+      const ctx = canvasSize(canvas, 240);
+      const w = canvas.clientWidth;
+      const h = 240;
+      clearCanvas(ctx, w, h);
+
+      ctx.font = '12px ui-sans-serif, system-ui, Segoe UI, Roboto, Arial';
+      const padL = 12, padR = 12, padT = 10, padB = 18;
+      const iw = w - padL - padR;
+      const ih = h - padT - padB;
+
+      const values = items.map(x => x.value);
+      const maxV = Math.max(1, ...values);
+      const n = items.length || 1;
+      const gap = 10;
+      const barW = Math.max(18, (iw - gap * (n - 1)) / n);
+
+      for (let i = 0; i < items.length; i++) {
+        const x = padL + i * (barW + gap);
+        const v = items[i].value;
+        const bh = (v / maxV) * ih;
+        const y = padT + (ih - bh);
+        ctx.fillStyle = 'rgba(255,255,255,0.10)';
+        ctx.fillRect(x, padT, barW, ih);
+        ctx.fillStyle = color || 'rgba(52,211,153,0.90)';
+        ctx.fillRect(x, y, barW, bh);
+        ctx.fillStyle = 'rgba(255,255,255,0.75)';
+        ctx.save();
+        ctx.translate(x + barW / 2, h - 6);
+        ctx.rotate(-Math.PI / 6);
+        ctx.textAlign = 'center';
+        ctx.fillText(items[i].label, 0, 0);
+        ctx.restore();
+      }
+    }
+
+    function drawDonut(canvas, items) {
+      const ctx = canvasSize(canvas, 240);
+      const w = canvas.clientWidth;
+      const h = 240;
+      clearCanvas(ctx, w, h);
+
+      const cx = w / 2;
+      const cy = h / 2;
+      const r = Math.min(w, h) * 0.32;
+      const r2 = r * 0.60;
+
+      const total = items.reduce((a, b) => a + b.value, 0) || 1;
+      let ang = -Math.PI / 2;
+
+      const colors = ['rgba(96,165,250,0.95)', 'rgba(251,191,36,0.95)', 'rgba(251,113,133,0.90)', 'rgba(52,211,153,0.90)'];
+
+      for (let i = 0; i < items.length; i++) {
+        const frac = items[i].value / total;
+        const ang2 = ang + frac * Math.PI * 2;
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.fillStyle = colors[i % colors.length];
+        ctx.arc(cx, cy, r, ang, ang2);
+        ctx.closePath();
+        ctx.fill();
+        ang = ang2;
+      }
+
+      ctx.beginPath();
+      ctx.fillStyle = 'rgba(11,18,32,0.85)';
+      ctx.arc(cx, cy, r2, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = 'rgba(255,255,255,0.86)';
+      ctx.font = '600 18px ui-sans-serif, system-ui, Segoe UI, Roboto, Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText(fmt(total), cx, cy + 6);
+
+      ctx.textAlign = 'left';
+      ctx.font = '12px ui-sans-serif, system-ui, Segoe UI, Roboto, Arial';
+      for (let i = 0; i < items.length; i++) {
+        const x = 12;
+        const y = 18 + i * 18;
+        ctx.fillStyle = colors[i % colors.length];
+        ctx.fillRect(x, y - 10, 10, 10);
+        ctx.fillStyle = 'rgba(255,255,255,0.75)';
+        ctx.fillText(items[i].label + ': ' + fmt(items[i].value), x + 16, y);
+      }
+    }
+
+    function renderSummary(sum) {
+      lastSummary = sum;
+      qs('kpiRows').textContent = fmt(sum.filtered_total_rows);
+      qs('kpiCases').textContent = fmt(sum.total_cases);
+      qs('kpiMunis').textContent = fmt(sum.municipios);
+
+      const broteSi = (sum.brote_counts && (sum.brote_counts.SI || sum.brote_counts['SI'])) ? (sum.brote_counts.SI || sum.brote_counts['SI']) : 0;
+      const pct = sum.filtered_total_rows ? Math.round((broteSi / sum.filtered_total_rows) * 100) : 0;
+      qs('kpiBrote').textContent = 'Brote SI: ' + fmt(broteSi) + ' (' + pct + '%)';
+
+      const t = sum.metrics && sum.metrics.temperatura_promedio !== null ? (sum.metrics.temperatura_promedio + ' °C') : '—';
+      const p = sum.metrics && sum.metrics.precipitacion_promedio !== null ? (sum.metrics.precipitacion_promedio + ' mm') : '—';
+      qs('kpiTemp').textContent = t;
+      qs('kpiAire').textContent = 'Aire: ' + fmt(sum.metrics ? sum.metrics.calidad_aire_promedio : null) + ' | Prec: ' + p;
+
+      const trendLabels = (sum.weekly_cases || []).map(x => x.label);
+      const trendValues = (sum.weekly_cases || []).map(x => x.casos);
+      drawLineChart(qs('chartTrend'), trendLabels, trendValues, 'rgba(96,165,250,0.95)');
+
+      const broteItems = [];
+      const bc = sum.brote_counts || {};
+      Object.keys(bc).forEach(k => {
+        broteItems.push({ label: String(k), value: Number(bc[k]) || 0 });
+      });
+      broteItems.sort((a,b) => b.value - a.value);
+      drawDonut(qs('chartBrote'), broteItems);
+
+      const dis = (sum.disease_stats || []).slice(0, 6).map(x => ({ label: x.enfermedad, value: Number(x.casos) || 0 }));
+      drawBarChart(qs('chartDisease'), dis, 'rgba(52,211,153,0.90)');
+
+      const top = (sum.top_municipios || []).slice(0, 8).map(x => ({ label: String(x.municipio), value: Number(x.casos) || 0 }));
+      drawBarChart(qs('chartTopMuni'), top, 'rgba(251,191,36,0.90)');
+    }
+
+    async function loadSummary() {
+      const p = getParams();
+      const params = new URLSearchParams(p);
+      const sum = await fetchJSON('/api/summary?' + params.toString());
+      renderSummary(sum);
+    }
+
+    async function applyAll() {
+      try {
+        setStatus('Cargando…');
+        offset = 0;
+        await loadSummary();
+        await loadData();
+        setStatus('Listo');
+      } catch (e) {
+        setStatus('Error');
+        toast(e.message || String(e));
+      }
+    }
+
+    function resetAll() {
+      qs('q').value = '';
+      qs('departamento').value = '';
+      qs('municipio').value = '';
+      qs('enfermedad').value = '';
+      qs('ano').value = '';
+      qs('semana').value = '';
+      qs('brote').value = '';
+    }
+
+    function redraw() {
+      if (lastSummary) renderSummary(lastSummary);
+    }
+
+    qs('btnApply').addEventListener('click', applyAll);
+    qs('btnApply2').addEventListener('click', applyAll);
+    qs('btnReset').addEventListener('click', async function() {
+      resetAll();
+      offset = 0;
+      try {
+        await loadValues();
+        await applyAll();
+      } catch (e) {
+        toast(e.message || String(e));
+      }
+    });
+    qs('btnPrev').addEventListener('click', async function() {
+      const limit = Math.max(1, parseInt(qs('limit').value || '100', 10));
+      offset = Math.max(0, offset - limit);
+      await loadData();
+    });
+    qs('btnNext').addEventListener('click', async function() {
+      const limit = Math.max(1, parseInt(qs('limit').value || '100', 10));
+      offset = offset + limit;
+      await loadData();
+    });
+    qs('limit').addEventListener('change', async function() {
+      offset = 0;
+      await loadData();
+    });
+    window.addEventListener('resize', function() { redraw(); });
+
+    (async () => {
+      try {
+        setStatus('Cargando…');
+        await loadMeta();
+        await loadValues();
+        await applyAll();
+      } catch (e) {
+        setStatus('Error');
+        toast(e.message || String(e));
+      }
+    })();
+  </script>
+</body>
+</html>
+"""
+    html = html.replace("__CSV_PATH__", html_escape(csv_file.as_posix()))
+
+    class Handler(BaseHTTPRequestHandler):
+        def _send(self, status, content_type, body_bytes):
+            self.send_response(status)
+            self.send_header("Content-Type", content_type)
+            self.send_header("Content-Length", str(len(body_bytes)))
+            self.end_headers()
+            self.wfile.write(body_bytes)
+
+        def do_GET(self):
+            parsed = urlparse(self.path)
+            path = parsed.path
+
+            if path == "/":
+                body = html.encode("utf-8")
+                return self._send(200, "text/html; charset=utf-8", body)
+
+            if path == "/api/meta":
+                payload = {
+                    "columns": columns,
+                    "total_rows": int(len(df)),
+                    "sources": sources,
+                    "csv_path": str(csv_file),
+                }
+                status, data = to_json_bytes(payload, 200)
+                return self._send(status, "application/json; charset=utf-8", data)
+
+            if path == "/api/values":
+                payload = get_values()
+                status, data = to_json_bytes(payload, 200)
+                return self._send(status, "application/json; charset=utf-8", data)
+
+            if path == "/api/summary":
+                qs_params = parse_qs(parsed.query)
+                params = {k: (v[0] if v else "") for k, v in qs_params.items()}
+                filtered = apply_filters(df, params)
+                payload = build_summary(filtered)
+                status, data = to_json_bytes(payload, 200)
+                return self._send(status, "application/json; charset=utf-8", data)
+
+            if path == "/api/data":
+                qs_params = parse_qs(parsed.query)
+                params = {k: (v[0] if v else "") for k, v in qs_params.items()}
+                offset_req = parse_int(params.get("offset"), 0)
+                limit_req = parse_int(params.get("limit"), 100)
+                offset_req = max(0, offset_req)
+                limit_req = max(1, min(5000, limit_req))
+
+                filtered = apply_filters(df, params)
+                filtered_total = int(len(filtered))
+
+                page = filtered.iloc[offset_req: offset_req + limit_req]
+                rows = page.to_dict(orient="records")
+                payload = {
+                    "columns": columns,
+                    "rows": rows,
+                    "offset": offset_req,
+                    "limit": limit_req,
+                    "filtered_total": filtered_total,
+                }
+                status, data = to_json_bytes(payload, 200)
+                return self._send(status, "application/json; charset=utf-8", data)
+
+            if path == "/download":
+                try:
+                    body = csv_file.read_bytes()
+                    self.send_response(200)
+                    self.send_header("Content-Type", "text/csv; charset=utf-8")
+                    self.send_header("Content-Disposition", f'attachment; filename="{csv_file.name}"')
+                    self.send_header("Content-Length", str(len(body)))
+                    self.end_headers()
+                    self.wfile.write(body)
+                    return
+                except Exception:
+                    status, data = to_json_bytes({"error": "No se pudo descargar el archivo."}, 500)
+                    return self._send(status, "application/json; charset=utf-8", data)
+
+            status, data = to_json_bytes({"error": "No encontrado"}, 404)
+            return self._send(status, "application/json; charset=utf-8", data)
+
+        def log_message(self, format, *args):
+            return
+
+    server = ThreadingHTTPServer((host, port), Handler)
+    print(f"Frontend listo: http://{host}:{port}/")
+    print(f"CSV: {csv_file}")
+    server.serve_forever()
+
+def _parse_args(argv):
+    p = argparse.ArgumentParser(add_help=True)
+    p.add_argument("--serve", action="store_true")
+    p.add_argument("--host", default="127.0.0.1")
+    p.add_argument("--port", type=int, default=8000)
+    p.add_argument("--csv", default=None)
+    return p.parse_args(argv)
 
 if __name__ == "__main__":
-    main()
+    args = _parse_args(sys.argv[1:])
+    if args.serve:
+        run_frontend_server(host=args.host, port=args.port, csv_path=args.csv)
+    else:
+        main()
