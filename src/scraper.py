@@ -12,26 +12,8 @@ RAW_DATA_PATH = os.path.join(BASE_DIR, "data", "raw")
 if not os.path.exists(RAW_DATA_PATH):
     os.makedirs(RAW_DATA_PATH)
 
-# DATASETS CON URLs CORRECTOS - 10 DATASETS FUNCIONALES
+# DATASETS CON URLs CORRECTOS - SOLO 5 DATASETS SOLICITADOS
 DATASETS = [
-    {
-        "nombre_csv": "chikungunya.csv",
-        "url": "https://medata.gov.co/sites/default/files/distribution/1-026-22-000130/sivigila_chikungunya.csv",
-        "descripcion": "Chikungunya Colombia",
-        "tipo": "directo"
-    },
-    {
-        "nombre_csv": "dengue.csv",
-        "url": "https://medata.gov.co/sites/default/files/distribution/1-026-22-000135/sivigila_dengue.csv",
-        "descripcion": "Dengue Colombia",
-        "tipo": "directo"
-    },
-    {
-        "nombre_csv": "zika.csv",
-        "url": "https://medata.gov.co/sites/default/files/distribution/1-026-22-000171/sivigila_zika.csv",
-        "descripcion": "Zika Colombia",
-        "tipo": "directo"
-    },
     {
         "nombre_csv": "normales_climatologicas.csv",
         "url": "https://www.datos.gov.co/resource/nsz2-kzcq.json",
@@ -54,18 +36,6 @@ DATASETS = [
         "nombre_csv": "vacunacion_departamento.csv",
         "url": "https://www.datos.gov.co/resource/6i25-2hdt.json",
         "descripcion": "Coberturas administrativas de vacunacion por departamento",
-        "tipo": "socrata"
-    },
-    {
-        "nombre_csv": "dengue_caqueta.csv",
-        "url": "https://www.datos.gov.co/resource/fhz2-4x64.json",
-        "descripcion": "Casos de Dengue Departamento del Caqueta",
-        "tipo": "socrata"
-    },
-    {
-        "nombre_csv": "dengue_pereira.csv",
-        "url": "https://www.datos.gov.co/resource/tm62-e28n.json",
-        "descripcion": "Casos de dengue en la ciudad de Pereira",
         "tipo": "socrata"
     },
     {
