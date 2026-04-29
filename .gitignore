@@ -1,0 +1,49 @@
+# ======================
+# Datos
+# ======================
+*.csv
+*.xlsx
+*.parquet
+
+data/
+data/raw/
+
+# ======================
+# Entornos virtuales
+# ======================
+venv/
+env/
+.venv/
+
+# ======================
+# Logs y salidas
+# ======================
+*.log
+out*.txt
+stdout.log
+stderr.log
+
+# ======================
+# Python
+# ======================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# ======================
+# Jupyter
+# ======================
+.ipynb_checkpoints/
+
+# ======================
+# Sistema operativo
+# ======================
+.DS_Store
+Thumbs.db
+
+# ======================
+# IDEs
+# ======================
+.vscode/
+.idea/
