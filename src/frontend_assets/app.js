@@ -43,6 +43,7 @@ let offset = 0;
         { id: 'navHome', route: '/inicio' },
         { id: 'navDiseases', route: '/enfermedades' },
         { id: 'navDash', route: '/dashboard' },
+        { id: 'navDashBI', route: '/dashboardbi' },
       ];
       items.forEach(x => {
         const el = qs(x.id);
@@ -58,10 +59,11 @@ let offset = 0;
         '/inicio': 'page-home',
         '/enfermedades': 'page-diseases',
         '/dashboard': 'page-dashboard',
+        '/dashboardbi': 'page-dashboardbi',
       };
       const target = map[r] || 'page-home';
       document.body.setAttribute('data-route', (r || '/inicio').replace('/', ''));
-      ['page-home', 'page-diseases', 'page-dashboard'].forEach(id => {
+      ['page-home', 'page-diseases', 'page-dashboard', 'page-dashboardbi'].forEach(id => {
         const el = qs(id);
         if (!el) return;
         if (id === target) el.classList.add('active');
@@ -71,6 +73,7 @@ let offset = 0;
       setTimeout(function() {
         try { setHomeChatVisible(); } catch (e) {}
         try { scheduleRefresh(); } catch (e) {}
+        try { if (r === '/dashboardbi') loadDashboardBIEmbed(); } catch (e) {}
       }, 80);
     }
 
@@ -247,10 +250,12 @@ let offset = 0;
         'btn.exportFiltered': 'Exportar (filtrado)',
         'btn.pdf': 'PDF',
         'btn.powerbi': 'Power BI',
+        'btn.dashboardBI': 'dashboardBI',
         'btn.csvFull': 'CSV completo',
         'nav.home': 'Inicio',
         'nav.diseases': 'Enfermedades',
         'nav.dashboard': 'Dashboard',
+        'nav.dashboardBI': 'dashboardBI',
         'home.title': 'Inicio',
         'home.sub': 'Portal educativo + análisis visual',
         'kpi.totalCases': 'Casos registrados',
@@ -286,6 +291,12 @@ let offset = 0;
         'home.topMuni.tip': 'Se actualiza con los mismos filtros del dashboard.',
         'powerbi.missing': 'Aún no hay archivo Power BI (.pbix). Cuando lo tengas, colócalo en data/processed/reporte_powerbi.pbix o inicia el servidor con --pbix RUTA.',
         'powerbi.error': 'No se pudo verificar el archivo de Power BI.',
+        'dashboardbi.missing': 'Aún no hay archivo brote.pbix en la carpeta raw/. Colócalo como raw/brote.pbix.',
+        'dashboardbi.error': 'No se pudo verificar el archivo brote.pbix.',
+        'bi.title': 'Dashboard BI',
+        'bi.sub': 'Power BI embebido en la app',
+        'bi.embedMissing': 'Falta configurar el enlace de Power BI para embeber. Agrega DASHBOARD_BI_EMBED_URL en .env con el enlace de “Publicar en la web” o el enlace de lectura del reporte.',
+        'bi.embedError': 'No se pudo cargar el dashboard embebido.',
         'dis.title': 'Enfermedades',
         'dis.sub': 'Información clara para entender y prevenir',
         'dis.search.label': 'Buscador',
@@ -329,10 +340,12 @@ let offset = 0;
         'btn.exportFiltered': 'Export (filtered)',
         'btn.pdf': 'PDF',
         'btn.powerbi': 'Power BI',
+        'btn.dashboardBI': 'dashboardBI',
         'btn.csvFull': 'Full CSV',
         'nav.home': 'Home',
         'nav.diseases': 'Diseases',
         'nav.dashboard': 'Dashboard',
+        'nav.dashboardBI': 'dashboardBI',
         'home.title': 'Home',
         'home.sub': 'Educational portal + visual insights',
         'kpi.totalCases': 'Reported cases',
@@ -368,6 +381,12 @@ let offset = 0;
         'home.topMuni.tip': 'Updates with the same dashboard filters.',
         'powerbi.missing': 'Power BI file (.pbix) is not available yet. When you have it, place it in data/processed/reporte_powerbi.pbix or start the server with --pbix PATH.',
         'powerbi.error': 'Could not check the Power BI file.',
+        'dashboardbi.missing': 'brote.pbix is not available in the raw/ folder. Place it as raw/brote.pbix.',
+        'dashboardbi.error': 'Could not check brote.pbix.',
+        'bi.title': 'BI Dashboard',
+        'bi.sub': 'Power BI embedded in the app',
+        'bi.embedMissing': 'Missing Power BI embed link. Set DASHBOARD_BI_EMBED_URL in .env with a “Publish to web” link or a view link.',
+        'bi.embedError': 'Could not load the embedded dashboard.',
         'dis.title': 'Diseases',
         'dis.sub': 'Clear information to understand and prevent',
         'dis.search.label': 'Search',
@@ -1519,6 +1538,49 @@ let offset = 0;
       });
     }
 
+    function initDashboardBIButton() {
+      const btn = document.getElementById('btnDashboardBI');
+      if (!btn) return;
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        location.hash = '#/dashboardbi';
+        showPage('/dashboardbi');
+      });
+    }
+
+    let dashboardBIEmbedUrl = null;
+    async function loadDashboardBIEmbed() {
+      const frame = document.getElementById('dashboardBIFrame');
+      const msg = document.getElementById('dashboardBIMessage');
+      if (!frame || !msg) return;
+
+      if (dashboardBIEmbedUrl) {
+        msg.style.display = 'none';
+        frame.style.display = 'block';
+        if (frame.src !== dashboardBIEmbedUrl) frame.src = dashboardBIEmbedUrl;
+        return;
+      }
+
+      try {
+        const data = await fetchJSON('/api/dashboardbi_embed');
+        const url = (data && data.embed_url) ? String(data.embed_url).trim() : '';
+        if (!url) {
+          frame.style.display = 'none';
+          msg.style.display = 'block';
+          msg.textContent = t('bi.embedMissing');
+          return;
+        }
+        dashboardBIEmbedUrl = url;
+        msg.style.display = 'none';
+        frame.style.display = 'block';
+        frame.src = dashboardBIEmbedUrl;
+      } catch (e) {
+        frame.style.display = 'none';
+        msg.style.display = 'block';
+        msg.textContent = t('bi.embedError');
+      }
+    }
+
     qs('btnApply').addEventListener('click', function() { scheduleRefresh(); });
     qs('btnReset').addEventListener('click', function() { resetAll(); scheduleRefresh(); });
     qs('btnPDF').addEventListener('click', function() { window.print(); });
@@ -1556,6 +1618,7 @@ let offset = 0;
         initTheme();
         initLang();
         initPowerBIButton();
+        initDashboardBIButton();
         setLayoutVars();
         initRouting();
         initHomeFAQ();

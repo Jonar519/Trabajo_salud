@@ -29,6 +29,8 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None, pbix_path=No
     pbix_file = Path(pbix_path) if pbix_path else default_pbix
     if not pbix_file.is_absolute():
         pbix_file = (project_root / pbix_file).resolve()
+    dashboardbi_file = (project_root / "raw" / "brote.pbix").resolve()
+    dashboardbi_embed_url = (os.getenv("DASHBOARD_BI_EMBED_URL") or os.getenv("POWERBI_BROTE_EMBED_URL") or "").strip()
 
     if not csv_file.exists():
         raise FileNotFoundError(
@@ -3385,6 +3387,11 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None, pbix_path=No
                 status, data = to_json_bytes(payload, 200)
                 return self._send(status, "application/json; charset=utf-8", data)
 
+            if path == "/api/dashboardbi_embed":
+                payload = {"embed_url": dashboardbi_embed_url}
+                status, data = to_json_bytes(payload, 200)
+                return self._send(status, "application/json; charset=utf-8", data)
+
             if path == "/api/open_powerbi":
                 if os.name != "nt":
                     status, data = to_json_bytes({"ok": False, "error": "Esta función solo está disponible en Windows."}, 400)
@@ -3398,6 +3405,28 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None, pbix_path=No
                 try:
                     subprocess.Popen(["explorer", "/select,", str(target)])
                     status, data = to_json_bytes({"ok": True, "opened": target.name}, 200)
+                    return self._send(status, "application/json; charset=utf-8", data)
+                except Exception as e:
+                    status, data = to_json_bytes({"ok": False, "error": f"No se pudo abrir el Explorador: {e}"}, 500)
+                    return self._send(status, "application/json; charset=utf-8", data)
+
+            if path == "/api/dashboardbi":
+                payload = {"available": bool(dashboardbi_file.exists()), "filename": dashboardbi_file.name}
+                status, data = to_json_bytes(payload, 200)
+                return self._send(status, "application/json; charset=utf-8", data)
+
+            if path == "/api/open_dashboardbi":
+                if os.name != "nt":
+                    status, data = to_json_bytes({"ok": False, "error": "Esta función solo está disponible en Windows."}, 400)
+                    return self._send(status, "application/json; charset=utf-8", data)
+
+                if not dashboardbi_file.exists():
+                    status, data = to_json_bytes({"ok": False, "error": "No se encontró raw/brote.pbix."}, 404)
+                    return self._send(status, "application/json; charset=utf-8", data)
+
+                try:
+                    subprocess.Popen(["explorer", "/select,", str(dashboardbi_file)])
+                    status, data = to_json_bytes({"ok": True, "opened": dashboardbi_file.name}, 200)
                     return self._send(status, "application/json; charset=utf-8", data)
                 except Exception as e:
                     status, data = to_json_bytes({"ok": False, "error": f"No se pudo abrir el Explorador: {e}"}, 500)
@@ -3442,6 +3471,23 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None, pbix_path=No
                     self.send_response(200)
                     self.send_header("Content-Type", "application/octet-stream")
                     self.send_header("Content-Disposition", f'attachment; filename="{pbix_file.name}"')
+                    self.send_header("Content-Length", str(len(body)))
+                    self.end_headers()
+                    self.wfile.write(body)
+                    return
+                except Exception:
+                    status, data = to_json_bytes({"error": "No se pudo descargar el archivo."}, 500)
+                    return self._send(status, "application/json; charset=utf-8", data)
+
+            if path == "/download_dashboardbi":
+                if not dashboardbi_file.exists():
+                    status, data = to_json_bytes({"error": "Archivo brote.pbix no disponible."}, 404)
+                    return self._send(status, "application/json; charset=utf-8", data)
+                try:
+                    body = dashboardbi_file.read_bytes()
+                    self.send_response(200)
+                    self.send_header("Content-Type", "application/octet-stream")
+                    self.send_header("Content-Disposition", f'attachment; filename="{dashboardbi_file.name}"')
                     self.send_header("Content-Length", str(len(body)))
                     self.end_headers()
                     self.wfile.write(body)

@@ -24,6 +24,7 @@
           <a class="btn" id="btnExportFiltered" href="/download_filtered" data-i18n="btn.exportFiltered">Exportar (filtrado)</a>
           <button class="btn" id="btnPDF" title="Guardar como PDF (desde el navegador)" data-i18n="btn.pdf">PDF</button>
           <a class="btn" id="btnPowerBI" href="/download_powerbi" data-i18n="btn.powerbi">Power BI</a>
+          <a class="btn" id="btnDashboardBI" href="#/dashboardbi" data-i18n="btn.dashboardBI">dashboardBI</a>
           <a class="btn primary" href="/download" data-i18n="btn.csvFull">CSV completo</a>
         </div>
       </div>
@@ -35,6 +36,7 @@
       <a href="#/inicio" id="navHome" data-i18n="nav.home">Inicio</a>
       <a href="#/enfermedades" id="navDiseases" data-i18n="nav.diseases">Enfermedades</a>
       <a href="#/dashboard" id="navDash" data-i18n="nav.dashboard">Dashboard</a>
+      <a href="#/dashboardbi" id="navDashBI" data-i18n="nav.dashboardBI">dashboardBI</a>
     </div>
 
     <section class="page" id="page-home">
@@ -453,6 +455,19 @@
             </div>
           </div>
 
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="page-dashboardbi">
+      <div class="card" style="margin-top: 14px;">
+        <div class="hd">
+          <h2 data-i18n="bi.title">Dashboard BI</h2>
+          <div class="sub" data-i18n="bi.sub">Power BI embebido en la app</div>
+        </div>
+        <div class="bd">
+          <div class="muted" id="dashboardBIMessage" style="display:none;"></div>
+          <iframe id="dashboardBIFrame" class="bi-frame" title="Dashboard BI" style="display:none;" allowfullscreen="true"></iframe>
         </div>
       </div>
     </section>
