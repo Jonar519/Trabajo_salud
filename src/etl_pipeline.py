@@ -1164,6 +1164,65 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
         if not qn:
             return "Escribe una pregunta, por ejemplo: ¿Qué enfermedad ha crecido más en los últimos años?"
 
+        disease_info = {
+            "DENGUE": {
+                "title": "Dengue",
+                "what": "Enfermedad viral transmitida por mosquitos (principalmente Aedes). Puede ser leve o complicarse en algunos casos.",
+                "symptoms": ["fiebre alta", "dolor de cabeza", "dolor detrás de los ojos", "dolor muscular y articular", "náuseas o malestar general"],
+                "prevention": ["eliminar agua estancada", "usar repelente", "usar mosquiteros o mallas", "ropa que cubra la piel en horas de mayor actividad del mosquito"],
+                "when": ["sangrado", "dolor abdominal fuerte", "somnolencia o confusión", "dificultad para respirar", "signos de deshidratación"],
+            },
+            "ZIKA": {
+                "title": "Zika",
+                "what": "Virus transmitido por mosquitos. Suele causar síntomas leves, pero requiere especial atención durante el embarazo.",
+                "symptoms": ["sarpullido", "fiebre baja", "dolor articular", "ojos rojos (conjuntivitis)", "cansancio"],
+                "prevention": ["evitar picaduras (repelente, ropa larga)", "eliminar criaderos", "consultar ante síntomas si estás embarazada o planeas estarlo"],
+                "when": ["síntomas durante el embarazo", "malestar que empeora", "fiebre con sarpullido intenso"],
+            },
+            "CHIKUNGUNYA": {
+                "title": "Chikungunya",
+                "what": "Virus transmitido por mosquitos. Puede causar dolor articular fuerte que limita actividades y puede durar semanas.",
+                "symptoms": ["fiebre", "dolor articular intenso", "hinchazón articular", "dolor muscular", "dolor de cabeza"],
+                "prevention": ["usar repelente", "eliminar agua estancada", "usar mosquiteros", "proteger el hogar con mallas"],
+                "when": ["dolor articular severo o prolongado", "fiebre alta persistente", "síntomas que empeoran o deshidratación"],
+            },
+        }
+        disease = None
+        for k in disease_info:
+            if k in qn:
+                disease = k
+                break
+        if disease is None:
+            if "CHIK" in qn:
+                disease = "CHIKUNGUNYA"
+            elif "DENG" in qn:
+                disease = "DENGUE"
+            elif "ZIK" in qn:
+                disease = "ZIKA"
+
+        if ("SINTOM" in qn or "SÍNTOM" in qn) and disease in disease_info:
+            info = disease_info[disease]
+            return f"Síntomas comunes de {info['title']}: " + ", ".join(info["symptoms"]) + "."
+
+        if ("PREVEN" in qn or "EVIT" in qn) and disease in disease_info:
+            info = disease_info[disease]
+            return f"Para prevenir {info['title']}: " + "; ".join(info["prevention"]) + "."
+
+        if ("CUANDO" in qn and ("CONSULT" in qn or "URGEN" in qn or "MEDIC" in qn)) and disease in disease_info:
+            info = disease_info[disease]
+            return f"Consulta a un profesional si hay señales de alarma en {info['title']}: " + "; ".join(info["when"]) + "."
+
+        if ("QUE ES" in qn or "QUÉ ES" in qn or "EXPLIC" in qn) and disease in disease_info:
+            info = disease_info[disease]
+            return info["what"] + " (Este contenido es educativo y no reemplaza una consulta médica)."
+
+        if ("TRANSM" in qn or "CONTAG" in qn or "COMO SE" in qn and "TRANSM" in qn) and disease in disease_info:
+            info = disease_info[disease]
+            return f"{info['title']} se transmite principalmente por picadura de mosquitos. La prevención más efectiva es reducir criaderos y evitar picaduras."
+
+        if ("DIFEREN" in qn or "COMPAR" in qn) and ("DENG" in qn and "ZIK" in qn or "DENG" in qn and "CHIK" in qn or "ZIK" in qn and "CHIK" in qn):
+            return "Dengue, Zika y Chikungunya son enfermedades transmitidas por mosquitos. De forma general: dengue suele dar fiebre alta y puede complicarse; zika suele ser más leve pero es importante en embarazo; chikungunya destaca por dolor articular intenso. Si tienes síntomas, consulta a un profesional."
+
         if "CREC" in qn and "ENFERMEDAD" in qn and {"ano", "enfermedad", "casos_totales"}.issubset(df_filtered.columns) and len(df_filtered):
             g = (
                 df_filtered.groupby(["enfermedad", "ano"], dropna=False)["casos_totales"]
@@ -1251,7 +1310,109 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
             if not m.empty:
                 return f"El municipio más afectado en la selección actual es {m.iloc[0]['municipio']}."
 
-        return "Puedo ayudarte con preguntas como: “¿Qué enfermedad ha crecido más en los últimos años?”, “¿Cuál es la región más afectada?”, “¿En qué año hubo más casos?”, o “Dame un resumen”. Escribe “ayuda” para ver ejemplos."
+        if disease in disease_info:
+            info = disease_info[disease]
+            return f"{info['what']} Si quieres, pregunta por síntomas, prevención o señales de alarma."
+
+        return "Puedo ayudarte a entender tendencias (casos por año, región más afectada, crecimiento) y también con información educativa básica de dengue, zika y chikungunya. Escribe “ayuda” para ver ejemplos."
+
+    def answer_chat(messages, df_filtered, params):
+        key = (os.getenv("OPENAI_API_KEY") or "").strip()
+        base_url = (os.getenv("OPENAI_BASE_URL") or "https://api.openai.com").strip().rstrip("/")
+        model = (os.getenv("OPENAI_MODEL") or "gpt-4o-mini").strip()
+
+        last_user = ""
+        try:
+            for m in reversed(messages or []):
+                if (m or {}).get("role") == "user" and (m or {}).get("content"):
+                    last_user = str(m.get("content"))
+                    break
+        except Exception:
+            last_user = ""
+
+        summary = build_summary(df_filtered) if len(df_filtered) else {"total_cases": 0, "top_enfermedad": "", "top_departamento": ""}
+        v = summary.get("variation") or {}
+        var_txt = ""
+        if v and v.get("pct") is not None and v.get("from_year") is not None and v.get("to_year") is not None:
+            sign = "-" if v.get("direction") == "baja" else ""
+            var_txt = f"Cambio en el tiempo (primer vs último año del filtro): {sign}{abs(float(v.get('pct'))):.1f}% ({v.get('from_year')}→{v.get('to_year')})."
+
+        context = "\n".join(
+            [
+                "Contexto (datos del dashboard, según filtros actuales):",
+                f"- Total de casos: {int(summary.get('total_cases') or 0)}",
+                f"- Enfermedad más común: {summary.get('top_enfermedad') or '—'}",
+                f"- Región más afectada: {summary.get('top_departamento') or '—'}",
+                f"- {var_txt or 'Cambio en el tiempo: —'}",
+                "",
+                "Notas:",
+                "- El contenido es educativo y no reemplaza una consulta médica.",
+                "- Si el usuario pregunta por números, usa el contexto y responde en lenguaje simple.",
+            ]
+        )
+
+        if not key:
+            if last_user:
+                return answer_question(last_user, df_filtered) + " (Para un modo tipo ChatGPT que responda preguntas abiertas, configura OPENAI_API_KEY.)"
+            return "Escribe una pregunta. (Para un modo tipo ChatGPT, configura OPENAI_API_KEY.)"
+
+        try:
+            import requests  # type: ignore
+
+            sys_prompt = (
+                "Eres un asistente conversacional para público general sobre salud en Colombia. "
+                "Responde en español, con tono claro, empático y sin tecnicismos. "
+                "Cuando hables de salud, incluye recomendaciones generales y señales de alarma, "
+                "y recuerda que no reemplazas a un profesional médico. "
+                "Cuando uses datos, explícalos con claridad y evita conclusiones exageradas."
+            )
+
+            msgs = [{"role": "system", "content": sys_prompt + "\n\n" + context}]
+            for m in (messages or [])[-16:]:
+                role = (m or {}).get("role") or "user"
+                content = (m or {}).get("content") or ""
+                if role not in ("user", "assistant"):
+                    role = "user"
+                if content:
+                    msgs.append({"role": role, "content": str(content)})
+
+            resp = requests.post(
+                f"{base_url}/v1/chat/completions",
+                headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
+                json={"model": model, "messages": msgs, "temperature": 0.4},
+                timeout=25,
+            )
+            if resp.status_code >= 400:
+                detail = ""
+                try:
+                    err = resp.json()
+                    msg = ((err or {}).get("error") or {}).get("message") or ""
+                    if msg:
+                        detail = str(msg)
+                except Exception:
+                    detail = (resp.text or "").strip()
+                code = int(resp.status_code)
+                hint = ""
+                if code == 401:
+                    hint = "Revisa que OPENAI_API_KEY sea válida."
+                elif code == 403:
+                    hint = "Puede que tu red bloquee el acceso al proveedor o que falte habilitar el servicio."
+                elif code == 404:
+                    hint = "Revisa OPENAI_BASE_URL y el nombre del modelo (OPENAI_MODEL)."
+                elif code == 429:
+                    hint = "Límite de uso alcanzado. Intenta más tarde o revisa tu plan."
+                fallback = answer_question(last_user, df_filtered) if last_user else "No pude responder."
+                extra = (" Detalle: " + detail) if detail else ""
+                extra2 = (" " + hint) if hint else ""
+                return "No pude responder en modo ChatGPT (" + str(code) + ")." + extra + extra2 + " Mientras tanto: " + fallback
+            data = resp.json()
+            ans = (((data or {}).get("choices") or [{}])[0].get("message") or {}).get("content") or ""
+            ans = str(ans).strip()
+            return ans or "No pude responder."
+        except Exception:
+            if last_user:
+                return answer_question(last_user, df_filtered) + " (Para un modo tipo ChatGPT, configura OPENAI_API_KEY.)"
+            return "No pude responder."
 
     html = """<!doctype html>
 <html lang="es">
@@ -1287,6 +1448,7 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
       --shadow2: 0 10px 22px rgba(0,0,0,0.22);
     }
     * { box-sizing: border-box; }
+    html, body { height: 100%; }
     body {
       margin: 0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
@@ -1303,6 +1465,9 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
       max-width: 100%;
       margin: 0;
       padding: 16px 14px 28px;
+      min-height: calc(100vh - var(--headerH, 0px) - 24px);
+      display: flex;
+      flex-direction: column;
     }
     .header {
       position: sticky;
@@ -1402,6 +1567,7 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
       align-items: center;
       flex-wrap: wrap;
       margin: 12px 0 0;
+      min-height: var(--navH, 0px);
     }
     .nav a {
       border: 1px solid var(--border);
@@ -1418,14 +1584,19 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
       border-color: color-mix(in srgb, var(--accent) 55%, var(--border));
       box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 16%, transparent);
     }
-    .page { display: none; animation: fade .18s ease; }
+    .page { display: none; animation: fade .18s ease; flex: 1 1 auto; }
     .page.active { display: block; }
+    .page > .card { height: 100%; }
+    #page-home > .card,
+    #page-diseases > .card,
+    #page-dashboard { min-height: calc(100vh - var(--headerH, 0px) - var(--navH, 0px) - 64px); }
     @keyframes fade { from { opacity: 0; transform: translateY(2px); } to { opacity: 1; transform: translateY(0); } }
     .home-grid {
       display: grid;
       grid-template-columns: 1.3fr 1fr;
       gap: 14px;
       align-items: start;
+      height: 100%;
     }
     @media (max-width: 1020px) { .home-grid { grid-template-columns: 1fr; } }
     .disease-grid {
@@ -1473,6 +1644,7 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
       gap: 10px;
       align-items: start;
       min-height: 92px;
+      cursor: pointer;
     }
     .feature:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
     .ico {
@@ -1557,6 +1729,102 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
     .panel li { margin: 5px 0; }
     .compare-box { margin-top: 12px; }
     .compare-actions { display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top: 10px; }
+    .chat-float {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      width: 360px;
+      max-width: calc(100vw - 28px);
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: color-mix(in srgb, var(--panel) 92%, transparent);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      z-index: 80;
+      display: none;
+    }
+    .chat-float.active { display: block; }
+    .chat-float .hd {
+      padding: 12px 12px 10px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 10%, transparent), transparent);
+    }
+    .chat-float .hd .title {
+      display:flex;
+      align-items:center;
+      gap: 8px;
+      min-width: 0;
+    }
+    .chat-float .hd .title .dot {
+      width: 10px; height: 10px; border-radius: 999px;
+      background: color-mix(in srgb, var(--accent2) 80%, var(--accent));
+      box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent2) 16%, transparent);
+      flex: 0 0 auto;
+    }
+    .chat-float .hd h3 { margin: 0; font-size: 13px; }
+    .chat-float .hd .muted { font-size: 12px; }
+    .chat-body {
+      padding: 12px;
+      display: grid;
+      gap: 8px;
+      max-height: 48vh;
+      overflow: auto;
+      background: color-mix(in srgb, var(--panel2) 65%, transparent);
+    }
+    .msg {
+      padding: 10px 12px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow2);
+      font-size: 13px;
+      line-height: 1.45;
+      max-width: 92%;
+      white-space: pre-wrap;
+    }
+    .msg.user { justify-self: end; background: color-mix(in srgb, var(--accent) 12%, var(--panel)); }
+    .msg.bot { justify-self: start; background: color-mix(in srgb, var(--panel) 92%, transparent); }
+    .chat-tools { padding: 10px 12px; border-top: 1px solid var(--border); background: color-mix(in srgb, var(--panel) 92%, transparent); }
+    .chat-row { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; }
+    .chat-quick { display:flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+    .qbtn {
+      border: 1px solid var(--border);
+      background: color-mix(in srgb, var(--panel) 92%, transparent);
+      color: var(--muted);
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 12px;
+      cursor: pointer;
+      box-shadow: var(--shadow2);
+      transition: transform .12s ease, box-shadow .12s ease;
+    }
+    .qbtn:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
+    .chat-mini {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 79;
+      display: none;
+    }
+    .chat-mini.active { display: block; }
+    .chat-mini .bubble {
+      width: 52px; height: 52px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 14%, var(--panel)), color-mix(in srgb, var(--accent2) 10%, var(--panel)));
+      box-shadow: var(--shadow);
+      display:flex; align-items:center; justify-content:center;
+      cursor: pointer;
+      user-select: none;
+      font-size: 18px;
+    }
+    @media (max-width: 1020px) {
+      .chat-float { left: 14px; right: 14px; width: auto; }
+      .chat-body { max-height: 40vh; }
+    }
     .card {
       border: 1px solid var(--border);
       border-radius: 18px;
@@ -1733,16 +2001,17 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
         <div class="brand">
           <div class="logo"></div>
           <div class="titles">
-            <h1>Enfermedades en Colombia</h1>
-            <p>Explora la evolución de los casos por año, enfermedad y departamento. Diseñado para entenderse rápido, sin tecnicismos.</p>
+            <h1 data-i18n="app.title">Enfermedades en Colombia</h1>
+            <p data-i18n="app.subtitle">Explora la evolución de los casos por año, enfermedad y departamento. Diseñado para entenderse rápido, sin tecnicismos.</p>
           </div>
         </div>
         <div class="controls">
-          <span class="pill" id="statusPill"><span class="spinner" id="spin" style="display:none;"></span><span id="statusText">Listo</span></span>
-          <button class="btn ghost" id="btnTheme" title="Cambiar modo claro/oscuro">Modo</button>
-          <a class="btn" id="btnExportFiltered" href="/download_filtered">Exportar (filtrado)</a>
-          <button class="btn" id="btnPDF" title="Guardar como PDF (desde el navegador)">PDF</button>
-          <a class="btn primary" href="/download">CSV completo</a>
+          <span class="pill" id="statusPill"><span class="spinner" id="spin" style="display:none;"></span><span id="statusText" data-i18n="status.ready">Listo</span></span>
+          <button class="btn ghost" id="btnLang" title="Cambiar idioma">ES</button>
+          <button class="btn ghost" id="btnTheme" title="Cambiar modo claro/oscuro" data-i18n="btn.theme">Modo</button>
+          <a class="btn" id="btnExportFiltered" href="/download_filtered" data-i18n="btn.exportFiltered">Exportar (filtrado)</a>
+          <button class="btn" id="btnPDF" title="Guardar como PDF (desde el navegador)" data-i18n="btn.pdf">PDF</button>
+          <a class="btn primary" href="/download" data-i18n="btn.csvFull">CSV completo</a>
         </div>
       </div>
     </div>
@@ -1750,70 +2019,79 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
 
   <div class="app">
     <div class="nav" id="nav">
-      <a href="#/inicio" id="navHome">Inicio</a>
-      <a href="#/enfermedades" id="navDiseases">Enfermedades</a>
-      <a href="#/dashboard" id="navDash">Dashboard</a>
+      <a href="#/inicio" id="navHome" data-i18n="nav.home">Inicio</a>
+      <a href="#/enfermedades" id="navDiseases" data-i18n="nav.diseases">Enfermedades</a>
+      <a href="#/dashboard" id="navDash" data-i18n="nav.dashboard">Dashboard</a>
     </div>
 
     <section class="page" id="page-home">
       <div class="card" style="margin-top: 14px;">
         <div class="hd">
-          <h2>Inicio</h2>
-          <div class="sub">Portal educativo + análisis visual</div>
+          <h2 data-i18n="home.title">Inicio</h2>
+          <div class="sub" data-i18n="home.sub">Portal educativo + análisis visual</div>
         </div>
         <div class="bd">
           <div class="home-grid">
             <div class="stack">
               <div class="kpis">
                 <div class="kpi">
-                  <div class="label">Casos registrados</div>
+                  <div class="label" data-i18n="kpi.totalCases">Casos registrados</div>
                   <div class="value" id="homeKpiCases">—</div>
-                  <div class="desc">Total del dataset</div>
+                  <div class="desc" data-i18n="kpi.totalDataset">Total del dataset</div>
                 </div>
                 <div class="kpi">
-                  <div class="label">Enfermedad más común</div>
+                  <div class="label" data-i18n="kpi.topDisease">Enfermedad más común</div>
                   <div class="value" id="homeKpiTopDis">—</div>
-                  <div class="desc">Por número de casos</div>
+                  <div class="desc" data-i18n="kpi.byCases">Por número de casos</div>
                 </div>
                 <div class="kpi">
-                  <div class="label">Región más afectada</div>
+                  <div class="label" data-i18n="kpi.topRegion">Región más afectada</div>
                   <div class="value" id="homeKpiTopDept">—</div>
-                  <div class="desc">Departamento con más casos</div>
+                  <div class="desc" data-i18n="kpi.deptMostCases">Departamento con más casos</div>
                 </div>
                 <div class="kpi">
-                  <div class="label">Cambio en el tiempo</div>
+                  <div class="label" data-i18n="kpi.changeOverTime">Cambio en el tiempo</div>
                   <div class="value" id="homeKpiVar">—</div>
-                  <div class="desc" id="homeKpiVarDesc">Tendencia general</div>
+                  <div class="desc" id="homeKpiVarDesc" data-i18n="kpi.overallTrend">Tendencia general</div>
                 </div>
               </div>
               <div class="actions">
-                <button class="cta" id="btnGoDash">Explorar Dashboard →</button>
-                <button class="btn" id="btnGoDiseases">Guía de enfermedades</button>
-                <button class="btn ghost" id="btnScrollFAQ">Preguntas frecuentes</button>
-                <span class="pill">Consejo: filtra por años y compara enfermedades</span>
+                <button class="cta" id="btnGoDash" data-i18n="home.ctaDash">Explorar Dashboard →</button>
+                <button class="btn" id="btnGoDiseases" data-i18n="home.ctaGuide">Guía de enfermedades</button>
+                <button class="btn ghost" id="btnScrollFAQ" data-i18n="home.ctaFaq">Preguntas frecuentes</button>
+                <span class="pill" data-i18n="home.tip">Consejo: filtra por años y compara enfermedades</span>
               </div>
 
               <div class="feature-grid">
-                <div class="feature">
+                <div class="feature" tabindex="0" role="button" data-go="dash-trend">
                   <div class="ico">↗</div>
                   <div>
-                    <h4>Ver tendencias</h4>
-                    <p>Identifica si los casos suben o bajan en el tiempo y compara enfermedades.</p>
+                    <h4 data-i18n="home.feature.trends.title">Ver tendencias</h4>
+                    <p data-i18n="home.feature.trends.desc">Identifica si los casos suben o bajan en el tiempo y compara enfermedades.</p>
                   </div>
                 </div>
-                <div class="feature">
+                <div class="feature" tabindex="0" role="button" data-go="dash-map">
                   <div class="ico">▦</div>
                   <div>
-                    <h4>Explorar regiones</h4>
-                    <p>Ubica departamentos con mayor incidencia y descubre patrones geográficos.</p>
+                    <h4 data-i18n="home.feature.regions.title">Explorar regiones</h4>
+                    <p data-i18n="home.feature.regions.desc">Ubica departamentos con mayor incidencia y descubre patrones geográficos.</p>
                   </div>
                 </div>
-                <div class="feature">
+                <div class="feature" tabindex="0" role="button" data-go="learn">
                   <div class="ico">✓</div>
                   <div>
-                    <h4>Aprender y prevenir</h4>
-                    <p>Conoce síntomas comunes, prevención y cuándo consultar para actuar a tiempo.</p>
+                    <h4 data-i18n="home.feature.learn.title">Aprender y prevenir</h4>
+                    <p data-i18n="home.feature.learn.desc">Conoce síntomas comunes, prevención y cuándo consultar para actuar a tiempo.</p>
                   </div>
+                </div>
+              </div>
+
+              <div class="panel">
+                <h4 data-i18n="home.learnQuick.title">Aprender y prevenir (guía rápida)</h4>
+                <ul id="homeGuideList"></ul>
+                <div class="actions" style="margin-top: 10px;">
+                  <button class="btn primary" id="btnLearnMore" data-i18n="home.learnQuick.more">Ver guía completa</button>
+                  <button class="btn" id="btnAskIdeas" data-i18n="home.learnQuick.askIdeas">¿Qué puedo preguntar?</button>
                 </div>
               </div>
 
@@ -1821,28 +2099,28 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
 
               <div id="homeFAQ">
                 <details class="faq" open>
-                  <summary><strong>¿Cómo interpretar este panel?</strong></summary>
-                  <div class="muted">Las cifras muestran casos registrados en los datos. Usa el dashboard para filtrar por años, enfermedad y departamento. La tendencia te ayuda a ver si hay aumento o disminución.</div>
+                  <summary><strong data-i18n="home.faq1.q">¿Cómo interpretar este panel?</strong></summary>
+                  <div class="muted" data-i18n="home.faq1.a">Las cifras muestran casos registrados en los datos. Usa el dashboard para filtrar por años, enfermedad y departamento. La tendencia te ayuda a ver si hay aumento o disminución.</div>
                 </details>
                 <details class="faq">
-                  <summary><strong>¿Qué significa “Cambio en el tiempo”?</strong></summary>
-                  <div class="muted">Compara el primer y el último año disponibles en tu selección. Si seleccionas un solo año, no se calcula.</div>
+                  <summary><strong data-i18n="home.faq2.q">¿Qué significa “Cambio en el tiempo”?</strong></summary>
+                  <div class="muted" data-i18n="home.faq2.a">Compara el primer y el último año disponibles en tu selección. Si seleccionas un solo año, no se calcula.</div>
                 </details>
                 <details class="faq">
-                  <summary><strong>¿De dónde salen los datos?</strong></summary>
-                  <div class="muted">Provienen de fuentes públicas (datos.gov.co) integradas en un dataset maestro para análisis y visualización.</div>
+                  <summary><strong data-i18n="home.faq3.q">¿De dónde salen los datos?</strong></summary>
+                  <div class="muted" data-i18n="home.faq3.a">Provienen de fuentes públicas (datos.gov.co) integradas en un dataset maestro para análisis y visualización.</div>
                 </details>
               </div>
             </div>
             <div class="chart">
-              <h3>Vista previa: tendencia</h3>
+              <h3 data-i18n="home.preview.title">Vista previa: tendencia</h3>
               <canvas id="homeTrend"></canvas>
               <div class="chips" style="margin-top:10px;">
                 <span class="chip"><span style="width:10px;height:10px;border-radius:999px;background:#0284c7;display:inline-block;"></span> <strong>Dengue</strong></span>
                 <span class="chip"><span style="width:10px;height:10px;border-radius:999px;background:#10b981;display:inline-block;"></span> <strong>Zika</strong></span>
                 <span class="chip"><span style="width:10px;height:10px;border-radius:999px;background:#ef4444;display:inline-block;"></span> <strong>Chikungunya</strong></span>
               </div>
-              <div class="muted" style="margin-top:8px;">Tip: selecciona varias enfermedades para comparar su comportamiento.</div>
+              <div class="muted" style="margin-top:8px;" data-i18n="home.preview.tip">Tip: selecciona varias enfermedades para comparar su comportamiento.</div>
             </div>
           </div>
         </div>
@@ -1852,124 +2130,132 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
     <section class="page" id="page-diseases">
       <div class="card" style="margin-top: 14px;">
         <div class="hd">
-          <h2>Enfermedades</h2>
-          <div class="sub">Información clara para entender y prevenir</div>
+          <h2 data-i18n="dis.title">Enfermedades</h2>
+          <div class="sub" data-i18n="dis.sub">Información clara para entender y prevenir</div>
         </div>
         <div class="bd">
           <div class="field" style="max-width: 560px;">
-            <label>Buscador</label>
-            <input id="diseaseSearch" placeholder="Escribe: dengue, zika, chikungunya…" />
+            <label data-i18n="dis.search.label">Buscador</label>
+            <input id="diseaseSearch" placeholder="Escribe: dengue, zika, chikungunya…" data-i18n-placeholder="dis.search.ph" />
           </div>
 
           <div class="diseases-layout">
             <div>
               <div class="panel">
-                <h4>Selecciona una enfermedad</h4>
-                <div class="muted">Verás una explicación sencilla y un resumen de datos para tu presentación.</div>
+                <h4 data-i18n="dis.pick.title">Selecciona una enfermedad</h4>
+                <div class="muted" data-i18n="dis.pick.desc">Verás una explicación sencilla y un resumen de datos para tu presentación.</div>
               </div>
               <div class="disease-list" id="diseaseList" style="margin-top: 12px;">
                 <div class="disease-item" data-disease="DENGUE">
                   <h3><span class="tag">D</span> Dengue</h3>
                   <div class="muted" style="margin-top:6px;">Transmitida por mosquitos. Puede variar de leve a grave.</div>
                   <div class="chips">
-                    <span class="chip">Casos: <strong id="statDengueCases">—</strong></span>
-                    <span class="chip">Cambio: <strong id="statDengueVar">—</strong></span>
+                    <span class="chip"><span data-i18n="dis.cases">Casos</span>: <strong id="statDengueCases">—</strong></span>
+                    <span class="chip"><span data-i18n="dis.change">Cambio</span>: <strong id="statDengueVar">—</strong></span>
                   </div>
                 </div>
                 <div class="disease-item" data-disease="ZIKA">
                   <h3><span class="tag">Z</span> Zika</h3>
                   <div class="muted" style="margin-top:6px;">Suele ser leve, pero requiere cuidado especial en embarazo.</div>
                   <div class="chips">
-                    <span class="chip">Casos: <strong id="statZikaCases">—</strong></span>
-                    <span class="chip">Cambio: <strong id="statZikaVar">—</strong></span>
+                    <span class="chip"><span data-i18n="dis.cases">Casos</span>: <strong id="statZikaCases">—</strong></span>
+                    <span class="chip"><span data-i18n="dis.change">Cambio</span>: <strong id="statZikaVar">—</strong></span>
                   </div>
                 </div>
                 <div class="disease-item" data-disease="CHIKUNGUNYA">
                   <h3><span class="tag">C</span> Chikungunya</h3>
                   <div class="muted" style="margin-top:6px;">Dolor articular puede durar semanas. Prevención es clave.</div>
                   <div class="chips">
-                    <span class="chip">Casos: <strong id="statChikCases">—</strong></span>
-                    <span class="chip">Cambio: <strong id="statChikVar">—</strong></span>
+                    <span class="chip"><span data-i18n="dis.cases">Casos</span>: <strong id="statChikCases">—</strong></span>
+                    <span class="chip"><span data-i18n="dis.change">Cambio</span>: <strong id="statChikVar">—</strong></span>
                   </div>
                 </div>
               </div>
 
               <div class="panel compare-box">
-                <h4>Comparar en el dashboard</h4>
-                <div class="muted">Elige 2 o 3 para compararlas en la gráfica de tendencia.</div>
+                <h4 data-i18n="dis.compare.title">Comparar en el dashboard</h4>
+                <div class="muted" data-i18n="dis.compare.desc">Elige 2 o 3 para compararlas en la gráfica de tendencia.</div>
                 <div class="chips" id="compareChips" style="margin-top:10px;"></div>
                 <div class="compare-actions">
-                  <button class="btn primary" id="btnCompareGo" disabled>Comparar ahora</button>
-                  <button class="btn" id="btnCompareClear">Limpiar</button>
+                  <button class="btn primary" id="btnCompareGo" disabled data-i18n="dis.compare.go">Comparar ahora</button>
+                  <button class="btn" id="btnCompareClear" data-i18n="dis.compare.clear">Limpiar</button>
                 </div>
               </div>
             </div>
 
             <div class="card">
               <div class="hd">
-                <h2>Detalle</h2>
-                <div class="sub">Educativo, simple y directo</div>
+                <h2 data-i18n="dis.detail.title">Detalle</h2>
+                <div class="sub" data-i18n="dis.detail.sub">Educativo, simple y directo</div>
               </div>
               <div class="bd">
                 <h3 class="detail-title" id="dTitle">—</h3>
-                <p class="detail-lead" id="dLead">Selecciona una enfermedad para ver información.</p>
+                <p class="detail-lead" id="dLead" data-i18n="dis.detail.lead">Selecciona una enfermedad para ver información.</p>
 
                 <div class="kpis" style="margin-top: 12px; grid-template-columns: repeat(3, 1fr);">
                   <div class="kpi" style="min-height: 82px;">
-                    <div class="label">Casos (dataset)</div>
+                    <div class="label" data-i18n="dis.detail.kpiCases">Casos (dataset)</div>
                     <div class="value" id="dCases">—</div>
-                    <div class="desc">Total disponible</div>
+                    <div class="desc" data-i18n="dis.detail.kpiCasesDesc">Total disponible</div>
                   </div>
                   <div class="kpi" style="min-height: 82px;">
-                    <div class="label">Cambio en el tiempo</div>
+                    <div class="label" data-i18n="kpi.changeOverTime">Cambio en el tiempo</div>
                     <div class="value" id="dVar">—</div>
-                    <div class="desc" id="dVarDesc">Tendencia</div>
+                    <div class="desc" id="dVarDesc" data-i18n="dis.detail.kpiTrend">Tendencia</div>
                   </div>
                   <div class="kpi" style="min-height: 82px;">
-                    <div class="label">Región más afectada</div>
+                    <div class="label" data-i18n="kpi.topRegion">Región más afectada</div>
                     <div class="value" id="dTopDept">—</div>
-                    <div class="desc">Por casos</div>
+                    <div class="desc" data-i18n="kpi.byCases">Por número de casos</div>
                   </div>
                 </div>
 
                 <div class="actions" style="margin-top: 12px;">
-                  <button class="btn primary" id="dBtnView">Ver en el Dashboard</button>
-                  <button class="btn" id="dBtnAdd">Añadir a comparación</button>
+                  <button class="btn primary" id="dBtnView" data-i18n="dis.detail.viewDash">Ver en el Dashboard</button>
+                  <button class="btn" id="dBtnAdd" data-i18n="dis.detail.addCompare">Añadir a comparación</button>
                 </div>
 
                 <div class="detail-cols">
                   <div class="panel">
-                    <h4>Síntomas comunes</h4>
+                    <h4 data-i18n="dis.detail.symptoms">Síntomas comunes</h4>
                     <ul id="dSymptoms"></ul>
                   </div>
                   <div class="panel">
-                    <h4>Prevención</h4>
+                    <h4 data-i18n="dis.detail.prevention">Prevención</h4>
                     <ul id="dPrevention"></ul>
                   </div>
                 </div>
 
                 <div class="panel" style="margin-top: 12px;">
-                  <h4>Cuándo consultar</h4>
+                  <h4 data-i18n="dis.detail.when">Cuándo consultar</h4>
                   <ul id="dWhen"></ul>
                 </div>
 
                 <div class="panel" style="margin-top: 12px;">
-                  <h4>Nota importante</h4>
-                  <div class="muted">Este sitio es educativo y no reemplaza una consulta médica. Si tienes síntomas graves o persistentes, busca atención profesional.</div>
+                  <h4 data-i18n="dis.detail.noteTitle">Nota importante</h4>
+                  <div class="muted" data-i18n="dis.detail.noteText">Este sitio es educativo y no reemplaza una consulta médica. Si tienes síntomas graves o persistentes, busca atención profesional.</div>
                 </div>
               </div>
             </div>
           </div>
 
           <div class="panel" style="margin-top: 12px;">
-            <h4>Preguntas frecuentes</h4>
+            <h4 data-i18n="dis.faq.title">Preguntas frecuentes</h4>
             <details class="faq">
-              <summary><strong>¿Qué significa “brote”?</strong></summary>
-              <div class="muted">Es una señal de alerta cuando los casos superan lo esperado para ese municipio y enfermedad. Sirve para orientar la atención, no para alarmar.</div>
+              <summary><strong data-i18n="dis.faq1.q">¿Qué significa “brote”?</strong></summary>
+              <div class="muted" data-i18n="dis.faq1.a">Es una señal de alerta cuando los casos superan lo esperado para ese municipio y enfermedad. Sirve para orientar la atención, no para alarmar.</div>
             </details>
             <details class="faq">
-              <summary><strong>¿Por qué no puedo filtrar por edad o género?</strong></summary>
-              <div class="muted">El dataset actual no incluye esas columnas. Si las agregas en futuras versiones, la plataforma las habilita automáticamente.</div>
+              <summary><strong data-i18n="dis.faq2.q">¿Por qué algunas enfermedades suben en ciertas épocas?</strong></summary>
+              <div class="muted" data-i18n="dis.faq2.a">La lluvia y la temperatura influyen en la presencia de mosquitos. También afectan factores como movilidad, prevención y acceso a servicios de salud.</div>
+            </details>
+            <details class="faq">
+              <summary><strong data-i18n="dis.faq3.q">¿Qué puedo hacer en casa para reducir el riesgo?</strong></summary>
+              <div class="muted" data-i18n="dis.faq3.a">Elimina agua estancada, lava recipientes, usa repelente, coloca mosquiteros y revisa patios y canaletas semanalmente.</div>
+            </details>
+            <details class="faq">
+              <summary><strong data-i18n="dis.faq4.q">¿Qué significa “región más afectada” en el dashboard?</strong></summary>
+              <div class="muted" data-i18n="dis.faq4.a">Es el departamento con más casos dentro de tu selección (filtros). Puedes cambiarlo al filtrar por años o enfermedades.</div>
             </details>
           </div>
         </div>
@@ -2065,7 +2351,7 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
 
               <div class="viz">
                 <div class="chart">
-                  <h3>Tendencia de casos</h3>
+                  <h3 id="dashTrend">Tendencia de casos</h3>
                   <canvas id="chartTrend"></canvas>
                   <div class="muted" id="trendHint" style="margin-top:8px;">Compara enfermedades y observa si suben o bajan.</div>
                 </div>
@@ -2078,7 +2364,7 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
 
               <div class="viz" style="grid-template-columns: 1fr 1fr;">
                 <div class="chart">
-                  <h3>Mapa (casos por departamento)</h3>
+                  <h3 id="dashMap">Mapa (casos por departamento)</h3>
                   <div class="map-wrap">
                     <div class="map" id="mapBox"></div>
                     <div class="legend">
@@ -2154,13 +2440,58 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
   <div class="toast" id="toast"></div>
   <div class="tooltip" id="tooltip"></div>
 
+  <div class="chat-mini" id="homeChatMini">
+    <div class="bubble" id="homeChatOpen" title="Asistente de salud">💬</div>
+  </div>
+  <div class="chat-float" id="homeChat">
+    <div class="hd">
+      <div class="title">
+        <span class="dot"></span>
+        <div style="min-width:0;">
+          <h3>Asistente de salud</h3>
+          <div class="muted">Pregúntame sobre las enfermedades o sobre lo que ves en los datos</div>
+        </div>
+      </div>
+      <div style="display:flex; gap:8px; align-items:center;">
+        <button class="btn ghost" id="homeChatReset" title="Nueva conversación">Nuevo</button>
+        <button class="btn ghost" id="homeChatClose" title="Cerrar">Cerrar</button>
+      </div>
+    </div>
+    <div class="chat-body" id="homeChatBody">
+      <div class="msg bot">Hola. Puedo ayudarte a entender <strong>dengue</strong>, <strong>zika</strong> y <strong>chikungunya</strong>, y también a interpretar tendencias por año y región. ¿Qué te gustaría saber?</div>
+    </div>
+    <div class="chat-tools">
+      <div class="chat-row">
+        <input id="homeAskInput" placeholder="Escribe tu pregunta…" />
+        <button class="btn primary" id="homeAskSend">Enviar</button>
+      </div>
+      <div class="chat-quick">
+        <button class="qbtn" data-q="¿Qué enfermedad ha crecido más en los últimos años?">Crecimiento</button>
+        <button class="qbtn" data-q="¿Cuál es la región más afectada?">Región</button>
+        <button class="qbtn" data-q="¿Cuáles son los síntomas del dengue?">Síntomas</button>
+        <button class="qbtn" data-q="¿Cómo prevenir chikungunya?">Prevención</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     let offset = 0;
     let total = 0;
     let columns = [];
     let mapData = null;
+    let homeChatMessages = [];
 
     function qs(id) { return document.getElementById(id); }
+
+    function setLayoutVars() {
+      const root = document.documentElement;
+      const header = document.querySelector('.header');
+      const nav = document.getElementById('nav');
+      const h = header ? header.getBoundingClientRect().height : 0;
+      const n = nav ? nav.getBoundingClientRect().height : 0;
+      root.style.setProperty('--headerH', Math.round(h) + 'px');
+      root.style.setProperty('--navH', Math.round(n) + 'px');
+    }
 
     function toast(msg) {
       const el = qs('toast');
@@ -2210,6 +2541,7 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
       });
       setActiveNav(r);
       setTimeout(function() {
+        try { setHomeChatVisible(); } catch (e) {}
         try { scheduleRefresh(); } catch (e) {}
       }, 80);
     }
@@ -2279,6 +2611,238 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
     function initTheme() {
       const saved = localStorage.getItem('theme');
       if (saved === 'dark' || saved === 'light') setTheme(saved);
+    }
+
+    const I18N = {
+      es: {
+        'app.title': 'Enfermedades en Colombia',
+        'app.subtitle': 'Explora la evolución de los casos por año, enfermedad y departamento. Diseñado para entenderse rápido, sin tecnicismos.',
+        'status.ready': 'Listo',
+        'btn.theme': 'Modo',
+        'btn.exportFiltered': 'Exportar (filtrado)',
+        'btn.pdf': 'PDF',
+        'btn.csvFull': 'CSV completo',
+        'nav.home': 'Inicio',
+        'nav.diseases': 'Enfermedades',
+        'nav.dashboard': 'Dashboard',
+        'home.title': 'Inicio',
+        'home.sub': 'Portal educativo + análisis visual',
+        'kpi.totalCases': 'Casos registrados',
+        'kpi.totalDataset': 'Total del dataset',
+        'kpi.topDisease': 'Enfermedad más común',
+        'kpi.byCases': 'Por número de casos',
+        'kpi.topRegion': 'Región más afectada',
+        'kpi.deptMostCases': 'Departamento con más casos',
+        'kpi.changeOverTime': 'Cambio en el tiempo',
+        'kpi.overallTrend': 'Tendencia general',
+        'home.ctaDash': 'Explorar Dashboard →',
+        'home.ctaGuide': 'Guía de enfermedades',
+        'home.ctaFaq': 'Preguntas frecuentes',
+        'home.tip': 'Consejo: filtra por años y compara enfermedades',
+        'home.feature.trends.title': 'Ver tendencias',
+        'home.feature.trends.desc': 'Identifica si los casos suben o bajan en el tiempo y compara enfermedades.',
+        'home.feature.regions.title': 'Explorar regiones',
+        'home.feature.regions.desc': 'Ubica departamentos con mayor incidencia y descubre patrones geográficos.',
+        'home.feature.learn.title': 'Aprender y prevenir',
+        'home.feature.learn.desc': 'Conoce síntomas comunes, prevención y cuándo consultar para actuar a tiempo.',
+        'home.learnQuick.title': 'Aprender y prevenir (guía rápida)',
+        'home.learnQuick.more': 'Ver guía completa',
+        'home.learnQuick.askIdeas': '¿Qué puedo preguntar?',
+        'home.faq1.q': '¿Cómo interpretar este panel?',
+        'home.faq1.a': 'Las cifras muestran casos registrados en los datos. Usa el dashboard para filtrar por años, enfermedad y departamento. La tendencia te ayuda a ver si hay aumento o disminución.',
+        'home.faq2.q': '¿Qué significa “Cambio en el tiempo”?',
+        'home.faq2.a': 'Compara el primer y el último año disponibles en tu selección. Si seleccionas un solo año, no se calcula.',
+        'home.faq3.q': '¿De dónde salen los datos?',
+        'home.faq3.a': 'Provienen de fuentes públicas (datos.gov.co) integradas en un dataset maestro para análisis y visualización.',
+        'home.preview.title': 'Vista previa: tendencia',
+        'home.preview.tip': 'Tip: selecciona varias enfermedades para comparar su comportamiento.',
+        'dis.title': 'Enfermedades',
+        'dis.sub': 'Información clara para entender y prevenir',
+        'dis.search.label': 'Buscador',
+        'dis.search.ph': 'Escribe: dengue, zika, chikungunya…',
+        'dis.pick.title': 'Selecciona una enfermedad',
+        'dis.pick.desc': 'Verás una explicación sencilla y un resumen de datos para tu presentación.',
+        'dis.cases': 'Casos',
+        'dis.change': 'Cambio',
+        'dis.compare.title': 'Comparar en el dashboard',
+        'dis.compare.desc': 'Elige 2 o 3 para compararlas en la gráfica de tendencia.',
+        'dis.compare.go': 'Comparar ahora',
+        'dis.compare.clear': 'Limpiar',
+        'dis.detail.title': 'Detalle',
+        'dis.detail.sub': 'Educativo, simple y directo',
+        'dis.detail.lead': 'Selecciona una enfermedad para ver información.',
+        'dis.detail.kpiCases': 'Casos (dataset)',
+        'dis.detail.kpiCasesDesc': 'Total disponible',
+        'dis.detail.kpiTrend': 'Tendencia',
+        'dis.detail.viewDash': 'Ver en el Dashboard',
+        'dis.detail.addCompare': 'Añadir a comparación',
+        'dis.detail.symptoms': 'Síntomas comunes',
+        'dis.detail.prevention': 'Prevención',
+        'dis.detail.when': 'Cuándo consultar',
+        'dis.detail.noteTitle': 'Nota importante',
+        'dis.detail.noteText': 'Este sitio es educativo y no reemplaza una consulta médica. Si tienes síntomas graves o persistentes, busca atención profesional.',
+        'dis.faq.title': 'Preguntas frecuentes',
+        'dis.faq1.q': '¿Qué significa “brote”?',
+        'dis.faq1.a': 'Es una señal de alerta cuando los casos superan lo esperado para ese municipio y enfermedad. Sirve para orientar la atención, no para alarmar.',
+        'dis.faq2.q': '¿Por qué algunas enfermedades suben en ciertas épocas?',
+        'dis.faq2.a': 'La lluvia y la temperatura influyen en la presencia de mosquitos. También afectan factores como movilidad, prevención y acceso a servicios de salud.',
+        'dis.faq3.q': '¿Qué puedo hacer en casa para reducir el riesgo?',
+        'dis.faq3.a': 'Elimina agua estancada, lava recipientes, usa repelente, coloca mosquiteros y revisa patios y canaletas semanalmente.',
+        'dis.faq4.q': '¿Qué significa “región más afectada” en el dashboard?',
+        'dis.faq4.a': 'Es el departamento con más casos dentro de tu selección (filtros). Puedes cambiarlo al filtrar por años o enfermedades.',
+      },
+      en: {
+        'app.title': 'Diseases in Colombia',
+        'app.subtitle': 'Explore how cases evolve by year, disease, and department. Designed to be clear and non-technical.',
+        'status.ready': 'Ready',
+        'btn.theme': 'Theme',
+        'btn.exportFiltered': 'Export (filtered)',
+        'btn.pdf': 'PDF',
+        'btn.csvFull': 'Full CSV',
+        'nav.home': 'Home',
+        'nav.diseases': 'Diseases',
+        'nav.dashboard': 'Dashboard',
+        'home.title': 'Home',
+        'home.sub': 'Educational portal + visual insights',
+        'kpi.totalCases': 'Reported cases',
+        'kpi.totalDataset': 'Dataset total',
+        'kpi.topDisease': 'Most common disease',
+        'kpi.byCases': 'By number of cases',
+        'kpi.topRegion': 'Most affected region',
+        'kpi.deptMostCases': 'Department with most cases',
+        'kpi.changeOverTime': 'Change over time',
+        'kpi.overallTrend': 'Overall trend',
+        'home.ctaDash': 'Explore Dashboard →',
+        'home.ctaGuide': 'Disease guide',
+        'home.ctaFaq': 'FAQ',
+        'home.tip': 'Tip: filter by years and compare diseases',
+        'home.feature.trends.title': 'See trends',
+        'home.feature.trends.desc': 'Check whether cases go up or down over time and compare diseases.',
+        'home.feature.regions.title': 'Explore regions',
+        'home.feature.regions.desc': 'Identify departments with higher incidence and discover geographic patterns.',
+        'home.feature.learn.title': 'Learn & prevent',
+        'home.feature.learn.desc': 'Learn common symptoms, prevention, and when to seek care.',
+        'home.learnQuick.title': 'Learn & prevent (quick guide)',
+        'home.learnQuick.more': 'Open full guide',
+        'home.learnQuick.askIdeas': 'What can I ask?',
+        'home.faq1.q': 'How do I read this panel?',
+        'home.faq1.a': 'Numbers reflect cases recorded in the dataset. Use the dashboard to filter by years, disease, and department. The trend helps you see increases or decreases.',
+        'home.faq2.q': 'What does “Change over time” mean?',
+        'home.faq2.a': 'It compares the first and last year in your selection. If you pick a single year, it cannot be computed.',
+        'home.faq3.q': 'Where does the data come from?',
+        'home.faq3.a': 'It comes from public sources (datos.gov.co) combined into a master dataset for analysis and visualization.',
+        'home.preview.title': 'Preview: trend',
+        'home.preview.tip': 'Tip: select multiple diseases to compare their behavior.',
+        'dis.title': 'Diseases',
+        'dis.sub': 'Clear information to understand and prevent',
+        'dis.search.label': 'Search',
+        'dis.search.ph': 'Type: dengue, zika, chikungunya…',
+        'dis.pick.title': 'Pick a disease',
+        'dis.pick.desc': 'You will see a simple explanation and a data summary for your presentation.',
+        'dis.cases': 'Cases',
+        'dis.change': 'Change',
+        'dis.compare.title': 'Compare in the dashboard',
+        'dis.compare.desc': 'Choose 2–3 to compare them in the trend chart.',
+        'dis.compare.go': 'Compare now',
+        'dis.compare.clear': 'Clear',
+        'dis.detail.title': 'Details',
+        'dis.detail.sub': 'Educational, simple, and direct',
+        'dis.detail.lead': 'Select a disease to view information.',
+        'dis.detail.kpiCases': 'Cases (dataset)',
+        'dis.detail.kpiCasesDesc': 'Total available',
+        'dis.detail.kpiTrend': 'Trend',
+        'dis.detail.viewDash': 'View in Dashboard',
+        'dis.detail.addCompare': 'Add to comparison',
+        'dis.detail.symptoms': 'Common symptoms',
+        'dis.detail.prevention': 'Prevention',
+        'dis.detail.when': 'When to seek care',
+        'dis.detail.noteTitle': 'Important note',
+        'dis.detail.noteText': 'This site is educational and does not replace medical advice. If you have severe or persistent symptoms, seek professional care.',
+        'dis.faq.title': 'FAQ',
+        'dis.faq1.q': 'What does “outbreak” mean?',
+        'dis.faq1.a': 'It is an alert signal when cases exceed what is expected for that municipality and disease. It helps guide attention, not alarm.',
+        'dis.faq2.q': 'Why do some diseases increase in certain seasons?',
+        'dis.faq2.a': 'Rain and temperature affect mosquito presence. Mobility, prevention, and access to care can also influence trends.',
+        'dis.faq3.q': 'What can I do at home to reduce risk?',
+        'dis.faq3.a': 'Remove standing water, clean containers, use repellent, use bed nets/screens, and check patios and gutters weekly.',
+        'dis.faq4.q': 'What does “most affected region” mean?',
+        'dis.faq4.a': 'It is the department with the most cases within your current filters. It will change as you adjust years or diseases.',
+      },
+    };
+
+    function getLang() {
+      const saved = localStorage.getItem('lang');
+      if (saved === 'en' || saved === 'es') return saved;
+      const nav = (navigator.language || '').toLowerCase();
+      return nav.startsWith('en') ? 'en' : 'es';
+    }
+
+    function setLang(lang) {
+      localStorage.setItem('lang', lang);
+      applyLang(lang);
+    }
+
+    function t(key) {
+      const lang = getLang();
+      return (I18N[lang] && I18N[lang][key]) ? I18N[lang][key] : (I18N.es[key] || key);
+    }
+
+    function applyLang(lang) {
+      const l = (lang === 'en') ? 'en' : 'es';
+      document.documentElement.lang = l;
+      document.title = I18N[l]['app.title'] || document.title;
+
+      Array.from(document.querySelectorAll('[data-i18n]')).forEach(el => {
+        const key = el.getAttribute('data-i18n') || '';
+        if (!key) return;
+        el.textContent = (I18N[l][key] || I18N.es[key] || el.textContent);
+      });
+      Array.from(document.querySelectorAll('[data-i18n-placeholder]')).forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder') || '';
+        if (!key) return;
+        el.setAttribute('placeholder', (I18N[l][key] || I18N.es[key] || el.getAttribute('placeholder') || ''));
+      });
+
+      const btn = document.getElementById('btnLang');
+      if (btn) btn.textContent = (l === 'en') ? 'EN' : 'ES';
+
+      const guide = document.getElementById('homeGuideList');
+      if (guide) {
+        const items = (l === 'en')
+          ? [
+              '<strong>Remove breeding sites:</strong> empty, cover, and clean containers with water.',
+              '<strong>Protect your skin:</strong> use repellent and wear clothing that covers arms and legs.',
+              '<strong>Protect your home:</strong> bed nets, window screens, and ventilation.',
+              '<strong>Warning signs:</strong> bleeding, severe pain, or breathing difficulty → seek care.',
+            ]
+          : [
+              '<strong>Evita criaderos:</strong> vacía, tapa y limpia recipientes con agua.',
+              '<strong>Protege tu piel:</strong> usa repelente y ropa que cubra brazos y piernas.',
+              '<strong>Protege tu casa:</strong> mosquiteros, mallas y ventilación.',
+              '<strong>Señales de alarma:</strong> si hay sangrado, dolor intenso o dificultad respiratoria, busca atención.',
+            ];
+        guide.innerHTML = items.map(x => '<li>' + x + '</li>').join('');
+      }
+
+      const chat = document.getElementById('homeChat');
+      if (chat) {
+        const header = chat.querySelector('.hd .muted');
+        if (header) header.textContent = (l === 'en')
+          ? 'Ask me about diseases or what you see in the data'
+          : 'Pregúntame sobre las enfermedades o sobre lo que ves en los datos';
+      }
+    }
+
+    function initLang() {
+      applyLang(getLang());
+      const btn = document.getElementById('btnLang');
+      if (btn) {
+        btn.addEventListener('click', function() {
+          const cur = getLang();
+          setLang(cur === 'es' ? 'en' : 'es');
+          try { scheduleRefresh(); } catch (e) {}
+        });
+      }
     }
 
     function canvasSize(canvas, height) {
@@ -2716,25 +3280,52 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
     function initDiseasePage() {
       const diseaseInfo = {
         DENGUE: {
-          title: 'Dengue',
-          lead: 'Enfermedad viral transmitida por mosquitos. Puede presentarse como un cuadro leve o, en algunos casos, complicarse.',
-          symptoms: ['Fiebre alta', 'Dolor de cabeza', 'Dolor detrás de los ojos', 'Dolor muscular y articular', 'Náuseas o malestar general'],
-          prevention: ['Eliminar recipientes con agua estancada', 'Usar repelente', 'Instalar mosquiteros o mallas', 'Usar ropa que cubra la piel (especialmente al amanecer y atardecer)'],
-          when: ['Fiebre persistente por más de 2 días', 'Dolor intenso o deshidratación', 'Sangrado, somnolencia o dificultad para respirar (urgencias)'],
+          es: {
+            title: 'Dengue',
+            lead: 'Enfermedad viral transmitida por mosquitos. Puede presentarse como un cuadro leve o, en algunos casos, complicarse.',
+            symptoms: ['Fiebre alta', 'Dolor de cabeza', 'Dolor detrás de los ojos', 'Dolor muscular y articular', 'Náuseas o malestar general'],
+            prevention: ['Eliminar recipientes con agua estancada', 'Usar repelente', 'Instalar mosquiteros o mallas', 'Usar ropa que cubra la piel (especialmente al amanecer y atardecer)'],
+            when: ['Fiebre persistente por más de 2 días', 'Dolor intenso o deshidratación', 'Sangrado, somnolencia o dificultad para respirar (urgencias)'],
+          },
+          en: {
+            title: 'Dengue',
+            lead: 'A mosquito-borne viral disease. It can be mild, but in some cases it may become severe.',
+            symptoms: ['High fever', 'Headache', 'Pain behind the eyes', 'Muscle and joint pain', 'Nausea or general discomfort'],
+            prevention: ['Remove standing water containers', 'Use repellent', 'Use bed nets or window screens', 'Wear clothing that covers skin (especially dawn and dusk)'],
+            when: ['Fever lasting more than 2 days', 'Severe pain or dehydration', 'Bleeding, drowsiness, or breathing difficulty (urgent)'],
+          },
         },
         ZIKA: {
-          title: 'Zika',
-          lead: 'Virus transmitido por mosquitos. Suele ser leve, pero es importante en embarazo por posibles complicaciones.',
-          symptoms: ['Sarpullido', 'Fiebre baja', 'Dolor articular', 'Ojos rojos (conjuntivitis)', 'Cansancio'],
-          prevention: ['Evitar picaduras (repelente, ropa larga)', 'Eliminar criaderos de mosquitos', 'Consultar ante síntomas si estás embarazada o planeas estarlo'],
-          when: ['Síntomas durante el embarazo', 'Fiebre con sarpullido que empeora', 'Cualquier señal de alarma o malestar intenso'],
+          es: {
+            title: 'Zika',
+            lead: 'Virus transmitido por mosquitos. Suele ser leve, pero es importante en embarazo por posibles complicaciones.',
+            symptoms: ['Sarpullido', 'Fiebre baja', 'Dolor articular', 'Ojos rojos (conjuntivitis)', 'Cansancio'],
+            prevention: ['Evitar picaduras (repelente, ropa larga)', 'Eliminar criaderos de mosquitos', 'Consultar ante síntomas si estás embarazada o planeas estarlo'],
+            when: ['Síntomas durante el embarazo', 'Fiebre con sarpullido que empeora', 'Cualquier señal de alarma o malestar intenso'],
+          },
+          en: {
+            title: 'Zika',
+            lead: 'A mosquito-borne virus. Symptoms are often mild, but it is especially important during pregnancy.',
+            symptoms: ['Rash', 'Low fever', 'Joint pain', 'Red eyes (conjunctivitis)', 'Fatigue'],
+            prevention: ['Avoid mosquito bites (repellent, long sleeves)', 'Remove breeding sites', 'Seek care if you are pregnant and have symptoms'],
+            when: ['Symptoms during pregnancy', 'Worsening rash with fever', 'Any warning sign or severe discomfort'],
+          },
         },
         CHIKUNGUNYA: {
-          title: 'Chikungunya',
-          lead: 'Virus transmitido por mosquitos. Puede causar dolor articular fuerte que limita actividades diarias.',
-          symptoms: ['Fiebre', 'Dolor articular intenso', 'Hinchazón articular', 'Dolor muscular', 'Dolor de cabeza'],
-          prevention: ['Repelente y mosquiteros', 'Eliminar criaderos', 'Mantener patios y recipientes sin agua acumulada'],
-          when: ['Dolor articular severo o prolongado', 'Fiebre alta persistente', 'Deshidratación o síntomas que empeoran'],
+          es: {
+            title: 'Chikungunya',
+            lead: 'Virus transmitido por mosquitos. Puede causar dolor articular fuerte que limita actividades diarias.',
+            symptoms: ['Fiebre', 'Dolor articular intenso', 'Hinchazón articular', 'Dolor muscular', 'Dolor de cabeza'],
+            prevention: ['Repelente y mosquiteros', 'Eliminar criaderos', 'Mantener patios y recipientes sin agua acumulada'],
+            when: ['Dolor articular severo o prolongado', 'Fiebre alta persistente', 'Deshidratación o síntomas que empeoran'],
+          },
+          en: {
+            title: 'Chikungunya',
+            lead: 'A mosquito-borne virus that can cause intense joint pain that limits daily activities.',
+            symptoms: ['Fever', 'Severe joint pain', 'Joint swelling', 'Muscle pain', 'Headache'],
+            prevention: ['Use repellent and bed nets', 'Remove breeding sites', 'Keep patios and containers free of standing water'],
+            when: ['Severe or prolonged joint pain', 'Persistent high fever', 'Dehydration or worsening symptoms'],
+          },
         },
       };
 
@@ -2793,7 +3384,7 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
         if (!arr.length) {
           const m = document.createElement('div');
           m.className = 'muted';
-          m.textContent = 'Aún no seleccionas enfermedades para comparar.';
+          m.textContent = (getLang() === 'en') ? 'You have not selected diseases to compare yet.' : 'Aún no seleccionas enfermedades para comparar.';
           box.appendChild(m);
         } else {
           arr.forEach((d, idx) => {
@@ -2806,10 +3397,11 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
             dot.style.background = diseaseColor(d, idx);
             dot.style.display = 'inline-block';
             const s = document.createElement('strong');
-            s.textContent = (diseaseInfo[d] ? diseaseInfo[d].title : d);
+            const lang = getLang();
+            s.textContent = (diseaseInfo[d] && diseaseInfo[d][lang] ? diseaseInfo[d][lang].title : d);
             chip.appendChild(dot);
             chip.appendChild(s);
-            chip.title = 'Clic para quitar';
+            chip.title = (getLang() === 'en') ? 'Click to remove' : 'Clic para quitar';
             chip.style.cursor = 'pointer';
             chip.addEventListener('click', function() {
               state.compare.delete(d);
@@ -2824,7 +3416,8 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
 
       async function renderDisease(d) {
         setActiveDisease(d);
-        const info = diseaseInfo[d];
+        const lang = getLang();
+        const info = (diseaseInfo[d] && diseaseInfo[d][lang]) ? diseaseInfo[d][lang] : null;
         const t = document.getElementById('dTitle');
         const lead = document.getElementById('dLead');
         if (t) t.textContent = info ? info.title : d;
@@ -2836,7 +3429,11 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
         const viewBtn = document.getElementById('dBtnView');
         const addBtn = document.getElementById('dBtnAdd');
         if (viewBtn) viewBtn.onclick = function() { selectDiseaseAndGo(d); };
-        if (addBtn) addBtn.onclick = function() { state.compare.add(d); renderCompare(); toast('Añadido: ' + (info ? info.title : d)); };
+        if (addBtn) addBtn.onclick = function() {
+          state.compare.add(d);
+          renderCompare();
+          toast((getLang() === 'en' ? 'Added: ' : 'Añadido: ') + (info ? info.title : d));
+        };
 
         try {
           const sum = await loadDiseaseSummary(d);
@@ -2925,6 +3522,141 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
       });
     }
 
+    function isHomeActive() {
+      const el = document.getElementById('page-home');
+      return !!(el && el.classList.contains('active'));
+    }
+
+    function setHomeChatVisible() {
+      const chat = document.getElementById('homeChat');
+      const mini = document.getElementById('homeChatMini');
+      if (!chat || !mini) return;
+      const open = localStorage.getItem('home_chat_open') === '1';
+      if (!isHomeActive()) {
+        chat.classList.remove('active');
+        mini.classList.remove('active');
+        return;
+      }
+      if (open) {
+        chat.classList.add('active');
+        mini.classList.remove('active');
+      } else {
+        chat.classList.remove('active');
+        mini.classList.add('active');
+      }
+    }
+
+    function addHomeMsg(kind, text) {
+      const box = document.getElementById('homeChatBody');
+      if (!box) return;
+      const div = document.createElement('div');
+      div.className = 'msg ' + (kind === 'user' ? 'user' : 'bot');
+      div.textContent = text;
+      box.appendChild(div);
+      box.scrollTop = box.scrollHeight;
+      return div;
+    }
+
+    function resetHomeChat() {
+      homeChatMessages = [];
+      const box = document.getElementById('homeChatBody');
+      if (!box) return;
+      box.innerHTML = '';
+      const m = document.createElement('div');
+      m.className = 'msg bot';
+      m.textContent = (getLang() === 'en')
+        ? 'Hi. I am your assistant. You can ask about health (dengue, zika, chikungunya) or about what you see in the data. What would you like to know?'
+        : 'Hola. Soy tu asistente. Puedes preguntarme sobre salud (dengue, zika, chikungunya) o sobre lo que ves en los datos. ¿Qué te gustaría saber?';
+      box.appendChild(m);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    async function askHome(question) {
+      const q = String(question || '').trim();
+      if (!q) return;
+      addHomeMsg('user', q);
+      homeChatMessages.push({ role: 'user', content: q });
+      setStatus('Pensando…', true);
+      const typing = addHomeMsg('bot', (getLang() === 'en') ? 'Typing…' : 'Escribiendo…');
+      try {
+        const body = {
+          messages: homeChatMessages.slice(-16),
+          params: getParams(),
+        };
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+        const txt = await res.text();
+        let payload = null;
+        try { payload = JSON.parse(txt); } catch (e) { payload = { answer: txt }; }
+        const a = (payload && payload.answer) ? String(payload.answer) : 'No pude responder.';
+        if (typing) typing.textContent = a;
+        else addHomeMsg('bot', a);
+        homeChatMessages.push({ role: 'assistant', content: a });
+      } catch (e) {
+        if (typing) typing.textContent = 'Ocurrió un error al responder. Intenta de nuevo.';
+        else addHomeMsg('bot', 'Ocurrió un error al responder. Intenta de nuevo.');
+      } finally {
+        setStatus('Listo', false);
+      }
+    }
+
+    function initHomeChat() {
+      const openBtn = document.getElementById('homeChatOpen');
+      const closeBtn = document.getElementById('homeChatClose');
+      const resetBtn = document.getElementById('homeChatReset');
+      const sendBtn = document.getElementById('homeAskSend');
+      const input = document.getElementById('homeAskInput');
+      if (openBtn) openBtn.addEventListener('click', function() { localStorage.setItem('home_chat_open', '1'); setHomeChatVisible(); });
+      if (closeBtn) closeBtn.addEventListener('click', function() { localStorage.setItem('home_chat_open', '0'); setHomeChatVisible(); });
+      if (resetBtn) resetBtn.addEventListener('click', function() { resetHomeChat(); });
+      if (sendBtn) sendBtn.addEventListener('click', function() { askHome(input ? input.value : ''); if (input) input.value = ''; });
+      if (input) input.addEventListener('keydown', function(e) { if (e.key === 'Enter') { e.preventDefault(); if (sendBtn) sendBtn.click(); } });
+      Array.from(document.querySelectorAll('.qbtn')).forEach(b => {
+        b.addEventListener('click', function() {
+          const q = b.getAttribute('data-q') || '';
+          askHome(q);
+        });
+      });
+      resetHomeChat();
+      setHomeChatVisible();
+    }
+
+    function initHomeActions() {
+      Array.from(document.querySelectorAll('.feature[data-go]')).forEach(el => {
+        const go = el.getAttribute('data-go') || '';
+        const run = function() {
+          if (go === 'dash-trend') {
+            location.hash = '#/dashboard';
+            showPage('/dashboard');
+            setTimeout(function() {
+              const t = document.getElementById('dashTrend');
+              if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 240);
+          } else if (go === 'dash-map') {
+            location.hash = '#/dashboard';
+            showPage('/dashboard');
+            setTimeout(function() {
+              const t = document.getElementById('dashMap');
+              if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 240);
+          } else if (go === 'learn') {
+            location.hash = '#/enfermedades';
+            showPage('/enfermedades');
+          }
+        };
+        el.addEventListener('click', run);
+        el.addEventListener('keydown', function(e) { if (e.key === 'Enter') run(); });
+      });
+
+      const more = document.getElementById('btnLearnMore');
+      if (more) more.addEventListener('click', function() { location.hash = '#/enfermedades'; showPage('/enfermedades'); });
+      const ideas = document.getElementById('btnAskIdeas');
+      if (ideas) ideas.addEventListener('click', function() { askHome('ayuda'); });
+    }
+
     qs('btnApply').addEventListener('click', function() { scheduleRefresh(); });
     qs('btnReset').addEventListener('click', function() { resetAll(); scheduleRefresh(); });
     qs('btnPDF').addEventListener('click', function() { window.print(); });
@@ -2955,13 +3687,17 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
       scheduleRefresh();
     });
 
-    window.addEventListener('resize', debounce(function() { scheduleRefresh(); }, 220));
+    window.addEventListener('resize', debounce(function() { setLayoutVars(); scheduleRefresh(); }, 220));
 
     (async function() {
       try {
         initTheme();
+        initLang();
+        setLayoutVars();
         initRouting();
         initDiseasePage();
+        initHomeActions();
+        initHomeChat();
         setStatus('Cargando…', true);
         await loadMeta();
         await loadValues();
@@ -2986,6 +3722,36 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
             self.send_header("Content-Length", str(len(body_bytes)))
             self.end_headers()
             self.wfile.write(body_bytes)
+
+        def do_POST(self):
+            parsed = urlparse(self.path)
+            path = parsed.path
+
+            if path == "/api/chat":
+                try:
+                    length = int(self.headers.get("Content-Length") or "0")
+                except Exception:
+                    length = 0
+                raw = self.rfile.read(length) if length > 0 else b""
+                try:
+                    payload = json.loads(raw.decode("utf-8") or "{}")
+                except Exception:
+                    status, data = to_json_bytes({"error": "JSON inválido"}, 400)
+                    return self._send(status, "application/json; charset=utf-8", data)
+
+                params = payload.get("params") or {}
+                if not isinstance(params, dict):
+                    params = {}
+                messages = payload.get("messages") or []
+                if not isinstance(messages, list):
+                    messages = []
+                filtered = apply_filters(df, params)
+                answer = answer_chat(messages, filtered, params)
+                status, data = to_json_bytes({"answer": answer}, 200)
+                return self._send(status, "application/json; charset=utf-8", data)
+
+            status, data = to_json_bytes({"error": "No encontrado"}, 404)
+            return self._send(status, "application/json; charset=utf-8", data)
 
         def do_GET(self):
             parsed = urlparse(self.path)
