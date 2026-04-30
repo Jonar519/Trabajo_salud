@@ -1,6 +1,7 @@
 import os
 import re
 import json
+import subprocess
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlparse, parse_qs
 from pathlib import Path
@@ -3383,6 +3384,24 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None, pbix_path=No
                 payload = {"available": bool(pbix_file.exists()), "filename": pbix_file.name}
                 status, data = to_json_bytes(payload, 200)
                 return self._send(status, "application/json; charset=utf-8", data)
+
+            if path == "/api/open_powerbi":
+                if os.name != "nt":
+                    status, data = to_json_bytes({"ok": False, "error": "Esta función solo está disponible en Windows."}, 400)
+                    return self._send(status, "application/json; charset=utf-8", data)
+
+                target = pbix_file if pbix_file.exists() else csv_file
+                if not target.exists():
+                    status, data = to_json_bytes({"ok": False, "error": "No se encontró el archivo a abrir."}, 404)
+                    return self._send(status, "application/json; charset=utf-8", data)
+
+                try:
+                    subprocess.Popen(["explorer", "/select,", str(target)])
+                    status, data = to_json_bytes({"ok": True, "opened": target.name}, 200)
+                    return self._send(status, "application/json; charset=utf-8", data)
+                except Exception as e:
+                    status, data = to_json_bytes({"ok": False, "error": f"No se pudo abrir el Explorador: {e}"}, 500)
+                    return self._send(status, "application/json; charset=utf-8", data)
 
             if path == "/download_filtered":
                 qs_params = parse_qs(parsed.query)

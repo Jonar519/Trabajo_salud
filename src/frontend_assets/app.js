@@ -1493,6 +1493,14 @@ let offset = 0;
       btn.addEventListener('click', async function(e) {
         e.preventDefault();
         try {
+          const opened = await fetchJSON('/api/open_powerbi');
+          if (opened && opened.ok) {
+            const msg = (getLang() === 'en')
+              ? ('Opening: ' + (opened.opened || 'file'))
+              : ('Abriendo: ' + (opened.opened || 'archivo'));
+            toast(msg);
+            return;
+          }
           const st = await fetchJSON('/api/powerbi');
           if (st && st.available) {
             window.location.href = '/download_powerbi';
