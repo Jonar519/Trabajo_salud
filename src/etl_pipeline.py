@@ -812,7 +812,7 @@ def main():
     print("\n  Pipeline completed successfully.\n")
     spark.stop()
 
-def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
+def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None, pbix_path=None):
     import pandas as pd
     import unicodedata
     import urllib.request
@@ -821,6 +821,10 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
     project_root = src_dir.parent
     default_csv = project_root / "data" / "processed" / "dataset_maestro_epidemiologico.csv"
     csv_file = Path(csv_path) if csv_path else default_csv
+    default_pbix = project_root / "data" / "processed" / "reporte_powerbi.pbix"
+    pbix_file = Path(pbix_path) if pbix_path else default_pbix
+    if not pbix_file.is_absolute():
+        pbix_file = (project_root / pbix_file).resolve()
 
     if not csv_file.exists():
         raise FileNotFoundError(
@@ -1469,6 +1473,10 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
       display: flex;
       flex-direction: column;
     }
+    [data-route="inicio"] .app {
+      min-height: auto;
+      padding-bottom: 14px;
+    }
     .header {
       position: sticky;
       top: 0;
@@ -1586,17 +1594,15 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
     }
     .page { display: none; animation: fade .18s ease; flex: 1 1 auto; }
     .page.active { display: block; }
-    .page > .card { height: 100%; }
-    #page-home > .card,
-    #page-diseases > .card,
+    .page > .card { height: auto; }
     #page-dashboard { min-height: calc(100vh - var(--headerH, 0px) - var(--navH, 0px) - 64px); }
     @keyframes fade { from { opacity: 0; transform: translateY(2px); } to { opacity: 1; transform: translateY(0); } }
     .home-grid {
       display: grid;
-      grid-template-columns: 1.3fr 1fr;
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
       gap: 14px;
       align-items: start;
-      height: 100%;
+      height: auto;
     }
     @media (max-width: 1020px) { .home-grid { grid-template-columns: 1fr; } }
     .disease-grid {
@@ -2011,6 +2017,7 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
           <button class="btn ghost" id="btnTheme" title="Cambiar modo claro/oscuro" data-i18n="btn.theme">Modo</button>
           <a class="btn" id="btnExportFiltered" href="/download_filtered" data-i18n="btn.exportFiltered">Exportar (filtrado)</a>
           <button class="btn" id="btnPDF" title="Guardar como PDF (desde el navegador)" data-i18n="btn.pdf">PDF</button>
+          <a class="btn" id="btnPowerBI" href="/download_powerbi" data-i18n="btn.powerbi">Power BI</a>
           <a class="btn primary" href="/download" data-i18n="btn.csvFull">CSV completo</a>
         </div>
       </div>
@@ -2112,15 +2119,23 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
                 </details>
               </div>
             </div>
-            <div class="chart">
-              <h3 data-i18n="home.preview.title">Vista previa: tendencia</h3>
-              <canvas id="homeTrend"></canvas>
-              <div class="chips" style="margin-top:10px;">
-                <span class="chip"><span style="width:10px;height:10px;border-radius:999px;background:#0284c7;display:inline-block;"></span> <strong>Dengue</strong></span>
-                <span class="chip"><span style="width:10px;height:10px;border-radius:999px;background:#10b981;display:inline-block;"></span> <strong>Zika</strong></span>
-                <span class="chip"><span style="width:10px;height:10px;border-radius:999px;background:#ef4444;display:inline-block;"></span> <strong>Chikungunya</strong></span>
+            <div class="stack">
+              <div class="chart">
+                <h3 data-i18n="home.preview.title">Vista previa: tendencia</h3>
+                <canvas id="homeTrend"></canvas>
+                <div class="chips" style="margin-top:10px;">
+                  <span class="chip"><span style="width:10px;height:10px;border-radius:999px;background:#0284c7;display:inline-block;"></span> <strong>Dengue</strong></span>
+                  <span class="chip"><span style="width:10px;height:10px;border-radius:999px;background:#10b981;display:inline-block;"></span> <strong>Zika</strong></span>
+                  <span class="chip"><span style="width:10px;height:10px;border-radius:999px;background:#ef4444;display:inline-block;"></span> <strong>Chikungunya</strong></span>
+                </div>
+                <div class="muted" style="margin-top:8px;" data-i18n="home.preview.tip">Tip: selecciona varias enfermedades para comparar su comportamiento.</div>
               </div>
-              <div class="muted" style="margin-top:8px;" data-i18n="home.preview.tip">Tip: selecciona varias enfermedades para comparar su comportamiento.</div>
+
+              <div class="chart">
+                <h3 data-i18n="home.topMuni.title">Top municipios (casos)</h3>
+                <canvas id="homeTopMuni"></canvas>
+                <div class="muted" style="margin-top:8px;" data-i18n="home.topMuni.tip">Se actualiza con los mismos filtros del dashboard.</div>
+              </div>
             </div>
           </div>
         </div>
@@ -2533,6 +2548,7 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
         '/dashboard': 'page-dashboard',
       };
       const target = map[r] || 'page-home';
+      document.body.setAttribute('data-route', (r || '/inicio').replace('/', ''));
       ['page-home', 'page-diseases', 'page-dashboard'].forEach(id => {
         const el = qs(id);
         if (!el) return;
@@ -2621,6 +2637,7 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
         'btn.theme': 'Modo',
         'btn.exportFiltered': 'Exportar (filtrado)',
         'btn.pdf': 'PDF',
+        'btn.powerbi': 'Power BI',
         'btn.csvFull': 'CSV completo',
         'nav.home': 'Inicio',
         'nav.diseases': 'Enfermedades',
@@ -2656,6 +2673,10 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
         'home.faq3.a': 'Provienen de fuentes públicas (datos.gov.co) integradas en un dataset maestro para análisis y visualización.',
         'home.preview.title': 'Vista previa: tendencia',
         'home.preview.tip': 'Tip: selecciona varias enfermedades para comparar su comportamiento.',
+        'home.topMuni.title': 'Top municipios (casos)',
+        'home.topMuni.tip': 'Se actualiza con los mismos filtros del dashboard.',
+        'powerbi.missing': 'Aún no hay archivo Power BI (.pbix). Cuando lo tengas, colócalo en data/processed/reporte_powerbi.pbix o inicia el servidor con --pbix RUTA.',
+        'powerbi.error': 'No se pudo verificar el archivo de Power BI.',
         'dis.title': 'Enfermedades',
         'dis.sub': 'Información clara para entender y prevenir',
         'dis.search.label': 'Buscador',
@@ -2698,6 +2719,7 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
         'btn.theme': 'Theme',
         'btn.exportFiltered': 'Export (filtered)',
         'btn.pdf': 'PDF',
+        'btn.powerbi': 'Power BI',
         'btn.csvFull': 'Full CSV',
         'nav.home': 'Home',
         'nav.diseases': 'Diseases',
@@ -2733,6 +2755,10 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
         'home.faq3.a': 'It comes from public sources (datos.gov.co) combined into a master dataset for analysis and visualization.',
         'home.preview.title': 'Preview: trend',
         'home.preview.tip': 'Tip: select multiple diseases to compare their behavior.',
+        'home.topMuni.title': 'Top municipalities (cases)',
+        'home.topMuni.tip': 'Updates with the same dashboard filters.',
+        'powerbi.missing': 'Power BI file (.pbix) is not available yet. When you have it, place it in data/processed/reporte_powerbi.pbix or start the server with --pbix PATH.',
+        'powerbi.error': 'Could not check the Power BI file.',
         'dis.title': 'Diseases',
         'dis.sub': 'Clear information to understand and prevent',
         'dis.search.label': 'Search',
@@ -3113,6 +3139,12 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
       drawLineMulti(qs('chartTrend'), trend.labels || [], trend.series || []);
       const homeTrend = document.getElementById('homeTrend');
       if (homeTrend) drawLineMulti(homeTrend, trend.labels || [], trend.series || []);
+
+      const homeTopMuni = document.getElementById('homeTopMuni');
+      if (homeTopMuni) {
+        const topHome = (sum.top_municipios || []).slice(0, 8).map(x => ({ label: x.municipio, value: Number(x.casos) || 0 }));
+        drawBars(homeTopMuni, topHome, '#0284c7');
+      }
 
       const homeInsights = document.getElementById('homeInsights');
       if (homeInsights) {
@@ -3657,6 +3689,30 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
       if (ideas) ideas.addEventListener('click', function() { askHome('ayuda'); });
     }
 
+    function initPowerBIButton() {
+      const btn = document.getElementById('btnPowerBI');
+      if (!btn) return;
+      btn.addEventListener('click', async function(e) {
+        e.preventDefault();
+        try {
+          const st = await fetchJSON('/api/powerbi');
+          if (st && st.available) {
+            window.location.href = '/download_powerbi';
+            return;
+          }
+          const msg = (getLang() === 'en')
+            ? (I18N.en['powerbi.missing'] || 'Power BI file not available yet.')
+            : (I18N.es['powerbi.missing'] || 'Aún no hay archivo de Power BI disponible.');
+          toast(msg);
+        } catch (err) {
+          const msg = (getLang() === 'en')
+            ? (I18N.en['powerbi.error'] || 'Could not check Power BI file.')
+            : (I18N.es['powerbi.error'] || 'No se pudo verificar el archivo de Power BI.');
+          toast(msg);
+        }
+      });
+    }
+
     qs('btnApply').addEventListener('click', function() { scheduleRefresh(); });
     qs('btnReset').addEventListener('click', function() { resetAll(); scheduleRefresh(); });
     qs('btnPDF').addEventListener('click', function() { window.print(); });
@@ -3693,6 +3749,7 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
       try {
         initTheme();
         initLang();
+        initPowerBIButton();
         setLayoutVars();
         initRouting();
         initDiseasePage();
@@ -3839,6 +3896,11 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
                 status, data = to_json_bytes(payload, 200)
                 return self._send(status, "application/json; charset=utf-8", data)
 
+            if path == "/api/powerbi":
+                payload = {"available": bool(pbix_file.exists()), "filename": pbix_file.name}
+                status, data = to_json_bytes(payload, 200)
+                return self._send(status, "application/json; charset=utf-8", data)
+
             if path == "/download_filtered":
                 qs_params = parse_qs(parsed.query)
                 params = {k: (v[0] if v else "") for k, v in qs_params.items()}
@@ -3869,6 +3931,23 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
                     status, data = to_json_bytes({"error": "No se pudo descargar el archivo."}, 500)
                     return self._send(status, "application/json; charset=utf-8", data)
 
+            if path == "/download_powerbi":
+                if not pbix_file.exists():
+                    status, data = to_json_bytes({"error": "Archivo Power BI no disponible."}, 404)
+                    return self._send(status, "application/json; charset=utf-8", data)
+                try:
+                    body = pbix_file.read_bytes()
+                    self.send_response(200)
+                    self.send_header("Content-Type", "application/octet-stream")
+                    self.send_header("Content-Disposition", f'attachment; filename="{pbix_file.name}"')
+                    self.send_header("Content-Length", str(len(body)))
+                    self.end_headers()
+                    self.wfile.write(body)
+                    return
+                except Exception:
+                    status, data = to_json_bytes({"error": "No se pudo descargar el archivo."}, 500)
+                    return self._send(status, "application/json; charset=utf-8", data)
+
             status, data = to_json_bytes({"error": "No encontrado"}, 404)
             return self._send(status, "application/json; charset=utf-8", data)
 
@@ -3886,11 +3965,12 @@ def _parse_args(argv):
     p.add_argument("--host", default="127.0.0.1")
     p.add_argument("--port", type=int, default=8000)
     p.add_argument("--csv", default=None)
+    p.add_argument("--pbix", default=None)
     return p.parse_args(argv)
 
 if __name__ == "__main__":
     args = _parse_args(sys.argv[1:])
     if args.serve:
-        run_frontend_server(host=args.host, port=args.port, csv_path=args.csv)
+        run_frontend_server(host=args.host, port=args.port, csv_path=args.csv, pbix_path=args.pbix)
     else:
         main()
