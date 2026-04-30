@@ -1396,6 +1396,167 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
       align-items: start;
     }
     @media (max-width: 1020px) { .grid { grid-template-columns: 1fr; } }
+    .nav {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin: 12px 0 0;
+    }
+    .nav a {
+      border: 1px solid var(--border);
+      background: color-mix(in srgb, var(--panel) 92%, transparent);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 13px;
+      color: var(--text);
+      box-shadow: var(--shadow2);
+      transition: transform .12s ease, box-shadow .12s ease;
+    }
+    .nav a:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
+    .nav a.active {
+      border-color: color-mix(in srgb, var(--accent) 55%, var(--border));
+      box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 16%, transparent);
+    }
+    .page { display: none; animation: fade .18s ease; }
+    .page.active { display: block; }
+    @keyframes fade { from { opacity: 0; transform: translateY(2px); } to { opacity: 1; transform: translateY(0); } }
+    .home-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 14px;
+      align-items: start;
+    }
+    @media (max-width: 1020px) { .home-grid { grid-template-columns: 1fr; } }
+    .disease-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    @media (max-width: 1020px) { .disease-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 520px) { .disease-grid { grid-template-columns: 1fr; } }
+    .disease-card h3 { margin: 0 0 6px; font-size: 15px; }
+    .disease-card ul { margin: 8px 0 0; padding-left: 18px; color: var(--muted); font-size: 12.5px; line-height: 1.5; }
+    .disease-card li { margin: 4px 0; }
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 14px;
+      border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--border));
+      background: color-mix(in srgb, var(--accent) 12%, var(--panel));
+      box-shadow: var(--shadow2);
+      cursor: pointer;
+      font-size: 13px;
+      transition: transform .12s ease, box-shadow .12s ease;
+    }
+    .cta:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
+    .stack { display: grid; gap: 12px; }
+    .actions { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 2px;
+    }
+    @media (max-width: 1020px) { .feature-grid { grid-template-columns: 1fr; } }
+    .feature {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: color-mix(in srgb, var(--panel2) 70%, transparent);
+      padding: 12px;
+      box-shadow: var(--shadow2);
+      transition: transform .12s ease, box-shadow .12s ease;
+      display: grid;
+      grid-template-columns: 40px 1fr;
+      gap: 10px;
+      align-items: start;
+      min-height: 92px;
+    }
+    .feature:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
+    .ico {
+      width: 40px; height: 40px; border-radius: 14px;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 18%, transparent), color-mix(in srgb, var(--accent2) 10%, transparent));
+      display:flex; align-items:center; justify-content:center;
+      font-size: 16px;
+      color: color-mix(in srgb, var(--accent) 85%, var(--text));
+      box-shadow: var(--shadow2);
+      user-select: none;
+    }
+    .feature h4 { margin: 0; font-size: 13px; }
+    .feature p { margin: 4px 0 0; color: var(--muted); font-size: 12.5px; line-height: 1.45; }
+    details.faq {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: color-mix(in srgb, var(--panel2) 68%, transparent);
+      padding: 10px 12px;
+      box-shadow: var(--shadow2);
+    }
+    details.faq + details.faq { margin-top: 8px; }
+    details.faq summary { cursor: pointer; font-size: 13px; }
+    details.faq summary::marker { color: var(--muted); }
+    details.faq .muted { margin-top: 8px; }
+    .diseases-layout {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 14px;
+      align-items: start;
+    }
+    @media (max-width: 1020px) { .diseases-layout { grid-template-columns: 1fr; } }
+    .disease-list { display: grid; gap: 10px; }
+    .disease-item {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: color-mix(in srgb, var(--panel2) 70%, transparent);
+      padding: 12px;
+      cursor: pointer;
+      transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+      box-shadow: var(--shadow2);
+    }
+    .disease-item:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
+    .disease-item.active {
+      border-color: color-mix(in srgb, var(--accent) 55%, var(--border));
+      box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 16%, transparent);
+    }
+    .disease-item h3 { margin: 0; font-size: 14px; display:flex; gap:8px; align-items:center; }
+    .disease-item .tag {
+      display:inline-flex; align-items:center; justify-content:center;
+      width: 28px; height: 28px; border-radius: 12px;
+      border: 1px solid var(--border);
+      background: color-mix(in srgb, var(--panel) 92%, transparent);
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .chips { display:flex; gap: 8px; flex-wrap:wrap; margin-top: 8px; }
+    .chip {
+      display:inline-flex; gap: 6px; align-items:center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: color-mix(in srgb, var(--panel) 90%, transparent);
+      color: var(--muted);
+      font-size: 12px;
+      box-shadow: var(--shadow2);
+    }
+    .chip strong { color: var(--text); font-weight: 600; }
+    .detail-title { margin: 0; font-size: 18px; letter-spacing: 0.1px; }
+    .detail-lead { margin: 6px 0 0; color: var(--muted); line-height: 1.55; }
+    .detail-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+    @media (max-width: 1020px) { .detail-cols { grid-template-columns: 1fr; } }
+    .panel {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: color-mix(in srgb, var(--panel2) 70%, transparent);
+      padding: 12px;
+      box-shadow: var(--shadow2);
+    }
+    .panel h4 { margin: 0 0 8px; font-size: 13px; }
+    .panel ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: 12.5px; line-height: 1.5; }
+    .panel li { margin: 5px 0; }
+    .compare-box { margin-top: 12px; }
+    .compare-actions { display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top: 10px; }
     .card {
       border: 1px solid var(--border);
       border-radius: 18px;
@@ -1588,177 +1749,406 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
   </div>
 
   <div class="app">
-    <div class="grid">
-      <div class="card filters">
+    <div class="nav" id="nav">
+      <a href="#/inicio" id="navHome">Inicio</a>
+      <a href="#/enfermedades" id="navDiseases">Enfermedades</a>
+      <a href="#/dashboard" id="navDash">Dashboard</a>
+    </div>
+
+    <section class="page" id="page-home">
+      <div class="card" style="margin-top: 14px;">
         <div class="hd">
-          <h2>Filtros</h2>
-          <div class="sub">Actualiza todo al instante</div>
+          <h2>Inicio</h2>
+          <div class="sub">Portal educativo + análisis visual</div>
         </div>
         <div class="bd">
-          <div class="field">
-            <label>Buscador <span class="tip" title="Busca por departamento, municipio o enfermedad">?</span></label>
-            <input id="q" placeholder="Ej: DENGUE, ANTIOQUIA, BOGOTA" />
-          </div>
-
-          <div class="row">
-            <div class="field">
-              <label>Desde (año)</label>
-              <select id="anoMin"><option value="">(cualquiera)</option></select>
-            </div>
-            <div class="field">
-              <label>Hasta (año)</label>
-              <select id="anoMax"><option value="">(cualquiera)</option></select>
-            </div>
-          </div>
-
-          <div class="field">
-            <label>Enfermedades (puedes elegir varias) <span class="tip" title="Selecciona 1 o varias para comparar en la tendencia">?</span></label>
-            <select id="enfermedades" multiple size="5"></select>
-            <div class="muted" style="margin-top:6px;">Tip: Ctrl/Shift para seleccionar varias en PC.</div>
-          </div>
-
-          <div class="field">
-            <label>Departamento <span class="tip" title="También puedes hacer clic en el mapa para seleccionar un departamento">?</span></label>
-            <select id="departamento"><option value="">(cualquiera)</option></select>
-          </div>
-
-          <div class="row">
-            <div class="field">
-              <label>Edad <span class="tip" title="Este dataset no incluye edad, por eso no se puede filtrar aún">?</span></label>
-              <select disabled><option>No disponible</option></select>
-            </div>
-            <div class="field">
-              <label>Género <span class="tip" title="Este dataset no incluye género, por eso no se puede filtrar aún">?</span></label>
-              <select disabled><option>No disponible</option></select>
-            </div>
-          </div>
-
-          <div class="footerbar" style="margin-top: 10px;">
-            <button class="btn" id="btnReset">Reset</button>
-            <button class="btn primary" id="btnApply">Aplicar</button>
-          </div>
-
-          <div class="muted" style="margin-top: 12px;">
-            <div><strong>Fuente local:</strong> __CSV_PATH__</div>
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <div class="card">
-          <div class="hd">
-            <h2>Resumen</h2>
-            <div class="sub">Lo más importante, en segundos</div>
-          </div>
-          <div class="bd">
-            <div class="kpis">
-              <div class="kpi">
-                <div class="label">Casos registrados</div>
-                <div class="value" id="kpiCases">—</div>
-                <div class="desc" id="kpiCasesDesc">Total en la selección</div>
+          <div class="home-grid">
+            <div class="stack">
+              <div class="kpis">
+                <div class="kpi">
+                  <div class="label">Casos registrados</div>
+                  <div class="value" id="homeKpiCases">—</div>
+                  <div class="desc">Total del dataset</div>
+                </div>
+                <div class="kpi">
+                  <div class="label">Enfermedad más común</div>
+                  <div class="value" id="homeKpiTopDis">—</div>
+                  <div class="desc">Por número de casos</div>
+                </div>
+                <div class="kpi">
+                  <div class="label">Región más afectada</div>
+                  <div class="value" id="homeKpiTopDept">—</div>
+                  <div class="desc">Departamento con más casos</div>
+                </div>
+                <div class="kpi">
+                  <div class="label">Cambio en el tiempo</div>
+                  <div class="value" id="homeKpiVar">—</div>
+                  <div class="desc" id="homeKpiVarDesc">Tendencia general</div>
+                </div>
               </div>
-              <div class="kpi">
-                <div class="label">Enfermedad más común</div>
-                <div class="value" id="kpiTopDis">—</div>
-                <div class="desc">Por número de casos</div>
+              <div class="actions">
+                <button class="cta" id="btnGoDash">Explorar Dashboard →</button>
+                <button class="btn" id="btnGoDiseases">Guía de enfermedades</button>
+                <button class="btn ghost" id="btnScrollFAQ">Preguntas frecuentes</button>
+                <span class="pill">Consejo: filtra por años y compara enfermedades</span>
               </div>
-              <div class="kpi">
-                <div class="label">Región más afectada</div>
-                <div class="value" id="kpiTopDept">—</div>
-                <div class="desc">Departamento con más casos</div>
-              </div>
-              <div class="kpi">
-                <div class="label">Cambio en el tiempo</div>
-                <div class="value" id="kpiVar">—</div>
-                <div class="desc" id="kpiVarDesc">Comparación por años disponibles</div>
-              </div>
-            </div>
 
-            <div class="viz">
-              <div class="chart">
-                <h3>Tendencia de casos</h3>
-                <canvas id="chartTrend"></canvas>
-                <div class="muted" id="trendHint" style="margin-top:8px;">Compara enfermedades y observa si suben o bajan.</div>
-              </div>
-              <div class="chart">
-                <h3>Distribución por enfermedad</h3>
-                <canvas id="chartDisease"></canvas>
-                <div class="muted" style="margin-top:8px;">Muestra las más frecuentes en tu selección.</div>
-              </div>
-            </div>
-
-            <div class="viz" style="grid-template-columns: 1fr 1fr;">
-              <div class="chart">
-                <h3>Mapa (casos por departamento)</h3>
-                <div class="map-wrap">
-                  <div class="map" id="mapBox"></div>
-                  <div class="legend">
-                    <span>Menos</span><span class="grad"></span><span>Más</span>
-                    <span class="muted" id="mapHint"></span>
+              <div class="feature-grid">
+                <div class="feature">
+                  <div class="ico">↗</div>
+                  <div>
+                    <h4>Ver tendencias</h4>
+                    <p>Identifica si los casos suben o bajan en el tiempo y compara enfermedades.</p>
+                  </div>
+                </div>
+                <div class="feature">
+                  <div class="ico">▦</div>
+                  <div>
+                    <h4>Explorar regiones</h4>
+                    <p>Ubica departamentos con mayor incidencia y descubre patrones geográficos.</p>
+                  </div>
+                </div>
+                <div class="feature">
+                  <div class="ico">✓</div>
+                  <div>
+                    <h4>Aprender y prevenir</h4>
+                    <p>Conoce síntomas comunes, prevención y cuándo consultar para actuar a tiempo.</p>
                   </div>
                 </div>
               </div>
-              <div class="chart">
-                <h3>Top municipios</h3>
-                <canvas id="chartTopMuni"></canvas>
-                <div class="muted" style="margin-top:8px;">Los 8 municipios con más casos (en la selección).</div>
+
+              <div class="insights" id="homeInsights"></div>
+
+              <div id="homeFAQ">
+                <details class="faq" open>
+                  <summary><strong>¿Cómo interpretar este panel?</strong></summary>
+                  <div class="muted">Las cifras muestran casos registrados en los datos. Usa el dashboard para filtrar por años, enfermedad y departamento. La tendencia te ayuda a ver si hay aumento o disminución.</div>
+                </details>
+                <details class="faq">
+                  <summary><strong>¿Qué significa “Cambio en el tiempo”?</strong></summary>
+                  <div class="muted">Compara el primer y el último año disponibles en tu selección. Si seleccionas un solo año, no se calcula.</div>
+                </details>
+                <details class="faq">
+                  <summary><strong>¿De dónde salen los datos?</strong></summary>
+                  <div class="muted">Provienen de fuentes públicas (datos.gov.co) integradas en un dataset maestro para análisis y visualización.</div>
+                </details>
               </div>
             </div>
-          </div>
-        </div>
-
-        <div class="card" style="margin-top: 14px;">
-          <div class="hd">
-            <h2>Insights automáticos</h2>
-            <div class="sub">Conclusiones en lenguaje simple</div>
-          </div>
-          <div class="bd">
-            <div class="insights" id="insights"></div>
-          </div>
-        </div>
-
-        <div class="card chat" style="margin-top: 14px;">
-          <div class="hd">
-            <h2>Pregúntale al dashboard</h2>
-            <div class="sub">Ej: “¿Qué enfermedad ha crecido más?” (escribe “ayuda” para ver más)</div>
-          </div>
-          <div class="bd">
-            <div class="row" style="grid-template-columns: 1fr auto;">
-              <input id="askInput" placeholder="Escribe tu pregunta…" />
-              <button class="btn primary" id="btnAsk">Preguntar</button>
-            </div>
-            <div class="insight" id="askAnswer" style="margin-top:10px;">Escribe una pregunta para obtener una respuesta rápida.</div>
-          </div>
-        </div>
-
-        <div class="card" style="margin-top: 14px;">
-          <div class="hd">
-            <h2>Tabla</h2>
-            <div class="sub"><span class="pill" id="pillCount">Filas: —</span></div>
-          </div>
-          <div class="bd">
-            <div class="footerbar" style="margin-bottom: 10px;">
-              <div class="row" style="grid-template-columns: 140px auto auto 1fr; align-items:end; gap:10px;">
-                <div class="field" style="margin:0;">
-                  <label>Por página</label>
-                  <input id="limit" value="50" />
-                </div>
-                <button class="btn" id="btnPrev">Anterior</button>
-                <button class="btn" id="btnNext">Siguiente</button>
-                <div class="muted" id="pageInfo" style="align-self:center; justify-self:end;">—</div>
+            <div class="chart">
+              <h3>Vista previa: tendencia</h3>
+              <canvas id="homeTrend"></canvas>
+              <div class="chips" style="margin-top:10px;">
+                <span class="chip"><span style="width:10px;height:10px;border-radius:999px;background:#0284c7;display:inline-block;"></span> <strong>Dengue</strong></span>
+                <span class="chip"><span style="width:10px;height:10px;border-radius:999px;background:#10b981;display:inline-block;"></span> <strong>Zika</strong></span>
+                <span class="chip"><span style="width:10px;height:10px;border-radius:999px;background:#ef4444;display:inline-block;"></span> <strong>Chikungunya</strong></span>
               </div>
-            </div>
-            <div class="table-wrap">
-              <table id="table">
-                <thead><tr id="thead"></tr></thead>
-                <tbody id="tbody"></tbody>
-              </table>
+              <div class="muted" style="margin-top:8px;">Tip: selecciona varias enfermedades para comparar su comportamiento.</div>
             </div>
           </div>
         </div>
-
       </div>
-    </div>
+    </section>
+
+    <section class="page" id="page-diseases">
+      <div class="card" style="margin-top: 14px;">
+        <div class="hd">
+          <h2>Enfermedades</h2>
+          <div class="sub">Información clara para entender y prevenir</div>
+        </div>
+        <div class="bd">
+          <div class="field" style="max-width: 560px;">
+            <label>Buscador</label>
+            <input id="diseaseSearch" placeholder="Escribe: dengue, zika, chikungunya…" />
+          </div>
+
+          <div class="diseases-layout">
+            <div>
+              <div class="panel">
+                <h4>Selecciona una enfermedad</h4>
+                <div class="muted">Verás una explicación sencilla y un resumen de datos para tu presentación.</div>
+              </div>
+              <div class="disease-list" id="diseaseList" style="margin-top: 12px;">
+                <div class="disease-item" data-disease="DENGUE">
+                  <h3><span class="tag">D</span> Dengue</h3>
+                  <div class="muted" style="margin-top:6px;">Transmitida por mosquitos. Puede variar de leve a grave.</div>
+                  <div class="chips">
+                    <span class="chip">Casos: <strong id="statDengueCases">—</strong></span>
+                    <span class="chip">Cambio: <strong id="statDengueVar">—</strong></span>
+                  </div>
+                </div>
+                <div class="disease-item" data-disease="ZIKA">
+                  <h3><span class="tag">Z</span> Zika</h3>
+                  <div class="muted" style="margin-top:6px;">Suele ser leve, pero requiere cuidado especial en embarazo.</div>
+                  <div class="chips">
+                    <span class="chip">Casos: <strong id="statZikaCases">—</strong></span>
+                    <span class="chip">Cambio: <strong id="statZikaVar">—</strong></span>
+                  </div>
+                </div>
+                <div class="disease-item" data-disease="CHIKUNGUNYA">
+                  <h3><span class="tag">C</span> Chikungunya</h3>
+                  <div class="muted" style="margin-top:6px;">Dolor articular puede durar semanas. Prevención es clave.</div>
+                  <div class="chips">
+                    <span class="chip">Casos: <strong id="statChikCases">—</strong></span>
+                    <span class="chip">Cambio: <strong id="statChikVar">—</strong></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="panel compare-box">
+                <h4>Comparar en el dashboard</h4>
+                <div class="muted">Elige 2 o 3 para compararlas en la gráfica de tendencia.</div>
+                <div class="chips" id="compareChips" style="margin-top:10px;"></div>
+                <div class="compare-actions">
+                  <button class="btn primary" id="btnCompareGo" disabled>Comparar ahora</button>
+                  <button class="btn" id="btnCompareClear">Limpiar</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="hd">
+                <h2>Detalle</h2>
+                <div class="sub">Educativo, simple y directo</div>
+              </div>
+              <div class="bd">
+                <h3 class="detail-title" id="dTitle">—</h3>
+                <p class="detail-lead" id="dLead">Selecciona una enfermedad para ver información.</p>
+
+                <div class="kpis" style="margin-top: 12px; grid-template-columns: repeat(3, 1fr);">
+                  <div class="kpi" style="min-height: 82px;">
+                    <div class="label">Casos (dataset)</div>
+                    <div class="value" id="dCases">—</div>
+                    <div class="desc">Total disponible</div>
+                  </div>
+                  <div class="kpi" style="min-height: 82px;">
+                    <div class="label">Cambio en el tiempo</div>
+                    <div class="value" id="dVar">—</div>
+                    <div class="desc" id="dVarDesc">Tendencia</div>
+                  </div>
+                  <div class="kpi" style="min-height: 82px;">
+                    <div class="label">Región más afectada</div>
+                    <div class="value" id="dTopDept">—</div>
+                    <div class="desc">Por casos</div>
+                  </div>
+                </div>
+
+                <div class="actions" style="margin-top: 12px;">
+                  <button class="btn primary" id="dBtnView">Ver en el Dashboard</button>
+                  <button class="btn" id="dBtnAdd">Añadir a comparación</button>
+                </div>
+
+                <div class="detail-cols">
+                  <div class="panel">
+                    <h4>Síntomas comunes</h4>
+                    <ul id="dSymptoms"></ul>
+                  </div>
+                  <div class="panel">
+                    <h4>Prevención</h4>
+                    <ul id="dPrevention"></ul>
+                  </div>
+                </div>
+
+                <div class="panel" style="margin-top: 12px;">
+                  <h4>Cuándo consultar</h4>
+                  <ul id="dWhen"></ul>
+                </div>
+
+                <div class="panel" style="margin-top: 12px;">
+                  <h4>Nota importante</h4>
+                  <div class="muted">Este sitio es educativo y no reemplaza una consulta médica. Si tienes síntomas graves o persistentes, busca atención profesional.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel" style="margin-top: 12px;">
+            <h4>Preguntas frecuentes</h4>
+            <details class="faq">
+              <summary><strong>¿Qué significa “brote”?</strong></summary>
+              <div class="muted">Es una señal de alerta cuando los casos superan lo esperado para ese municipio y enfermedad. Sirve para orientar la atención, no para alarmar.</div>
+            </details>
+            <details class="faq">
+              <summary><strong>¿Por qué no puedo filtrar por edad o género?</strong></summary>
+              <div class="muted">El dataset actual no incluye esas columnas. Si las agregas en futuras versiones, la plataforma las habilita automáticamente.</div>
+            </details>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="page-dashboard">
+      <div class="grid" style="margin-top: 14px;">
+        <div class="card filters">
+          <div class="hd">
+            <h2>Filtros</h2>
+            <div class="sub">Actualiza todo al instante</div>
+          </div>
+          <div class="bd">
+            <div class="field">
+              <label>Buscador <span class="tip" title="Busca por departamento, municipio o enfermedad">?</span></label>
+              <input id="q" placeholder="Ej: DENGUE, ANTIOQUIA, BOGOTA" />
+            </div>
+
+            <div class="row">
+              <div class="field">
+                <label>Desde (año)</label>
+                <select id="anoMin"><option value="">(cualquiera)</option></select>
+              </div>
+              <div class="field">
+                <label>Hasta (año)</label>
+                <select id="anoMax"><option value="">(cualquiera)</option></select>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Enfermedades (puedes elegir varias) <span class="tip" title="Selecciona 1 o varias para comparar en la tendencia">?</span></label>
+              <select id="enfermedades" multiple size="5"></select>
+              <div class="muted" style="margin-top:6px;">Tip: Ctrl/Shift para seleccionar varias en PC.</div>
+            </div>
+
+            <div class="field">
+              <label>Departamento <span class="tip" title="También puedes hacer clic en el mapa para seleccionar un departamento">?</span></label>
+              <select id="departamento"><option value="">(cualquiera)</option></select>
+            </div>
+
+            <div class="row">
+              <div class="field">
+                <label>Edad <span class="tip" title="Este dataset no incluye edad, por eso no se puede filtrar aún">?</span></label>
+                <select disabled><option>No disponible</option></select>
+              </div>
+              <div class="field">
+                <label>Género <span class="tip" title="Este dataset no incluye género, por eso no se puede filtrar aún">?</span></label>
+                <select disabled><option>No disponible</option></select>
+              </div>
+            </div>
+
+            <div class="footerbar" style="margin-top: 10px;">
+              <button class="btn" id="btnReset">Reset</button>
+              <button class="btn primary" id="btnApply">Aplicar</button>
+            </div>
+
+            <div class="muted" style="margin-top: 12px;">
+              <div><strong>Fuente local:</strong> __CSV_PATH__</div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card">
+            <div class="hd">
+              <h2>Resumen</h2>
+              <div class="sub">Lo más importante, en segundos</div>
+            </div>
+            <div class="bd">
+              <div class="kpis">
+                <div class="kpi">
+                  <div class="label">Casos registrados</div>
+                  <div class="value" id="kpiCases">—</div>
+                  <div class="desc" id="kpiCasesDesc">Total en la selección</div>
+                </div>
+                <div class="kpi">
+                  <div class="label">Enfermedad más común</div>
+                  <div class="value" id="kpiTopDis">—</div>
+                  <div class="desc">Por número de casos</div>
+                </div>
+                <div class="kpi">
+                  <div class="label">Región más afectada</div>
+                  <div class="value" id="kpiTopDept">—</div>
+                  <div class="desc">Departamento con más casos</div>
+                </div>
+                <div class="kpi">
+                  <div class="label">Cambio en el tiempo</div>
+                  <div class="value" id="kpiVar">—</div>
+                  <div class="desc" id="kpiVarDesc">Comparación por años disponibles</div>
+                </div>
+              </div>
+
+              <div class="viz">
+                <div class="chart">
+                  <h3>Tendencia de casos</h3>
+                  <canvas id="chartTrend"></canvas>
+                  <div class="muted" id="trendHint" style="margin-top:8px;">Compara enfermedades y observa si suben o bajan.</div>
+                </div>
+                <div class="chart">
+                  <h3>Distribución por enfermedad</h3>
+                  <canvas id="chartDisease"></canvas>
+                  <div class="muted" style="margin-top:8px;">Muestra las más frecuentes en tu selección.</div>
+                </div>
+              </div>
+
+              <div class="viz" style="grid-template-columns: 1fr 1fr;">
+                <div class="chart">
+                  <h3>Mapa (casos por departamento)</h3>
+                  <div class="map-wrap">
+                    <div class="map" id="mapBox"></div>
+                    <div class="legend">
+                      <span>Menos</span><span class="grad"></span><span>Más</span>
+                      <span class="muted" id="mapHint"></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="chart">
+                  <h3>Top municipios</h3>
+                  <canvas id="chartTopMuni"></canvas>
+                  <div class="muted" style="margin-top:8px;">Los 8 municipios con más casos (en la selección).</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top: 14px;">
+            <div class="hd">
+              <h2>Insights automáticos</h2>
+              <div class="sub">Conclusiones en lenguaje simple</div>
+            </div>
+            <div class="bd">
+              <div class="insights" id="insights"></div>
+            </div>
+          </div>
+
+          <div class="card chat" style="margin-top: 14px;">
+            <div class="hd">
+              <h2>Pregúntale al dashboard</h2>
+              <div class="sub">Ej: “¿Qué enfermedad ha crecido más?” (escribe “ayuda” para ver más)</div>
+            </div>
+            <div class="bd">
+              <div class="row" style="grid-template-columns: 1fr auto;">
+                <input id="askInput" placeholder="Escribe tu pregunta…" />
+                <button class="btn primary" id="btnAsk">Preguntar</button>
+              </div>
+              <div class="insight" id="askAnswer" style="margin-top:10px;">Escribe una pregunta para obtener una respuesta rápida.</div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top: 14px;">
+            <div class="hd">
+              <h2>Tabla</h2>
+              <div class="sub"><span class="pill" id="pillCount">Filas: —</span></div>
+            </div>
+            <div class="bd">
+              <div class="footerbar" style="margin-bottom: 10px;">
+                <div class="row" style="grid-template-columns: 140px auto auto 1fr; align-items:end; gap:10px;">
+                  <div class="field" style="margin:0;">
+                    <label>Por página</label>
+                    <input id="limit" value="50" />
+                  </div>
+                  <button class="btn" id="btnPrev">Anterior</button>
+                  <button class="btn" id="btnNext">Siguiente</button>
+                  <div class="muted" id="pageInfo" style="align-self:center; justify-self:end;">—</div>
+                </div>
+              </div>
+              <div class="table-wrap">
+                <table id="table">
+                  <thead><tr id="thead"></tr></thead>
+                  <tbody id="tbody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
   </div>
 
   <div class="toast" id="toast"></div>
@@ -1788,6 +2178,47 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
       const res = await fetch(url);
       const txt = await res.text();
       try { return JSON.parse(txt); } catch (e) { throw new Error(txt.slice(0, 250)); }
+    }
+
+    function setActiveNav(route) {
+      const items = [
+        { id: 'navHome', route: '/inicio' },
+        { id: 'navDiseases', route: '/enfermedades' },
+        { id: 'navDash', route: '/dashboard' },
+      ];
+      items.forEach(x => {
+        const el = qs(x.id);
+        if (!el) return;
+        if (route === x.route) el.classList.add('active');
+        else el.classList.remove('active');
+      });
+    }
+
+    function showPage(route) {
+      const r = route || '/inicio';
+      const map = {
+        '/inicio': 'page-home',
+        '/enfermedades': 'page-diseases',
+        '/dashboard': 'page-dashboard',
+      };
+      const target = map[r] || 'page-home';
+      ['page-home', 'page-diseases', 'page-dashboard'].forEach(id => {
+        const el = qs(id);
+        if (!el) return;
+        if (id === target) el.classList.add('active');
+        else el.classList.remove('active');
+      });
+      setActiveNav(r);
+      setTimeout(function() {
+        try { scheduleRefresh(); } catch (e) {}
+      }, 80);
+    }
+
+    function getRoute() {
+      const h = (location.hash || '').replace(/^#/, '');
+      if (!h) return '/inicio';
+      if (h.startsWith('/')) return h;
+      return '/inicio';
     }
 
     function debounce(fn, wait) {
@@ -2072,6 +2503,13 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
       qs('kpiTopDept').textContent = sum.top_departamento || '—';
       qs('pillCount').textContent = 'Filas: ' + fmt(sum.filtered_total_rows);
 
+      const homeCases = document.getElementById('homeKpiCases');
+      if (homeCases) homeCases.textContent = fmt(sum.total_cases);
+      const homeTopDis = document.getElementById('homeKpiTopDis');
+      if (homeTopDis) homeTopDis.textContent = sum.top_enfermedad || '—';
+      const homeTopDept = document.getElementById('homeKpiTopDept');
+      if (homeTopDept) homeTopDept.textContent = sum.top_departamento || '—';
+
       const v = sum.variation;
       if (v && v.pct !== null && v.pct !== undefined) {
         const dir = v.direction;
@@ -2079,9 +2517,17 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
         const pctText = (dir === 'baja') ? ('-' + Math.abs(v.pct) + '%') : (v.pct + '%');
         qs('kpiVar').innerHTML = badge + ' ' + pctText;
         qs('kpiVarDesc').textContent = v.from_year + ' → ' + v.to_year;
+        const hk = document.getElementById('homeKpiVar');
+        if (hk) hk.innerHTML = badge + ' ' + pctText;
+        const hkDesc = document.getElementById('homeKpiVarDesc');
+        if (hkDesc) hkDesc.textContent = v.from_year + ' → ' + v.to_year;
       } else {
         qs('kpiVar').textContent = '—';
         qs('kpiVarDesc').textContent = 'Selecciona más de un año';
+        const hk = document.getElementById('homeKpiVar');
+        if (hk) hk.textContent = '—';
+        const hkDesc = document.getElementById('homeKpiVarDesc');
+        if (hkDesc) hkDesc.textContent = 'Selecciona más de un año';
       }
 
       const insights = qs('insights');
@@ -2101,6 +2547,19 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
 
       const trend = sum.trend || { labels: [], series: [] };
       drawLineMulti(qs('chartTrend'), trend.labels || [], trend.series || []);
+      const homeTrend = document.getElementById('homeTrend');
+      if (homeTrend) drawLineMulti(homeTrend, trend.labels || [], trend.series || []);
+
+      const homeInsights = document.getElementById('homeInsights');
+      if (homeInsights) {
+        homeInsights.innerHTML = '';
+        (sum.insights || []).slice(0, 2).forEach(t => {
+          const div = document.createElement('div');
+          div.className = 'insight';
+          div.textContent = t;
+          homeInsights.appendChild(div);
+        });
+      }
 
       const dis = (sum.disease_stats || []).slice(0, 6).map((x, idx) => ({ label: x.enfermedad, value: Number(x.casos) || 0, color: diseaseColor(x.enfermedad, idx) }));
       drawBars(qs('chartDisease'), dis, '#10b981');
@@ -2241,6 +2700,231 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
       updateExportLink();
     }
 
+    function setDiseaseSelection(names) {
+      const wanted = new Set((names || []).map(x => String(x || '').trim()).filter(Boolean));
+      Array.from(qs('enfermedades').options).forEach(o => { o.selected = wanted.has(o.value); });
+    }
+
+    function selectDiseaseAndGo(name) {
+      setDiseaseSelection([name]);
+      location.hash = '#/dashboard';
+      showPage('/dashboard');
+      offset = 0;
+      scheduleRefresh();
+    }
+
+    function initDiseasePage() {
+      const diseaseInfo = {
+        DENGUE: {
+          title: 'Dengue',
+          lead: 'Enfermedad viral transmitida por mosquitos. Puede presentarse como un cuadro leve o, en algunos casos, complicarse.',
+          symptoms: ['Fiebre alta', 'Dolor de cabeza', 'Dolor detrás de los ojos', 'Dolor muscular y articular', 'Náuseas o malestar general'],
+          prevention: ['Eliminar recipientes con agua estancada', 'Usar repelente', 'Instalar mosquiteros o mallas', 'Usar ropa que cubra la piel (especialmente al amanecer y atardecer)'],
+          when: ['Fiebre persistente por más de 2 días', 'Dolor intenso o deshidratación', 'Sangrado, somnolencia o dificultad para respirar (urgencias)'],
+        },
+        ZIKA: {
+          title: 'Zika',
+          lead: 'Virus transmitido por mosquitos. Suele ser leve, pero es importante en embarazo por posibles complicaciones.',
+          symptoms: ['Sarpullido', 'Fiebre baja', 'Dolor articular', 'Ojos rojos (conjuntivitis)', 'Cansancio'],
+          prevention: ['Evitar picaduras (repelente, ropa larga)', 'Eliminar criaderos de mosquitos', 'Consultar ante síntomas si estás embarazada o planeas estarlo'],
+          when: ['Síntomas durante el embarazo', 'Fiebre con sarpullido que empeora', 'Cualquier señal de alarma o malestar intenso'],
+        },
+        CHIKUNGUNYA: {
+          title: 'Chikungunya',
+          lead: 'Virus transmitido por mosquitos. Puede causar dolor articular fuerte que limita actividades diarias.',
+          symptoms: ['Fiebre', 'Dolor articular intenso', 'Hinchazón articular', 'Dolor muscular', 'Dolor de cabeza'],
+          prevention: ['Repelente y mosquiteros', 'Eliminar criaderos', 'Mantener patios y recipientes sin agua acumulada'],
+          when: ['Dolor articular severo o prolongado', 'Fiebre alta persistente', 'Deshidratación o síntomas que empeoran'],
+        },
+      };
+
+      const state = {
+        selected: 'DENGUE',
+        compare: new Set(),
+        cache: {},
+      };
+
+      function varText(v) {
+        if (!v || v.pct === null || v.pct === undefined) return '—';
+        const sign = (v.direction === 'baja') ? '-' : '';
+        return sign + String(Math.abs(Number(v.pct) || 0)) + '%';
+      }
+
+      function varBadge(v) {
+        if (!v || v.pct === null || v.pct === undefined) return '—';
+        const dir = v.direction;
+        const badge = dir === 'sube' ? '↑' : (dir === 'baja' ? '↓' : '•');
+        const pctText = (dir === 'baja') ? ('-' + Math.abs(v.pct) + '%') : (v.pct + '%');
+        return badge + ' ' + pctText;
+      }
+
+      async function loadDiseaseSummary(d) {
+        if (state.cache[d]) return state.cache[d];
+        const p = getParams();
+        p.enfermedad = d;
+        const res = await fetchJSON('/api/summary?' + new URLSearchParams(p).toString());
+        state.cache[d] = res;
+        return res;
+      }
+
+      function setActiveDisease(d) {
+        state.selected = d;
+        Array.from(document.querySelectorAll('#diseaseList .disease-item')).forEach(el => {
+          el.classList.toggle('active', (el.getAttribute('data-disease') || '') === d);
+        });
+      }
+
+      function fillList(id, items) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.innerHTML = '';
+        (items || []).slice(0, 6).forEach(t => {
+          const li = document.createElement('li');
+          li.textContent = t;
+          el.appendChild(li);
+        });
+      }
+
+      function renderCompare() {
+        const box = document.getElementById('compareChips');
+        if (!box) return;
+        box.innerHTML = '';
+        const arr = Array.from(state.compare);
+        if (!arr.length) {
+          const m = document.createElement('div');
+          m.className = 'muted';
+          m.textContent = 'Aún no seleccionas enfermedades para comparar.';
+          box.appendChild(m);
+        } else {
+          arr.forEach((d, idx) => {
+            const chip = document.createElement('span');
+            chip.className = 'chip';
+            const dot = document.createElement('span');
+            dot.style.width = '10px';
+            dot.style.height = '10px';
+            dot.style.borderRadius = '999px';
+            dot.style.background = diseaseColor(d, idx);
+            dot.style.display = 'inline-block';
+            const s = document.createElement('strong');
+            s.textContent = (diseaseInfo[d] ? diseaseInfo[d].title : d);
+            chip.appendChild(dot);
+            chip.appendChild(s);
+            chip.title = 'Clic para quitar';
+            chip.style.cursor = 'pointer';
+            chip.addEventListener('click', function() {
+              state.compare.delete(d);
+              renderCompare();
+            });
+            box.appendChild(chip);
+          });
+        }
+        const btn = document.getElementById('btnCompareGo');
+        if (btn) btn.disabled = arr.length < 2;
+      }
+
+      async function renderDisease(d) {
+        setActiveDisease(d);
+        const info = diseaseInfo[d];
+        const t = document.getElementById('dTitle');
+        const lead = document.getElementById('dLead');
+        if (t) t.textContent = info ? info.title : d;
+        if (lead) lead.textContent = info ? info.lead : '';
+        fillList('dSymptoms', info ? info.symptoms : []);
+        fillList('dPrevention', info ? info.prevention : []);
+        fillList('dWhen', info ? info.when : []);
+
+        const viewBtn = document.getElementById('dBtnView');
+        const addBtn = document.getElementById('dBtnAdd');
+        if (viewBtn) viewBtn.onclick = function() { selectDiseaseAndGo(d); };
+        if (addBtn) addBtn.onclick = function() { state.compare.add(d); renderCompare(); toast('Añadido: ' + (info ? info.title : d)); };
+
+        try {
+          const sum = await loadDiseaseSummary(d);
+          const cases = document.getElementById('dCases');
+          const vEl = document.getElementById('dVar');
+          const vDesc = document.getElementById('dVarDesc');
+          const top = document.getElementById('dTopDept');
+          if (cases) cases.textContent = fmt(sum.total_cases);
+          if (vEl) vEl.textContent = varBadge(sum.variation);
+          if (vDesc) vDesc.textContent = (sum.variation && sum.variation.from_year) ? (sum.variation.from_year + ' → ' + sum.variation.to_year) : 'Selecciona más de un año';
+          if (top) top.textContent = sum.top_departamento || '—';
+        } catch (e) {
+          const cases = document.getElementById('dCases');
+          if (cases) cases.textContent = '—';
+        }
+      }
+
+      async function hydrateListStats() {
+        const mapIds = {
+          DENGUE: { c: 'statDengueCases', v: 'statDengueVar' },
+          ZIKA: { c: 'statZikaCases', v: 'statZikaVar' },
+          CHIKUNGUNYA: { c: 'statChikCases', v: 'statChikVar' },
+        };
+        for (const d of Object.keys(mapIds)) {
+          try {
+            const sum = await loadDiseaseSummary(d);
+            const cases = document.getElementById(mapIds[d].c);
+            const v = document.getElementById(mapIds[d].v);
+            if (cases) cases.textContent = fmt(sum.total_cases);
+            if (v) v.textContent = varText(sum.variation);
+          } catch (e) {}
+        }
+      }
+
+      Array.from(document.querySelectorAll('#diseaseList .disease-item')).forEach(el => {
+        el.addEventListener('click', function() {
+          const d = el.getAttribute('data-disease') || '';
+          if (d) renderDisease(d);
+        });
+      });
+
+      const search = document.getElementById('diseaseSearch');
+      if (search) {
+        search.addEventListener('input', function() {
+          const q = normalize(search.value || '');
+          Array.from(document.querySelectorAll('#diseaseList .disease-item')).forEach(el => {
+            const d = normalize(el.getAttribute('data-disease') || '');
+            const t = normalize(el.textContent || '');
+            const ok = !q || d.includes(q) || t.includes(q);
+            el.style.display = ok ? '' : 'none';
+          });
+        });
+      }
+
+      const btnGo = document.getElementById('btnCompareGo');
+      if (btnGo) btnGo.addEventListener('click', function() {
+        const arr = Array.from(state.compare);
+        if (arr.length < 2) return;
+        setDiseaseSelection(arr);
+        location.hash = '#/dashboard';
+        showPage('/dashboard');
+        offset = 0;
+        scheduleRefresh();
+      });
+
+      const btnClear = document.getElementById('btnCompareClear');
+      if (btnClear) btnClear.addEventListener('click', function() { state.compare.clear(); renderCompare(); });
+
+      renderCompare();
+      hydrateListStats();
+      renderDisease(state.selected);
+    }
+
+    function initRouting() {
+      if (!location.hash) location.hash = '#/inicio';
+      showPage(getRoute());
+      window.addEventListener('hashchange', function() { showPage(getRoute()); });
+      const go = document.getElementById('btnGoDash');
+      if (go) go.addEventListener('click', function() { location.hash = '#/dashboard'; showPage('/dashboard'); });
+      const goDis = document.getElementById('btnGoDiseases');
+      if (goDis) goDis.addEventListener('click', function() { location.hash = '#/enfermedades'; showPage('/enfermedades'); });
+      const faq = document.getElementById('btnScrollFAQ');
+      if (faq) faq.addEventListener('click', function() {
+        const el = document.getElementById('homeFAQ');
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    }
+
     qs('btnApply').addEventListener('click', function() { scheduleRefresh(); });
     qs('btnReset').addEventListener('click', function() { resetAll(); scheduleRefresh(); });
     qs('btnPDF').addEventListener('click', function() { window.print(); });
@@ -2276,6 +2960,8 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None):
     (async function() {
       try {
         initTheme();
+        initRouting();
+        initDiseasePage();
         setStatus('Cargando…', true);
         await loadMeta();
         await loadValues();
