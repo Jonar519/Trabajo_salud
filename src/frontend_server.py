@@ -31,14 +31,11 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None, pbix_path=No
         pbix_file = (project_root / pbix_file).resolve()
     dashboardbi_file = (project_root / "raw" / "brote.pbix").resolve()
     dashboardbi_embed_url = (os.getenv("DASHBOARD_BI_EMBED_URL") or os.getenv("POWERBI_BROTE_EMBED_URL") or "").strip()
-
-    if not csv_file.exists():
-        raise FileNotFoundError(
-            f"No se encontró el CSV del dataset maestro en: {csv_file}\n"
-            "Ejecuta primero el pipeline para generarlo."
-        )
-
-    df = pd.read_csv(csv_file)
+    data_available = bool(csv_file.exists())
+    if data_available:
+        df = pd.read_csv(csv_file)
+    else:
+        df = pd.DataFrame()
     columns = list(df.columns)
     gemini_cache = {"api_version": None, "model": None}
 
@@ -3272,6 +3269,7 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None, pbix_path=No
                     "total_rows": int(len(df)),
                     "sources": sources,
                     "csv_path": str(csv_file),
+                    "data_available": bool(data_available),
                 }
                 status, data = to_json_bytes(payload, 200)
                 return self._send(status, "application/json; charset=utf-8", data)
@@ -3433,6 +3431,9 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None, pbix_path=No
                     return self._send(status, "application/json; charset=utf-8", data)
 
             if path == "/download_filtered":
+                if not data_available:
+                    status, data = to_json_bytes({"error": "CSV no disponible en el servidor. Define CSV_PATH o sube el archivo al despliegue."}, 404)
+                    return self._send(status, "application/json; charset=utf-8", data)
                 qs_params = parse_qs(parsed.query)
                 params = {k: (v[0] if v else "") for k, v in qs_params.items()}
                 filtered = apply_filters(df, params)
@@ -3449,6 +3450,9 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None, pbix_path=No
                 return
 
             if path == "/download":
+                if not data_available:
+                    status, data = to_json_bytes({"error": "CSV no disponible en el servidor. Define CSV_PATH o sube el archivo al despliegue."}, 404)
+                    return self._send(status, "application/json; charset=utf-8", data)
                 try:
                     body = csv_file.read_bytes()
                     self.send_response(200)
