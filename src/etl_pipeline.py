@@ -3,20 +3,83 @@ import sys
 import re
 import json
 import argparse
+import subprocess
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlparse, parse_qs
 from pathlib import Path
 
-try:
-    from pyspark.sql import SparkSession
-    from pyspark.sql import functions as F
-    from pyspark.sql.window import Window
+SparkSession = None
+F = None
+Window = None
+_PYSPARK_IMPORT_ERROR = None
+
+def _check_runtime():
+    exe = Path(sys.executable)
+    if not exe.exists():
+        raise RuntimeError(
+            "No se encontró el ejecutable de Python que está usando este proceso:\n"
+            f"  sys.executable = {sys.executable}\n"
+            "Esto suele pasar por un entorno virtual roto o activado a medias.\n"
+            "Solución recomendada (en la raíz del proyecto):\n"
+            "  1) borrar .venv\n"
+            "  2) python -m venv .venv\n"
+            "  3) activar .venv y ejecutar: pip install -r requirements.txt"
+        )
+
+    try:
+        p = subprocess.run(
+            ["java", "-version"],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+    except Exception as e:
+        raise RuntimeError(
+            "No se pudo ejecutar 'java -version'. Instala Java y configura JAVA_HOME.\n"
+            f"Detalle: {e}"
+        )
+
+    version_output = (p.stderr or "") + "\n" + (p.stdout or "")
+    m = re.search(r'version\s+"(\d+)(?:\.(\d+))?', version_output)
+    major = int(m.group(1)) if m else None
+
+    if major is None:
+        raise RuntimeError(
+            "No se pudo detectar la versión de Java desde 'java -version'.\n"
+            f"Salida:\n{version_output.strip()}"
+        )
+
+    if major >= 18:
+        raise RuntimeError(
+            "Tu Java es demasiado nuevo para PySpark/Spark 3.4.1 en Windows.\n"
+            f"Detectado: Java {major}\n"
+            "Instala Java 17 (recomendado) o Java 11 y asegúrate de que sea el que se usa en consola.\n"
+            "Luego vuelve a ejecutar el pipeline."
+        )
+
+def _load_pyspark():
+    global SparkSession, F, Window, _PYSPARK_IMPORT_ERROR
+    if SparkSession is not None and F is not None and Window is not None:
+        return
+
     _PYSPARK_IMPORT_ERROR = None
-except Exception as e:
-    SparkSession = None
-    F = None
-    Window = None
-    _PYSPARK_IMPORT_ERROR = e
+
+    spark_home = os.environ.get("SPARK_HOME")
+    if spark_home:
+        os.environ.pop("SPARK_HOME", None)
+
+    try:
+        from pyspark.sql import SparkSession as _SparkSession
+        from pyspark.sql import functions as _F
+        from pyspark.sql.window import Window as _Window
+        SparkSession = _SparkSession
+        F = _F
+        Window = _Window
+    except Exception as e:
+        SparkSession = None
+        F = None
+        Window = None
+        _PYSPARK_IMPORT_ERROR = e
 
 
 # ─────────────────────────────────────────────
@@ -24,6 +87,8 @@ except Exception as e:
 # ─────────────────────────────────────────────
 
 def create_spark_session():
+    _require_pyspark()
+    _check_runtime()
     """
     Initializes and returns a SparkSession tuned for local-mode execution
     on a single Windows machine.
@@ -78,6 +143,7 @@ def create_spark_session():
     )
 
 def _require_pyspark():
+    _load_pyspark()
     if SparkSession is None or F is None or Window is None:
         raise RuntimeError(
             "PySpark no está disponible en este entorno. "
@@ -802,12 +868,15 @@ def main():
     output_path = str(output_dir / "dataset_maestro_epidemiologico.csv")
     print(f"\n  Saving to: {output_path}")
 
-    (
-        master_df
-        .toPandas()
-        .to_csv(output_path, index=False, encoding="utf-8-sig")
-        # utf-8-sig adds a BOM so Excel on Windows opens accented characters correctly
-    )
+    pandas_df = master_df.toPandas()
+    pandas_df.to_csv(output_path, index=False, encoding="utf-8-sig")
+
+    clean_db_path = PROJECT_ROOT / "data" / "data_lake_limpia.db"
+    clean_db_path.parent.mkdir(parents=True, exist_ok=True)
+    from sqlalchemy import create_engine
+    engine = create_engine(f"sqlite:///{clean_db_path}")
+    pandas_df.to_sql("dataset_maestro_epidemiologico", engine, if_exists="replace", index=False)
+    print(f"  Data Lake limpio (SQLite): {clean_db_path}")
 
     print("\n  Pipeline completed successfully.\n")
     spark.stop()
