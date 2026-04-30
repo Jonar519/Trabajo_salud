@@ -3241,13 +3241,27 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None, pbix_path=No
                 body = css_bytes
                 if body is None:
                     body = b""
-                return self._send(200, "text/css; charset=utf-8", body)
+                self.send_response(200)
+                self.send_header("Content-Type", "text/css; charset=utf-8")
+                self.send_header("Cache-Control", "no-store, max-age=0")
+                self.send_header("Pragma", "no-cache")
+                self.send_header("Content-Length", str(len(body)))
+                self.end_headers()
+                self.wfile.write(body)
+                return
 
             if path == "/assets/app.js":
                 body = js_bytes
                 if body is None:
                     body = b""
-                return self._send(200, "application/javascript; charset=utf-8", body)
+                self.send_response(200)
+                self.send_header("Content-Type", "application/javascript; charset=utf-8")
+                self.send_header("Cache-Control", "no-store, max-age=0")
+                self.send_header("Pragma", "no-cache")
+                self.send_header("Content-Length", str(len(body)))
+                self.end_headers()
+                self.wfile.write(body)
+                return
 
             if path == "/api/meta":
                 payload = {
@@ -3281,16 +3295,54 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None, pbix_path=No
                 qs_params = parse_qs(parsed.query)
                 params = {k: (v[0] if v else "") for k, v in qs_params.items()}
                 filtered = apply_filters(df, params)
+                rows = []
                 if {"departamento", "casos_totales"}.issubset(filtered.columns) and len(filtered):
-                    g = (
-                        filtered.groupby("departamento", dropna=False)["casos_totales"]
-                        .sum()
-                        .reset_index()
-                        .sort_values("casos_totales", ascending=False)
-                    )
-                    rows = [{"departamento": str(r["departamento"]), "casos": int(r["casos_totales"])} for _, r in g.iterrows()]
-                else:
-                    rows = []
+                    if "enfermedad" in filtered.columns:
+                        target = {"DENGUE": "dengue", "ZIKA": "zika", "CHIKUNGUNYA": "chikungunya"}
+                        tmp = filtered[["departamento", "enfermedad", "casos_totales"]].copy()
+                        tmp["enfermedad"] = tmp["enfermedad"].astype(str).str.upper().str.strip()
+                        tmp = tmp[tmp["enfermedad"].isin(target.keys())]
+                        if len(tmp):
+                            g = (
+                                tmp.groupby(["departamento", "enfermedad"], dropna=False)["casos_totales"]
+                                .sum()
+                                .reset_index()
+                            )
+                            piv = (
+                                g.pivot_table(index="departamento", columns="enfermedad", values="casos_totales", aggfunc="sum", fill_value=0)
+                                .reset_index()
+                            )
+                            for k in target.keys():
+                                if k not in piv.columns:
+                                    piv[k] = 0
+                            piv["casos"] = piv[list(target.keys())].sum(axis=1)
+                            piv = piv.sort_values("casos", ascending=False)
+                            rows = [
+                                {
+                                    "departamento": str(r["departamento"]),
+                                    "casos": int(r["casos"]),
+                                    "dengue": int(r.get("DENGUE", 0)),
+                                    "zika": int(r.get("ZIKA", 0)),
+                                    "chikungunya": int(r.get("CHIKUNGUNYA", 0)),
+                                }
+                                for _, r in piv.iterrows()
+                            ]
+                        else:
+                            g = (
+                                filtered.groupby("departamento", dropna=False)["casos_totales"]
+                                .sum()
+                                .reset_index()
+                                .sort_values("casos_totales", ascending=False)
+                            )
+                            rows = [{"departamento": str(r["departamento"]), "casos": int(r["casos_totales"]), "dengue": 0, "zika": 0, "chikungunya": 0} for _, r in g.iterrows()]
+                    else:
+                        g = (
+                            filtered.groupby("departamento", dropna=False)["casos_totales"]
+                            .sum()
+                            .reset_index()
+                            .sort_values("casos_totales", ascending=False)
+                        )
+                        rows = [{"departamento": str(r["departamento"]), "casos": int(r["casos_totales"]), "dengue": 0, "zika": 0, "chikungunya": 0} for _, r in g.iterrows()]
                 payload = {"rows": rows}
                 status, data = to_json_bytes(payload, 200)
                 return self._send(status, "application/json; charset=utf-8", data)

@@ -513,6 +513,19 @@
     .map svg { width: 100%; height: 380px; display:block; }
     .legend { display:flex; gap: 10px; align-items:center; flex-wrap:wrap; color: var(--muted); font-size: 12px; }
     .grad { width: 160px; height: 10px; border-radius: 999px; border: 1px solid var(--border); background: linear-gradient(90deg, #e0f2fe, #7dd3fc, #38bdf8, #0284c7); }
+    .map-detail {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: color-mix(in srgb, var(--panel) 92%, transparent);
+      box-shadow: var(--shadow2);
+      padding: 10px 12px;
+      display: grid;
+      gap: 8px;
+      font-size: 12.5px;
+    }
+    .map-detail .rowline { display:flex; justify-content:space-between; gap: 10px; }
+    .map-detail .title { font-weight: 700; }
+    .map-detail .total { font-weight: 800; }
     .insights { display: grid; gap: 8px; }
     .insight {
       padding: 10px 12px;

@@ -2,6 +2,10 @@ let offset = 0;
     let total = 0;
     let columns = [];
     let mapData = null;
+    let mapGeoRows = [];
+    let mapGeoByDeptKey = {};
+    let mapSelectedDeptKey = null;
+    let mapSelectedDeptName = null;
     let homeChatMessages = [];
 
     function qs(id) { return document.getElementById(id); }
@@ -151,6 +155,52 @@ let offset = 0;
         .toUpperCase()
         .replace(/[^A-Z0-9]+/g, ' ')
         .trim();
+    }
+
+    const MAP_DEPT_ALIAS = {
+      'BOGOTA DC': 'BOGOTA',
+      'BOGOTA D C': 'BOGOTA',
+      'DISTRITO CAPITAL DE BOGOTA': 'BOGOTA',
+      'NORTE DE SANTANDER': 'NORTH SANTANDER',
+      'SAN ANDRES PROVIDENCIA Y SANTA CATALINA': 'SAN ANDRES Y PROVIDENCIA',
+      'ARCHIPIELAGO DE SAN ANDRES PROVIDENCIA Y SANTA CATALINA': 'SAN ANDRES Y PROVIDENCIA'
+    };
+
+    function deptKey(value) {
+      let k = normalize(value);
+      if (MAP_DEPT_ALIAS[k]) k = MAP_DEPT_ALIAS[k];
+      return k;
+    }
+
+    function buildGeoIndex(rows) {
+      const out = {};
+      (rows || []).forEach(r => {
+        const k = deptKey(r.departamento);
+        out[k] = r;
+      });
+      return out;
+    }
+
+    function deptNameMatches(a, b) {
+      const an = normalize(a);
+      const bn = normalize(b);
+      if (!an || !bn) return false;
+      if (an === bn) return true;
+      if (an.length > 4 && bn.includes(an)) return true;
+      if (bn.length > 4 && an.includes(bn)) return true;
+      return false;
+    }
+
+    function findGeoRowForDeptName(name) {
+      const key = deptKey(name);
+      const direct = mapGeoByDeptKey[key];
+      if (direct) return direct;
+      for (let i = 0; i < (mapGeoRows || []).length; i++) {
+        const r = mapGeoRows[i];
+        if (!r) continue;
+        if (deptNameMatches(name, r.departamento)) return r;
+      }
+      return null;
     }
 
     function getSelectedMulti(selectEl) {
@@ -670,40 +720,117 @@ let offset = 0;
         p.setAttribute('d', loc.path);
         p.setAttribute('data-name', loc.name);
         p.setAttribute('data-id', loc.id);
+        const depVal = findDepartmentOptionValue(loc.name);
+        if (depVal) p.setAttribute('data-dept', depVal);
         p.style.fill = '#e0f2fe';
         p.style.stroke = document.body.getAttribute('data-theme') === 'dark' ? 'rgba(255,255,255,0.18)' : 'rgba(15,23,42,0.18)';
         p.style.strokeWidth = '0.8';
         p.style.cursor = 'pointer';
-        p.addEventListener('mousemove', onMapHover);
-        p.addEventListener('mouseleave', onMapLeave);
-        p.addEventListener('click', function() {
-          const name = String(loc.name || '');
-          const depSel = qs('departamento');
-          const targetNorm = normalize(name);
-          const opts = Array.from(depSel.options).map(o => ({ val: o.value, norm: normalize(o.value) }));
-          const found = opts.find(o =>
-            o.norm === targetNorm ||
-            (targetNorm.includes(o.norm) && o.norm.length > 4) ||
-            (o.norm.includes(targetNorm) && targetNorm.length > 4)
-          );
-          if (found) {
-            depSel.value = found.val;
-            scheduleRefresh();
-          } else {
-            toast('No pude emparejar este departamento con el dataset: ' + name);
-          }
-        });
         svg.appendChild(p);
+
+        const hit = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        hit.setAttribute('d', loc.path);
+        hit.setAttribute('data-name', loc.name);
+        hit.setAttribute('data-id', loc.id);
+        hit.setAttribute('data-hit', '1');
+        if (depVal) hit.setAttribute('data-dept', depVal);
+        hit.style.fill = 'transparent';
+        hit.style.stroke = 'transparent';
+        hit.style.strokeWidth = '14';
+        hit.style.pointerEvents = 'stroke';
+        hit.style.cursor = 'pointer';
+        hit.addEventListener('mousemove', onMapHover);
+        hit.addEventListener('mouseleave', onMapLeave);
+        hit.addEventListener('click', function() {
+          const name = String(loc.name || '');
+          const dep = hit.getAttribute('data-dept') || findDepartmentOptionValue(name) || name;
+          mapSelectedDeptName = dep;
+          mapSelectedDeptKey = deptKey(mapSelectedDeptName);
+          renderMapDetail();
+        });
+        svg.appendChild(hit);
       });
 
       box.appendChild(svg);
     }
 
+    function findDepartmentOptionValue(mapName) {
+      const depSel = qs('departamento');
+      if (!depSel) return null;
+      const targetKey = deptKey(mapName);
+      const targetNorm = normalize(mapName);
+      const opts = Array.from(depSel.options).map(o => ({ val: o.value, key: deptKey(o.value), norm: normalize(o.value) }));
+      const foundKey = opts.find(o => o.key && o.key === targetKey);
+      if (foundKey) return foundKey.val;
+      const found = opts.find(o =>
+        o.norm === targetNorm ||
+        (targetNorm.includes(o.norm) && o.norm.length > 4) ||
+        (o.norm.includes(targetNorm) && targetNorm.length > 4)
+      );
+      return found ? found.val : null;
+    }
+
+    function renderMapDetail() {
+      const box = qs('mapDetail');
+      if (!box) return;
+      if (!mapSelectedDeptKey) {
+        box.style.display = 'none';
+        return;
+      }
+
+      const row = findGeoRowForDeptName(mapSelectedDeptName || mapSelectedDeptKey) || {};
+      const dengue = Number(row.dengue) || 0;
+      const zika = Number(row.zika) || 0;
+      const chik = Number(row.chikungunya) || 0;
+      const total = Number(row.casos) || (dengue + zika + chik) || 0;
+      const depName = (row.departamento || mapSelectedDeptName || '—');
+      mapSelectedDeptName = depName;
+      mapSelectedDeptKey = deptKey(depName);
+
+      const html =
+        '<div class="rowline" style="align-items:center;">' +
+          '<div class="title">Departamento: ' + escapeHtml(depName) + '</div>' +
+          '<button class="btn ghost" id="btnMapDetailClose" title="Cerrar">Cerrar</button>' +
+        '</div>' +
+        '<div class="rowline"><span>Dengue</span><strong>' + fmt(dengue) + ' casos</strong></div>' +
+        '<div class="rowline"><span>Zika</span><strong>' + fmt(zika) + ' casos</strong></div>' +
+        '<div class="rowline"><span>Chikungunya</span><strong>' + fmt(chik) + ' casos</strong></div>' +
+        '<div class="rowline"><span class="muted">Total</span><span class="total">' + fmt(total) + ' casos</span></div>' +
+        '<div style="display:flex;gap:10px;flex-wrap:wrap;">' +
+          '<button class="btn" id="btnMapApplyDept">Filtrar este departamento</button>' +
+        '</div>';
+
+      box.innerHTML = html;
+      box.style.display = 'grid';
+
+      const btnClose = qs('btnMapDetailClose');
+      if (btnClose) {
+        btnClose.addEventListener('click', function() {
+          mapSelectedDeptKey = null;
+          mapSelectedDeptName = null;
+          box.style.display = 'none';
+        });
+      }
+
+      const btnApply = qs('btnMapApplyDept');
+      if (btnApply) {
+        btnApply.addEventListener('click', function() {
+          const val = findDepartmentOptionValue(depName);
+          if (!val) {
+            toast('No pude emparejar este departamento con el dataset: ' + depName);
+            return;
+          }
+          qs('departamento').value = val;
+          scheduleRefresh();
+        });
+      }
+    }
+
     function onMapHover(ev) {
       const el = ev.target;
-      const name = el.getAttribute('data-name') || '';
+      const name = el.getAttribute('data-dept') || el.getAttribute('data-name') || '';
       const cases = el.getAttribute('data-cases') || '0';
-      const html = '<strong>' + escapeHtml(name) + '</strong><div class="muted">Casos: ' + fmt(cases) + '</div><div class="muted">Clic para filtrar</div>';
+      const html = '<strong>' + escapeHtml(name) + '</strong><div class="muted">Casos: ' + fmt(cases) + '</div><div class="muted">Clic para ver detalle</div>';
       showTooltipAt(html, ev.clientX, ev.clientY);
     }
 
@@ -714,28 +841,15 @@ let offset = 0;
     function updateMapColors(rows) {
       const svg = qs('mapBox').querySelector('svg');
       if (!svg) return;
-      const byDept = {};
-      const alias = {
-        'BOGOTA DC': 'BOGOTA',
-        'BOGOTA D C': 'BOGOTA',
-        'DISTRITO CAPITAL DE BOGOTA': 'BOGOTA',
-        'NORTE DE SANTANDER': 'NORTH SANTANDER',
-        'SAN ANDRES PROVIDENCIA Y SANTA CATALINA': 'SAN ANDRES Y PROVIDENCIA',
-        'ARCHIPIELAGO DE SAN ANDRES PROVIDENCIA Y SANTA CATALINA': 'SAN ANDRES Y PROVIDENCIA'
-      };
-      (rows || []).forEach(r => {
-        let k = normalize(r.departamento);
-        if (alias[k]) k = alias[k];
-        byDept[k] = (byDept[k] || 0) + (Number(r.casos) || 0);
-      });
-      const vals = Object.values(byDept);
+      const vals = (rows || []).map(r => Number((r || {}).casos) || 0);
       const maxV = Math.max(1, ...vals);
 
-      const paths = svg.querySelectorAll('path');
+      const paths = svg.querySelectorAll('path:not([data-hit])');
       paths.forEach(p => {
         const name = p.getAttribute('data-name') || '';
-        const key = normalize(name);
-        const v = byDept[key] || 0;
+        const dep = p.getAttribute('data-dept') || name;
+        const row = findGeoRowForDeptName(dep);
+        const v = row ? (Number(row.casos) || 0) : 0;
         p.setAttribute('data-cases', String(v));
         const t = v / maxV;
         const c1 = [224, 242, 254];
@@ -924,7 +1038,10 @@ let offset = 0;
       const sum = await fetchJSON('/api/summary?' + qs1);
       renderSummary(sum);
       const geo = await fetchJSON('/api/geo?' + qs1);
-      updateMapColors(geo.rows || []);
+      mapGeoRows = geo.rows || [];
+      mapGeoByDeptKey = buildGeoIndex(mapGeoRows);
+      updateMapColors(mapGeoRows);
+      renderMapDetail();
       offset = 0;
       await loadTable();
       setStatus('Listo', false);
@@ -1209,11 +1326,6 @@ let offset = 0;
       if (go) go.addEventListener('click', function() { location.hash = '#/dashboard'; showPage('/dashboard'); });
       const goDis = document.getElementById('btnGoDiseases');
       if (goDis) goDis.addEventListener('click', function() { location.hash = '#/enfermedades'; showPage('/enfermedades'); });
-      const faq = document.getElementById('btnScrollFAQ');
-      if (faq) faq.addEventListener('click', function() {
-        const el = document.getElementById('homeFAQ');
-        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
     }
 
     function isHomeActive() {
@@ -1318,6 +1430,24 @@ let offset = 0;
       setHomeChatVisible();
     }
 
+    function initHomeFAQ() {
+      const box = document.getElementById('homeFAQ');
+      if (!box) return;
+      const items = Array.from(box.querySelectorAll('details.faq'));
+      items.forEach(det => {
+        const summary = det.querySelector('summary');
+        if (!summary) return;
+        summary.addEventListener('click', function(e) {
+          e.preventDefault();
+          const wasOpen = det.hasAttribute('open');
+          items.forEach(x => { if (x !== det) x.removeAttribute('open'); });
+          if (wasOpen) det.removeAttribute('open');
+          else det.setAttribute('open', '');
+          det.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      });
+    }
+
     function initHomeActions() {
       Array.from(document.querySelectorAll('.feature[data-go]')).forEach(el => {
         const go = el.getAttribute('data-go') || '';
@@ -1348,7 +1478,13 @@ let offset = 0;
       const more = document.getElementById('btnLearnMore');
       if (more) more.addEventListener('click', function() { location.hash = '#/enfermedades'; showPage('/enfermedades'); });
       const ideas = document.getElementById('btnAskIdeas');
-      if (ideas) ideas.addEventListener('click', function() { askHome('ayuda'); });
+      if (ideas) ideas.addEventListener('click', function() {
+        localStorage.setItem('home_chat_open', '1');
+        setHomeChatVisible();
+        const chat = document.getElementById('homeChat');
+        if (chat) chat.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        askHome((getLang() === 'en') ? 'help' : 'ayuda');
+      });
     }
 
     function initPowerBIButton() {
@@ -1414,6 +1550,7 @@ let offset = 0;
         initPowerBIButton();
         setLayoutVars();
         initRouting();
+        initHomeFAQ();
         initDiseasePage();
         initHomeActions();
         initHomeChat();
