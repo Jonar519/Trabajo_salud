@@ -93,6 +93,57 @@ let offset = 0;
       return x.toLocaleString();
     }
 
+    function escapeHtml(s) {
+      return String(s ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function showTooltipAt(html, clientX, clientY) {
+      const tip = qs('tooltip');
+      if (!tip) return;
+      tip.dataset.hideToken = '';
+      const wasVisible = tip.style.display === 'block';
+      if (tip.innerHTML !== html) tip.innerHTML = html;
+      if (!wasVisible) {
+        tip.style.display = 'block';
+        tip.style.opacity = '0';
+        tip.style.transform = 'translateY(4px)';
+        requestAnimationFrame(function() {
+          tip.style.opacity = '1';
+          tip.style.transform = 'translateY(0)';
+        });
+      }
+
+      tip.style.left = '0px';
+      tip.style.top = '0px';
+      const rect = tip.getBoundingClientRect();
+      const pad = 12;
+      let left = clientX + pad;
+      let top = clientY + pad;
+      if (left + rect.width > window.innerWidth - 8) left = clientX - rect.width - pad;
+      if (top + rect.height > window.innerHeight - 8) top = clientY - rect.height - pad;
+      left = Math.max(8, Math.min(window.innerWidth - rect.width - 8, left));
+      top = Math.max(8, Math.min(window.innerHeight - rect.height - 8, top));
+      tip.style.left = left + 'px';
+      tip.style.top = top + 'px';
+    }
+
+    function hideTooltip() {
+      const tip = qs('tooltip');
+      if (!tip || tip.style.display !== 'block') return;
+      const token = String(Date.now());
+      tip.dataset.hideToken = token;
+      tip.style.opacity = '0';
+      tip.style.transform = 'translateY(4px)';
+      setTimeout(function() {
+        if (tip.dataset.hideToken === token) tip.style.display = 'none';
+      }, 140);
+    }
+
     function normalize(s) {
       return (s || '')
         .normalize('NFKD')
@@ -410,7 +461,9 @@ let offset = 0;
       return fallback[idx % fallback.length];
     }
 
-    function drawLineMulti(canvas, labels, series) {
+    function drawLineMulti(canvas, labels, series, hoverIndex) {
+      labels = labels || [];
+      series = series || [];
       const { ctx, w, h } = canvasSize(canvas, 260);
       ctx.clearRect(0, 0, w, h);
       ctx.font = '12px ui-sans-serif, system-ui, Segoe UI, Roboto, Arial';
@@ -418,6 +471,7 @@ let offset = 0;
       drawAxes(ctx, w, h, pad);
       const iw = w - pad.l - pad.r;
       const ih = h - pad.t - pad.b;
+      const n = Math.max(1, (labels || []).length, ...((series || []).map(s => (s.data || []).length)));
       const all = [];
       series.forEach(s => (s.data || []).forEach(v => all.push(Number(v) || 0)));
       const maxV = Math.max(1, ...all);
@@ -442,13 +496,37 @@ let offset = 0;
         ctx.lineWidth = 2.25;
         ctx.beginPath();
         for (let i = 0; i < data.length; i++) {
-          const x = pad.l + (i / Math.max(1, data.length - 1)) * iw;
+          const x = pad.l + (i / Math.max(1, n - 1)) * iw;
           const v = Number(data[i]) || 0;
           const y = pad.t + ih - (v / maxV) * ih;
           if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
         }
         ctx.stroke();
       });
+
+      if (hoverIndex !== null && hoverIndex !== undefined) {
+        const hi = Math.max(0, Math.min(n - 1, hoverIndex));
+        const x = pad.l + (hi / Math.max(1, n - 1)) * iw;
+        const bg = document.body.getAttribute('data-theme') === 'dark' ? 'rgba(7,16,31,0.92)' : 'rgba(255,255,255,0.92)';
+        series.forEach((s, idx) => {
+          const data = s.data || [];
+          if (!data.length) return;
+          if (hi >= data.length) return;
+          const v = Number(data[hi]) || 0;
+          const y = pad.t + ih - (v / maxV) * ih;
+          ctx.beginPath();
+          ctx.arc(x, y, 6, 0, Math.PI * 2);
+          ctx.fillStyle = bg;
+          ctx.fill();
+          ctx.lineWidth = 2.5;
+          ctx.strokeStyle = diseaseColor(s.name || '', idx);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.arc(x, y, 2.6, 0, Math.PI * 2);
+          ctx.fillStyle = diseaseColor(s.name || '', idx);
+          ctx.fill();
+        });
+      }
 
       const legendY = h - 8;
       let x = pad.l;
@@ -460,6 +538,85 @@ let offset = 0;
         ctx.fillText(label, x + 14, legendY);
         x += 14 + ctx.measureText(label).width + 14;
       });
+
+      if (!canvas.__lineMultiState) canvas.__lineMultiState = {};
+      canvas.__lineMultiState.labels = labels || [];
+      canvas.__lineMultiState.series = series || [];
+      canvas.__lineMultiState.pad = pad;
+      canvas.__lineMultiState.maxV = maxV;
+      canvas.__lineMultiState.n = n;
+      canvas.__lineMultiState.ih = ih;
+      canvas.__lineMultiState.iw = iw;
+
+      if (!canvas.__lineMultiState.listenersAttached) {
+        canvas.__lineMultiState.listenersAttached = true;
+        canvas.__lineMultiState.hoverIndex = null;
+
+        canvas.addEventListener('mousemove', function(ev) {
+          const state = canvas.__lineMultiState;
+          if (!state) return;
+
+          const rect = canvas.getBoundingClientRect();
+          const mx = ev.clientX - rect.left;
+          const my = ev.clientY - rect.top;
+          const pad = state.pad;
+          const n = Math.max(1, state.n || 1);
+          const iw = rect.width - pad.l - pad.r;
+          const ih = rect.height - pad.t - pad.b;
+          if (iw <= 0 || ih <= 0) return;
+
+          const t = (mx - pad.l) / iw;
+          const idx = Math.max(0, Math.min(n - 1, Math.round(t * Math.max(1, n - 1))));
+
+          const x = pad.l + (idx / Math.max(1, n - 1)) * iw;
+          const hitR = 10;
+          let minD2 = Infinity;
+          (state.series || []).forEach((s) => {
+            const data = s.data || [];
+            if (!data.length) return;
+            if (idx >= data.length) return;
+            const v = Number(data[idx]) || 0;
+            const y = pad.t + ih - (v / (state.maxV || 1)) * ih;
+            const dx = mx - x;
+            const dy = my - y;
+            const d2 = dx * dx + dy * dy;
+            if (d2 < minD2) minD2 = d2;
+          });
+
+          if (minD2 <= hitR * hitR) {
+            if (state.hoverIndex !== idx) {
+              state.hoverIndex = idx;
+              drawLineMulti(canvas, state.labels, state.series, idx);
+            }
+
+            const year = (state.labels && state.labels.length) ? (state.labels[idx] ?? (idx + 1)) : (idx + 1);
+            const lines = (state.series || []).map((s) => {
+              const name = escapeHtml(s.name || 'Serie');
+              const v = Number((s.data || [])[idx]) || 0;
+              return '<div style="display:flex;justify-content:space-between;gap:10px;"><span>' + name + ':</span><strong>' + fmt(v) + ' casos</strong></div>';
+            });
+            const html =
+              '<div style="font-weight:700;margin-bottom:6px;">Año: ' + escapeHtml(year) + '</div>' +
+              '<div style="display:grid;gap:4px;">' + lines.join('') + '</div>';
+            showTooltipAt(html, ev.clientX, ev.clientY);
+          } else {
+            if (state.hoverIndex !== null) {
+              state.hoverIndex = null;
+              drawLineMulti(canvas, state.labels, state.series, null);
+            }
+            hideTooltip();
+          }
+        });
+
+        canvas.addEventListener('mouseleave', function() {
+          const state = canvas.__lineMultiState;
+          if (state && state.hoverIndex !== null) {
+            state.hoverIndex = null;
+            drawLineMulti(canvas, state.labels, state.series, null);
+          }
+          hideTooltip();
+        });
+      }
     }
 
     function drawBars(canvas, items, color) {
@@ -543,18 +700,15 @@ let offset = 0;
     }
 
     function onMapHover(ev) {
-      const tip = qs('tooltip');
       const el = ev.target;
       const name = el.getAttribute('data-name') || '';
       const cases = el.getAttribute('data-cases') || '0';
-      tip.innerHTML = '<strong>' + name + '</strong><div class="muted">Casos: ' + fmt(cases) + '</div><div class="muted">Clic para filtrar</div>';
-      tip.style.display = 'block';
-      tip.style.left = (ev.clientX + 12) + 'px';
-      tip.style.top = (ev.clientY + 12) + 'px';
+      const html = '<strong>' + escapeHtml(name) + '</strong><div class="muted">Casos: ' + fmt(cases) + '</div><div class="muted">Clic para filtrar</div>';
+      showTooltipAt(html, ev.clientX, ev.clientY);
     }
 
     function onMapLeave() {
-      qs('tooltip').style.display = 'none';
+      hideTooltip();
     }
 
     function updateMapColors(rows) {
