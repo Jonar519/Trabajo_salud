@@ -1,0 +1,500 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Enfermedades en Colombia</title>
+  <link rel="stylesheet" href="/assets/styles.css" />
+</head>
+<body data-theme="light">
+  <div class="header">
+    <div class="header-inner">
+      <div class="hero">
+        <div class="brand">
+          <div class="logo"></div>
+          <div class="titles">
+            <h1 data-i18n="app.title">Enfermedades en Colombia</h1>
+            <p data-i18n="app.subtitle">Explora la evolución de los casos por año, enfermedad y departamento. Diseñado para entenderse rápido, sin tecnicismos.</p>
+          </div>
+        </div>
+        <div class="controls">
+          <span class="pill" id="statusPill"><span class="spinner" id="spin" style="display:none;"></span><span id="statusText" data-i18n="status.ready">Listo</span></span>
+          <button class="btn ghost" id="btnLang" title="Cambiar idioma">ES</button>
+          <button class="btn ghost" id="btnTheme" title="Cambiar modo claro/oscuro" data-i18n="btn.theme">Modo</button>
+          <a class="btn" id="btnExportFiltered" href="/download_filtered" data-i18n="btn.exportFiltered">Exportar (filtrado)</a>
+          <button class="btn" id="btnPDF" title="Guardar como PDF (desde el navegador)" data-i18n="btn.pdf">PDF</button>
+          <a class="btn" id="btnPowerBI" href="/download_powerbi" data-i18n="btn.powerbi">Power BI</a>
+          <a class="btn primary" href="/download" data-i18n="btn.csvFull">CSV completo</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="app">
+    <div class="nav" id="nav">
+      <a href="#/inicio" id="navHome" data-i18n="nav.home">Inicio</a>
+      <a href="#/enfermedades" id="navDiseases" data-i18n="nav.diseases">Enfermedades</a>
+      <a href="#/dashboard" id="navDash" data-i18n="nav.dashboard">Dashboard</a>
+    </div>
+
+    <section class="page" id="page-home">
+      <div class="card" style="margin-top: 14px;">
+        <div class="hd">
+          <h2 data-i18n="home.title">Inicio</h2>
+          <div class="sub" data-i18n="home.sub">Portal educativo + análisis visual</div>
+        </div>
+        <div class="bd">
+          <div class="home-grid">
+            <div class="stack">
+              <div class="kpis">
+                <div class="kpi">
+                  <div class="label" data-i18n="kpi.totalCases">Casos registrados</div>
+                  <div class="value" id="homeKpiCases">—</div>
+                  <div class="desc" data-i18n="kpi.totalDataset">Total del dataset</div>
+                </div>
+                <div class="kpi">
+                  <div class="label" data-i18n="kpi.topDisease">Enfermedad más común</div>
+                  <div class="value" id="homeKpiTopDis">—</div>
+                  <div class="desc" data-i18n="kpi.byCases">Por número de casos</div>
+                </div>
+                <div class="kpi">
+                  <div class="label" data-i18n="kpi.topRegion">Región más afectada</div>
+                  <div class="value" id="homeKpiTopDept">—</div>
+                  <div class="desc" data-i18n="kpi.deptMostCases">Departamento con más casos</div>
+                </div>
+                <div class="kpi">
+                  <div class="label" data-i18n="kpi.changeOverTime">Cambio en el tiempo</div>
+                  <div class="value" id="homeKpiVar">—</div>
+                  <div class="desc" id="homeKpiVarDesc" data-i18n="kpi.overallTrend">Tendencia general</div>
+                </div>
+              </div>
+              <div class="actions">
+                <button class="cta" id="btnGoDash" data-i18n="home.ctaDash">Explorar Dashboard →</button>
+                <button class="btn" id="btnGoDiseases" data-i18n="home.ctaGuide">Guía de enfermedades</button>
+                <button class="btn ghost" id="btnScrollFAQ" data-i18n="home.ctaFaq">Preguntas frecuentes</button>
+                <span class="pill" data-i18n="home.tip">Consejo: filtra por años y compara enfermedades</span>
+              </div>
+
+              <div class="feature-grid">
+                <div class="feature" tabindex="0" role="button" data-go="dash-trend">
+                  <div class="ico">↗</div>
+                  <div>
+                    <h4 data-i18n="home.feature.trends.title">Ver tendencias</h4>
+                    <p data-i18n="home.feature.trends.desc">Identifica si los casos suben o bajan en el tiempo y compara enfermedades.</p>
+                  </div>
+                </div>
+                <div class="feature" tabindex="0" role="button" data-go="dash-map">
+                  <div class="ico">▦</div>
+                  <div>
+                    <h4 data-i18n="home.feature.regions.title">Explorar regiones</h4>
+                    <p data-i18n="home.feature.regions.desc">Ubica departamentos con mayor incidencia y descubre patrones geográficos.</p>
+                  </div>
+                </div>
+                <div class="feature" tabindex="0" role="button" data-go="learn">
+                  <div class="ico">✓</div>
+                  <div>
+                    <h4 data-i18n="home.feature.learn.title">Aprender y prevenir</h4>
+                    <p data-i18n="home.feature.learn.desc">Conoce síntomas comunes, prevención y cuándo consultar para actuar a tiempo.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="panel">
+                <h4 data-i18n="home.learnQuick.title">Aprender y prevenir (guía rápida)</h4>
+                <ul id="homeGuideList"></ul>
+                <div class="actions" style="margin-top: 10px;">
+                  <button class="btn primary" id="btnLearnMore" data-i18n="home.learnQuick.more">Ver guía completa</button>
+                  <button class="btn" id="btnAskIdeas" data-i18n="home.learnQuick.askIdeas">¿Qué puedo preguntar?</button>
+                </div>
+              </div>
+
+              <div class="insights" id="homeInsights"></div>
+
+              <div id="homeFAQ">
+                <details class="faq" open>
+                  <summary><strong data-i18n="home.faq1.q">¿Cómo interpretar este panel?</strong></summary>
+                  <div class="muted" data-i18n="home.faq1.a">Las cifras muestran casos registrados en los datos. Usa el dashboard para filtrar por años, enfermedad y departamento. La tendencia te ayuda a ver si hay aumento o disminución.</div>
+                </details>
+                <details class="faq">
+                  <summary><strong data-i18n="home.faq2.q">¿Qué significa “Cambio en el tiempo”?</strong></summary>
+                  <div class="muted" data-i18n="home.faq2.a">Compara el primer y el último año disponibles en tu selección. Si seleccionas un solo año, no se calcula.</div>
+                </details>
+                <details class="faq">
+                  <summary><strong data-i18n="home.faq3.q">¿De dónde salen los datos?</strong></summary>
+                  <div class="muted" data-i18n="home.faq3.a">Provienen de fuentes públicas (datos.gov.co) integradas en un dataset maestro para análisis y visualización.</div>
+                </details>
+              </div>
+            </div>
+            <div class="stack">
+              <div class="chart">
+                <h3 data-i18n="home.preview.title">Vista previa: tendencia</h3>
+                <canvas id="homeTrend"></canvas>
+                <div class="chips" style="margin-top:10px;">
+                  <span class="chip"><span style="width:10px;height:10px;border-radius:999px;background:#0284c7;display:inline-block;"></span> <strong>Dengue</strong></span>
+                  <span class="chip"><span style="width:10px;height:10px;border-radius:999px;background:#10b981;display:inline-block;"></span> <strong>Zika</strong></span>
+                  <span class="chip"><span style="width:10px;height:10px;border-radius:999px;background:#ef4444;display:inline-block;"></span> <strong>Chikungunya</strong></span>
+                </div>
+                <div class="muted" style="margin-top:8px;" data-i18n="home.preview.tip">Tip: selecciona varias enfermedades para comparar su comportamiento.</div>
+              </div>
+
+              <div class="chart">
+                <h3 data-i18n="home.topMuni.title">Top municipios (casos)</h3>
+                <canvas id="homeTopMuni"></canvas>
+                <div class="muted" style="margin-top:8px;" data-i18n="home.topMuni.tip">Se actualiza con los mismos filtros del dashboard.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="page-diseases">
+      <div class="card" style="margin-top: 14px;">
+        <div class="hd">
+          <h2 data-i18n="dis.title">Enfermedades</h2>
+          <div class="sub" data-i18n="dis.sub">Información clara para entender y prevenir</div>
+        </div>
+        <div class="bd">
+          <div class="field" style="max-width: 560px;">
+            <label data-i18n="dis.search.label">Buscador</label>
+            <input id="diseaseSearch" placeholder="Escribe: dengue, zika, chikungunya…" data-i18n-placeholder="dis.search.ph" />
+          </div>
+
+          <div class="diseases-layout">
+            <div>
+              <div class="panel">
+                <h4 data-i18n="dis.pick.title">Selecciona una enfermedad</h4>
+                <div class="muted" data-i18n="dis.pick.desc">Verás una explicación sencilla y un resumen de datos para tu presentación.</div>
+              </div>
+              <div class="disease-list" id="diseaseList" style="margin-top: 12px;">
+                <div class="disease-item" data-disease="DENGUE">
+                  <h3><span class="tag">D</span> Dengue</h3>
+                  <div class="muted" style="margin-top:6px;">Transmitida por mosquitos. Puede variar de leve a grave.</div>
+                  <div class="chips">
+                    <span class="chip"><span data-i18n="dis.cases">Casos</span>: <strong id="statDengueCases">—</strong></span>
+                    <span class="chip"><span data-i18n="dis.change">Cambio</span>: <strong id="statDengueVar">—</strong></span>
+                  </div>
+                </div>
+                <div class="disease-item" data-disease="ZIKA">
+                  <h3><span class="tag">Z</span> Zika</h3>
+                  <div class="muted" style="margin-top:6px;">Suele ser leve, pero requiere cuidado especial en embarazo.</div>
+                  <div class="chips">
+                    <span class="chip"><span data-i18n="dis.cases">Casos</span>: <strong id="statZikaCases">—</strong></span>
+                    <span class="chip"><span data-i18n="dis.change">Cambio</span>: <strong id="statZikaVar">—</strong></span>
+                  </div>
+                </div>
+                <div class="disease-item" data-disease="CHIKUNGUNYA">
+                  <h3><span class="tag">C</span> Chikungunya</h3>
+                  <div class="muted" style="margin-top:6px;">Dolor articular puede durar semanas. Prevención es clave.</div>
+                  <div class="chips">
+                    <span class="chip"><span data-i18n="dis.cases">Casos</span>: <strong id="statChikCases">—</strong></span>
+                    <span class="chip"><span data-i18n="dis.change">Cambio</span>: <strong id="statChikVar">—</strong></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="panel compare-box">
+                <h4 data-i18n="dis.compare.title">Comparar en el dashboard</h4>
+                <div class="muted" data-i18n="dis.compare.desc">Elige 2 o 3 para compararlas en la gráfica de tendencia.</div>
+                <div class="chips" id="compareChips" style="margin-top:10px;"></div>
+                <div class="compare-actions">
+                  <button class="btn primary" id="btnCompareGo" disabled data-i18n="dis.compare.go">Comparar ahora</button>
+                  <button class="btn" id="btnCompareClear" data-i18n="dis.compare.clear">Limpiar</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="hd">
+                <h2 data-i18n="dis.detail.title">Detalle</h2>
+                <div class="sub" data-i18n="dis.detail.sub">Educativo, simple y directo</div>
+              </div>
+              <div class="bd">
+                <h3 class="detail-title" id="dTitle">—</h3>
+                <p class="detail-lead" id="dLead" data-i18n="dis.detail.lead">Selecciona una enfermedad para ver información.</p>
+
+                <div class="kpis" style="margin-top: 12px; grid-template-columns: repeat(3, 1fr);">
+                  <div class="kpi" style="min-height: 82px;">
+                    <div class="label" data-i18n="dis.detail.kpiCases">Casos (dataset)</div>
+                    <div class="value" id="dCases">—</div>
+                    <div class="desc" data-i18n="dis.detail.kpiCasesDesc">Total disponible</div>
+                  </div>
+                  <div class="kpi" style="min-height: 82px;">
+                    <div class="label" data-i18n="kpi.changeOverTime">Cambio en el tiempo</div>
+                    <div class="value" id="dVar">—</div>
+                    <div class="desc" id="dVarDesc" data-i18n="dis.detail.kpiTrend">Tendencia</div>
+                  </div>
+                  <div class="kpi" style="min-height: 82px;">
+                    <div class="label" data-i18n="kpi.topRegion">Región más afectada</div>
+                    <div class="value" id="dTopDept">—</div>
+                    <div class="desc" data-i18n="kpi.byCases">Por número de casos</div>
+                  </div>
+                </div>
+
+                <div class="actions" style="margin-top: 12px;">
+                  <button class="btn primary" id="dBtnView" data-i18n="dis.detail.viewDash">Ver en el Dashboard</button>
+                  <button class="btn" id="dBtnAdd" data-i18n="dis.detail.addCompare">Añadir a comparación</button>
+                </div>
+
+                <div class="detail-cols">
+                  <div class="panel">
+                    <h4 data-i18n="dis.detail.symptoms">Síntomas comunes</h4>
+                    <ul id="dSymptoms"></ul>
+                  </div>
+                  <div class="panel">
+                    <h4 data-i18n="dis.detail.prevention">Prevención</h4>
+                    <ul id="dPrevention"></ul>
+                  </div>
+                </div>
+
+                <div class="panel" style="margin-top: 12px;">
+                  <h4 data-i18n="dis.detail.when">Cuándo consultar</h4>
+                  <ul id="dWhen"></ul>
+                </div>
+
+                <div class="panel" style="margin-top: 12px;">
+                  <h4 data-i18n="dis.detail.noteTitle">Nota importante</h4>
+                  <div class="muted" data-i18n="dis.detail.noteText">Este sitio es educativo y no reemplaza una consulta médica. Si tienes síntomas graves o persistentes, busca atención profesional.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel" style="margin-top: 12px;">
+            <h4 data-i18n="dis.faq.title">Preguntas frecuentes</h4>
+            <details class="faq">
+              <summary><strong data-i18n="dis.faq1.q">¿Qué significa “brote”?</strong></summary>
+              <div class="muted" data-i18n="dis.faq1.a">Es una señal de alerta cuando los casos superan lo esperado para ese municipio y enfermedad. Sirve para orientar la atención, no para alarmar.</div>
+            </details>
+            <details class="faq">
+              <summary><strong data-i18n="dis.faq2.q">¿Por qué algunas enfermedades suben en ciertas épocas?</strong></summary>
+              <div class="muted" data-i18n="dis.faq2.a">La lluvia y la temperatura influyen en la presencia de mosquitos. También afectan factores como movilidad, prevención y acceso a servicios de salud.</div>
+            </details>
+            <details class="faq">
+              <summary><strong data-i18n="dis.faq3.q">¿Qué puedo hacer en casa para reducir el riesgo?</strong></summary>
+              <div class="muted" data-i18n="dis.faq3.a">Elimina agua estancada, lava recipientes, usa repelente, coloca mosquiteros y revisa patios y canaletas semanalmente.</div>
+            </details>
+            <details class="faq">
+              <summary><strong data-i18n="dis.faq4.q">¿Qué significa “región más afectada” en el dashboard?</strong></summary>
+              <div class="muted" data-i18n="dis.faq4.a">Es el departamento con más casos dentro de tu selección (filtros). Puedes cambiarlo al filtrar por años o enfermedades.</div>
+            </details>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="page-dashboard">
+      <div class="grid" style="margin-top: 14px;">
+        <div class="card filters">
+          <div class="hd">
+            <h2>Filtros</h2>
+            <div class="sub">Actualiza todo al instante</div>
+          </div>
+          <div class="bd">
+            <div class="field">
+              <label>Buscador <span class="tip" title="Busca por departamento, municipio o enfermedad">?</span></label>
+              <input id="q" placeholder="Ej: DENGUE, ANTIOQUIA, BOGOTA" />
+            </div>
+
+            <div class="row">
+              <div class="field">
+                <label>Desde (año)</label>
+                <select id="anoMin"><option value="">(cualquiera)</option></select>
+              </div>
+              <div class="field">
+                <label>Hasta (año)</label>
+                <select id="anoMax"><option value="">(cualquiera)</option></select>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Enfermedades (puedes elegir varias) <span class="tip" title="Selecciona 1 o varias para comparar en la tendencia">?</span></label>
+              <select id="enfermedades" multiple size="5"></select>
+              <div class="muted" style="margin-top:6px;">Tip: Ctrl/Shift para seleccionar varias en PC.</div>
+            </div>
+
+            <div class="field">
+              <label>Departamento <span class="tip" title="También puedes hacer clic en el mapa para seleccionar un departamento">?</span></label>
+              <select id="departamento"><option value="">(cualquiera)</option></select>
+            </div>
+
+            <div class="row">
+              <div class="field">
+                <label>Edad <span class="tip" title="Este dataset no incluye edad, por eso no se puede filtrar aún">?</span></label>
+                <select disabled><option>No disponible</option></select>
+              </div>
+              <div class="field">
+                <label>Género <span class="tip" title="Este dataset no incluye género, por eso no se puede filtrar aún">?</span></label>
+                <select disabled><option>No disponible</option></select>
+              </div>
+            </div>
+
+            <div class="footerbar" style="margin-top: 10px;">
+              <button class="btn" id="btnReset">Reset</button>
+              <button class="btn primary" id="btnApply">Aplicar</button>
+            </div>
+
+            <div class="muted" style="margin-top: 12px;">
+              <div><strong>Fuente local:</strong> __CSV_PATH__</div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card">
+            <div class="hd">
+              <h2>Resumen</h2>
+              <div class="sub">Lo más importante, en segundos</div>
+            </div>
+            <div class="bd">
+              <div class="kpis">
+                <div class="kpi">
+                  <div class="label">Casos registrados</div>
+                  <div class="value" id="kpiCases">—</div>
+                  <div class="desc" id="kpiCasesDesc">Total en la selección</div>
+                </div>
+                <div class="kpi">
+                  <div class="label">Enfermedad más común</div>
+                  <div class="value" id="kpiTopDis">—</div>
+                  <div class="desc">Por número de casos</div>
+                </div>
+                <div class="kpi">
+                  <div class="label">Región más afectada</div>
+                  <div class="value" id="kpiTopDept">—</div>
+                  <div class="desc">Departamento con más casos</div>
+                </div>
+                <div class="kpi">
+                  <div class="label">Cambio en el tiempo</div>
+                  <div class="value" id="kpiVar">—</div>
+                  <div class="desc" id="kpiVarDesc">Comparación por años disponibles</div>
+                </div>
+              </div>
+
+              <div class="viz">
+                <div class="chart">
+                  <h3 id="dashTrend">Tendencia de casos</h3>
+                  <canvas id="chartTrend"></canvas>
+                  <div class="muted" id="trendHint" style="margin-top:8px;">Compara enfermedades y observa si suben o bajan.</div>
+                </div>
+                <div class="chart">
+                  <h3>Distribución por enfermedad</h3>
+                  <canvas id="chartDisease"></canvas>
+                  <div class="muted" style="margin-top:8px;">Muestra las más frecuentes en tu selección.</div>
+                </div>
+              </div>
+
+              <div class="viz" style="grid-template-columns: 1fr 1fr;">
+                <div class="chart">
+                  <h3 id="dashMap">Mapa (casos por departamento)</h3>
+                  <div class="map-wrap">
+                    <div class="map" id="mapBox"></div>
+                    <div class="legend">
+                      <span>Menos</span><span class="grad"></span><span>Más</span>
+                      <span class="muted" id="mapHint"></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="chart">
+                  <h3>Top municipios</h3>
+                  <canvas id="chartTopMuni"></canvas>
+                  <div class="muted" style="margin-top:8px;">Los 8 municipios con más casos (en la selección).</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top: 14px;">
+            <div class="hd">
+              <h2>Insights automáticos</h2>
+              <div class="sub">Conclusiones en lenguaje simple</div>
+            </div>
+            <div class="bd">
+              <div class="insights" id="insights"></div>
+            </div>
+          </div>
+
+          <div class="card chat" style="margin-top: 14px;">
+            <div class="hd">
+              <h2>Pregúntale al dashboard</h2>
+              <div class="sub">Ej: “¿Qué enfermedad ha crecido más?” (escribe “ayuda” para ver más)</div>
+            </div>
+            <div class="bd">
+              <div class="row" style="grid-template-columns: 1fr auto;">
+                <input id="askInput" placeholder="Escribe tu pregunta…" />
+                <button class="btn primary" id="btnAsk">Preguntar</button>
+              </div>
+              <div class="insight" id="askAnswer" style="margin-top:10px;">Escribe una pregunta para obtener una respuesta rápida.</div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top: 14px;">
+            <div class="hd">
+              <h2>Tabla</h2>
+              <div class="sub"><span class="pill" id="pillCount">Filas: —</span></div>
+            </div>
+            <div class="bd">
+              <div class="footerbar" style="margin-bottom: 10px;">
+                <div class="row" style="grid-template-columns: 140px auto auto 1fr; align-items:end; gap:10px;">
+                  <div class="field" style="margin:0;">
+                    <label>Por página</label>
+                    <input id="limit" value="50" />
+                  </div>
+                  <button class="btn" id="btnPrev">Anterior</button>
+                  <button class="btn" id="btnNext">Siguiente</button>
+                  <div class="muted" id="pageInfo" style="align-self:center; justify-self:end;">—</div>
+                </div>
+              </div>
+              <div class="table-wrap">
+                <table id="table">
+                  <thead><tr id="thead"></tr></thead>
+                  <tbody id="tbody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <div class="tooltip" id="tooltip"></div>
+
+  <div class="chat-mini" id="homeChatMini">
+    <div class="bubble" id="homeChatOpen" title="Asistente de salud">💬</div>
+  </div>
+  <div class="chat-float" id="homeChat">
+    <div class="hd">
+      <div class="title">
+        <span class="dot"></span>
+        <div style="min-width:0;">
+          <h3>Asistente de salud</h3>
+          <div class="muted">Pregúntame sobre las enfermedades o sobre lo que ves en los datos</div>
+        </div>
+      </div>
+      <div style="display:flex; gap:8px; align-items:center;">
+        <button class="btn ghost" id="homeChatReset" title="Nueva conversación">Nuevo</button>
+        <button class="btn ghost" id="homeChatClose" title="Cerrar">Cerrar</button>
+      </div>
+    </div>
+    <div class="chat-body" id="homeChatBody">
+      <div class="msg bot">Hola. Puedo ayudarte a entender <strong>dengue</strong>, <strong>zika</strong> y <strong>chikungunya</strong>, y también a interpretar tendencias por año y región. ¿Qué te gustaría saber?</div>
+    </div>
+    <div class="chat-tools">
+      <div class="chat-row">
+        <input id="homeAskInput" placeholder="Escribe tu pregunta…" />
+        <button class="btn primary" id="homeAskSend">Enviar</button>
+      </div>
+      <div class="chat-quick">
+        <button class="qbtn" data-q="¿Qué enfermedad ha crecido más en los últimos años?">Crecimiento</button>
+        <button class="qbtn" data-q="¿Cuál es la región más afectada?">Región</button>
+        <button class="qbtn" data-q="¿Cuáles son los síntomas del dengue?">Síntomas</button>
+        <button class="qbtn" data-q="¿Cómo prevenir chikungunya?">Prevención</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/assets/app.js"></script>
+</body>
+</html>
