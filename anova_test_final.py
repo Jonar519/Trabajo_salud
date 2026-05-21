@@ -9,15 +9,6 @@ from pathlib import Path
 project_root = Path(__file__).resolve().parent
 comp_rel_path = Path("data") / "core" / "dataset_comparado.csv"
 maes_rel_path = Path("data") / "processed" / "dataset_maestro_epidemiologico.csv"
-comp_path = project_root / comp_rel_path
-maes_path = project_root / maes_rel_path
-
-
-df_comp = pd.read_csv(comp_path)
-df_maes = pd.read_csv(maes_path)
-
-
-df_comp_dengue = df_comp[df_comp['disease'].str.upper() == 'DENGUE']
 
 
 alpha = 0.05
@@ -152,54 +143,60 @@ def save_report_to_ipynb(report_parts, output_path):
     output_path.write_text(json.dumps(notebook, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
+def generate_report_parts(project_root_path=None):
+    base = Path(project_root_path) if project_root_path is not None else project_root
+    comp_path = base / comp_rel_path
+    maes_path = base / maes_rel_path
 
-grupo_comp_casos = df_comp_dengue['cases_total'].dropna()
-grupo_maes_casos = df_maes['casos_totales'].dropna()
+    df_comp = pd.read_csv(comp_path)
+    df_maes = pd.read_csv(maes_path)
+    df_comp_dengue = df_comp[df_comp["disease"].astype(str).str.upper() == "DENGUE"]
 
-report_parts = []
-report_parts.append(
-    build_anova_report(
-        "CASOS TOTALES",
-        "Dataset Comparado",
-        grupo_comp_casos,
-        "Dataset Maestro",
-        grupo_maes_casos,
+    grupo_comp_casos = df_comp_dengue["cases_total"].dropna()
+    grupo_maes_casos = df_maes["casos_totales"].dropna()
+
+    report_parts = []
+    report_parts.append(
+        build_anova_report(
+            "CASOS TOTALES",
+            "Dataset Comparado",
+            grupo_comp_casos,
+            "Dataset Maestro",
+            grupo_maes_casos,
+        )
     )
-)
 
+    grupo_comp_temp = df_comp_dengue[df_comp_dengue["temp_avg_c"] > 0.0]["temp_avg_c"].dropna()
+    grupo_maes_temp = df_maes["temperatura_promedio"].dropna()
 
-grupo_comp_temp = df_comp_dengue[df_comp_dengue['temp_avg_c'] > 0.0]['temp_avg_c'].dropna()
-grupo_maes_temp = df_maes['temperatura_promedio'].dropna()
-
-report_parts.append(
-    build_anova_report(
-        "TEMPERATURA PROMEDIO (°C)",
-        "Dataset Comparado (Excluyendo ceros imputados)",
-        grupo_comp_temp,
-        "Dataset Maestro",
-        grupo_maes_temp,
+    report_parts.append(
+        build_anova_report(
+            "TEMPERATURA PROMEDIO (°C)",
+            "Dataset Comparado (Excluyendo ceros imputados)",
+            grupo_comp_temp,
+            "Dataset Maestro",
+            grupo_maes_temp,
+        )
     )
-)
 
+    grupo_comp_precip = df_comp_dengue["precipitation_mm"].dropna()
+    grupo_maes_precip = df_maes["precipitacion_promedio"].dropna()
 
-grupo_comp_precip = df_comp_dengue['precipitation_mm'].dropna()
-grupo_maes_precip = df_maes['precipitacion_promedio'].dropna()
-
-report_parts.append(
-    build_anova_report(
-        "PRECIPITACIÓN PROMEDIO (mm)",
-        "Dataset Comparado",
-        grupo_comp_precip,
-        "Dataset Maestro",
-        grupo_maes_precip,
+    report_parts.append(
+        build_anova_report(
+            "PRECIPITACIÓN PROMEDIO (mm)",
+            "Dataset Comparado",
+            grupo_comp_precip,
+            "Dataset Maestro",
+            grupo_maes_precip,
+        )
     )
-)
 
-report_parts.append("CONCLUSIÓN GENERAL:")
-report_parts.append(
-    "\n".join(
-        [
-           """
+    report_parts.append("CONCLUSIÓN GENERAL:")
+    report_parts.append(
+        "\n".join(
+            [
+                """
 Aunque ambos datasets pertenecen al mismo contexto de estudio,
 presentan diferencias importantes en los valores promedio de precipitación.
 
@@ -215,13 +212,26 @@ Esto puede indicar varias posibilidades:
 - presencia de datos faltantes o atípicos
 - metodologías diferentes de medición
 """,
-        ]
+            ]
+        )
     )
-)
 
-final_report = "\n".join(report_parts)
-print(final_report)
+    return report_parts
 
-ipynb_output_path = Path(__file__).with_name("anova_test_final_resultados.ipynb")
-save_report_to_ipynb(report_parts, ipynb_output_path)
-print(f"Notebook guardado en: {ipynb_output_path}")
+
+def generate_report_text(project_root_path=None):
+    return "\n".join(generate_report_parts(project_root_path=project_root_path))
+
+
+def main():
+    report_parts = generate_report_parts()
+    final_report = "\n".join(report_parts)
+    print(final_report)
+
+    ipynb_output_path = Path(__file__).with_name("anova_test_final_resultados.ipynb")
+    save_report_to_ipynb(report_parts, ipynb_output_path)
+    print(f"Notebook guardado en: {ipynb_output_path}")
+
+
+if __name__ == "__main__":
+    main()

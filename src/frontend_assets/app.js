@@ -43,6 +43,7 @@ let offset = 0;
         { id: 'navHome', route: '/inicio' },
         { id: 'navDiseases', route: '/enfermedades' },
         { id: 'navDash', route: '/dashboard' },
+        { id: 'navAnova', route: '/anova' },
         { id: 'navDashBI', route: '/dashboardbi' },
       ];
       items.forEach(x => {
@@ -59,11 +60,12 @@ let offset = 0;
         '/inicio': 'page-home',
         '/enfermedades': 'page-diseases',
         '/dashboard': 'page-dashboard',
+        '/anova': 'page-anova',
         '/dashboardbi': 'page-dashboardbi',
       };
       const target = map[r] || 'page-home';
       document.body.setAttribute('data-route', (r || '/inicio').replace('/', ''));
-      ['page-home', 'page-diseases', 'page-dashboard', 'page-dashboardbi'].forEach(id => {
+      ['page-home', 'page-diseases', 'page-dashboard', 'page-anova', 'page-dashboardbi'].forEach(id => {
         const el = qs(id);
         if (!el) return;
         if (id === target) el.classList.add('active');
@@ -73,6 +75,7 @@ let offset = 0;
       setTimeout(function() {
         try { setHomeChatVisible(); } catch (e) {}
         try { scheduleRefresh(); } catch (e) {}
+        try { if (r === '/anova') loadAnova(); } catch (e) {}
         try { if (r === '/dashboardbi') loadDashboardBIEmbed(); } catch (e) {}
       }, 80);
     }
@@ -255,7 +258,11 @@ let offset = 0;
         'nav.home': 'Inicio',
         'nav.diseases': 'Enfermedades',
         'nav.dashboard': 'Dashboard',
+        'nav.anova': 'ANOVA',
         'nav.dashboardBI': 'dashboardBI',
+        'anova.title': 'ANOVA',
+        'anova.sub': 'Resultados del test ANOVA (anova_test_final.py)',
+        'anova.reload': 'Actualizar',
         'home.title': 'Inicio',
         'home.sub': 'Portal educativo + análisis visual',
         'kpi.totalCases': 'Casos registrados',
@@ -345,7 +352,11 @@ let offset = 0;
         'nav.home': 'Home',
         'nav.diseases': 'Diseases',
         'nav.dashboard': 'Dashboard',
+        'nav.anova': 'ANOVA',
         'nav.dashboardBI': 'dashboardBI',
+        'anova.title': 'ANOVA',
+        'anova.sub': 'ANOVA test results (anova_test_final.py)',
+        'anova.reload': 'Refresh',
         'home.title': 'Home',
         'home.sub': 'Educational portal + visual insights',
         'kpi.totalCases': 'Reported cases',
@@ -423,6 +434,35 @@ let offset = 0;
         'dis.faq4.a': 'It is the department with the most cases within your current filters. It will change as you adjust years or diseases.',
       },
     };
+
+    async function loadAnova() {
+      const statusEl = qs('anovaStatus');
+      const textEl = qs('anovaText');
+      const errEl = qs('anovaError');
+      if (!statusEl || !textEl || !errEl) return;
+
+      statusEl.textContent = 'Cargando…';
+      errEl.style.display = 'none';
+      errEl.textContent = '';
+      textEl.textContent = '';
+
+      try {
+        const res = await fetchJSON('/api/anova');
+        if (!res || res.available !== true) {
+          const msg = (res && res.error) ? String(res.error) : 'No disponible';
+          errEl.textContent = msg;
+          errEl.style.display = 'block';
+          statusEl.textContent = 'Error';
+          return;
+        }
+        textEl.textContent = String(res.text || '');
+        statusEl.textContent = 'Listo';
+      } catch (e) {
+        errEl.textContent = e && e.message ? e.message : String(e);
+        errEl.style.display = 'block';
+        statusEl.textContent = 'Error';
+      }
+    }
 
     function getLang() {
       const saved = localStorage.getItem('lang');
@@ -1581,6 +1621,9 @@ let offset = 0;
         msg.textContent = t('bi.embedError');
       }
     }
+
+    const btnAnova = qs('btnAnovaReload');
+    if (btnAnova) btnAnova.addEventListener('click', function() { loadAnova(); });
 
     qs('btnApply').addEventListener('click', function() { scheduleRefresh(); });
     qs('btnReset').addEventListener('click', function() { resetAll(); scheduleRefresh(); });

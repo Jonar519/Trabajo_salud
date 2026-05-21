@@ -2,6 +2,7 @@ import os
 import re
 import json
 import subprocess
+import importlib.util
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlparse, parse_qs
 from pathlib import Path
@@ -95,6 +96,29 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None, pbix_path=No
     def to_json_bytes(payload, status=200):
         data = json.dumps(payload, ensure_ascii=False).encode("utf-8")
         return status, data
+
+    def get_anova_payload():
+        module_path = (project_root / "anova_test_final.py").resolve()
+        if not module_path.exists():
+            return {"available": False, "error": "No se encontró anova_test_final.py en la raíz del proyecto."}
+
+        try:
+            spec = importlib.util.spec_from_file_location("anova_test_final_runtime", str(module_path))
+            if spec is None or spec.loader is None:
+                return {"available": False, "error": "No se pudo cargar el módulo de ANOVA."}
+            mod = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(mod)
+
+            if hasattr(mod, "generate_report_text"):
+                text = mod.generate_report_text(project_root_path=project_root)
+            elif hasattr(mod, "generate_report_parts"):
+                text = "\n".join(mod.generate_report_parts(project_root_path=project_root))
+            else:
+                return {"available": False, "error": "El script de ANOVA no expone generate_report_text/generate_report_parts."}
+
+            return {"available": True, "text": text}
+        except Exception as e:
+            return {"available": False, "error": f"{type(e).__name__}: {e}"}
 
     def parse_int(value, default):
         try:
@@ -3279,6 +3303,11 @@ def run_frontend_server(host="127.0.0.1", port=8000, csv_path=None, pbix_path=No
                 payload = get_values()
                 status, data = to_json_bytes(payload, 200)
                 return self._send(status, "application/json; charset=utf-8", data)
+
+            if path == "/api/anova":
+                payload = get_anova_payload()
+                status, data = to_json_bytes(payload, 200)
+                return self._send(status, "application/json; charset=utf-8", data)
 
             if path == "/api/map":
                 payload = {"map": colombia_map}

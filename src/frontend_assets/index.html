@@ -36,6 +36,7 @@
       <a href="#/inicio" id="navHome" data-i18n="nav.home">Inicio</a>
       <a href="#/enfermedades" id="navDiseases" data-i18n="nav.diseases">Enfermedades</a>
       <a href="#/dashboard" id="navDash" data-i18n="nav.dashboard">Dashboard</a>
+      <a href="#/anova" id="navAnova" data-i18n="nav.anova">ANOVA</a>
       <a href="#/dashboardbi" id="navDashBI" data-i18n="nav.dashboardBI">dashboardBI</a>
     </div>
 
@@ -455,6 +456,25 @@
             </div>
           </div>
 
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="page-anova">
+      <div class="card" style="margin-top: 14px;">
+        <div class="hd">
+          <h2 data-i18n="anova.title">ANOVA</h2>
+          <div class="sub" data-i18n="anova.sub">Resultados del test ANOVA (anova_test_final.py)</div>
+        </div>
+        <div class="bd">
+          <div class="actions" style="margin-top: 0;">
+            <button class="btn primary" id="btnAnovaReload" data-i18n="anova.reload">Actualizar</button>
+            <span class="pill" id="anovaStatus">—</span>
+          </div>
+          <div class="panel" style="margin-top: 12px;">
+            <div class="muted" id="anovaError" style="display:none;"></div>
+            <div class="msg bot" id="anovaText" style="max-width: 100%;"></div>
+          </div>
         </div>
       </div>
     </section>
