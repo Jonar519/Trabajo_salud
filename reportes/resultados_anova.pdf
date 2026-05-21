@@ -1,0 +1,234 @@
+%PDF-1.4
+%âãÏÓ
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [ 5 0 R 7 0 R ] /Count 2 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+4 0 obj
+<< /Length 1867 >>
+stream
+BT
+/F1 11 Tf
+50 792 Td
+(============================================================) Tj
+0 -14 Td
+(ANÁLISIS ANOVA - CASOS TOTALES) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(Hipótesis:) Tj
+0 -14 Td
+(H0: Las medias de ambos datasets son iguales.) Tj
+0 -14 Td
+(H1: Las medias de ambos datasets son diferentes.) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(Dataset Comparado:) Tj
+0 -14 Td
+(Media = 9.8568) Tj
+0 -14 Td
+(N = 120839) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(Dataset Maestro:) Tj
+0 -14 Td
+(Media = 16.0924) Tj
+0 -14 Td
+(N = 3713) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(Resultados del ANOVA:) Tj
+0 -14 Td
+(Estadístico F = 170.8035) Tj
+0 -14 Td
+(p-valor = 5.2406e-39) Tj
+0 -14 Td
+(alpha = 0.05) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(Decisión:) Tj
+0 -14 Td
+(Se rechaza H0.) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(Interpretación:) Tj
+0 -14 Td
+(Existe evidencia estadísticamente significativa para afirmar) Tj
+0 -14 Td
+(que los promedios de ambos datasets son diferentes.) Tj
+0 -14 Td
+(============================================================) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(============================================================) Tj
+0 -14 Td
+(ANÁLISIS ANOVA - TEMPERATURA PROMEDIO \(°C\)) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(Hipótesis:) Tj
+0 -14 Td
+(H0: Las medias de ambos datasets son iguales.) Tj
+0 -14 Td
+(H1: Las medias de ambos datasets son diferentes.) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(Dataset Comparado \(Excluyendo ceros imputados\):) Tj
+0 -14 Td
+(Media = 18.7832) Tj
+0 -14 Td
+(N = 59276) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(Dataset Maestro:) Tj
+0 -14 Td
+(Media = 24.4171) Tj
+0 -14 Td
+(N = 3713) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(Resultados del ANOVA:) Tj
+0 -14 Td
+(Estadístico F = 2016.5206) Tj
+0 -14 Td
+(p-valor = 0.0000e+00) Tj
+0 -14 Td
+(alpha = 0.05) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(Decisión:) Tj
+0 -14 Td
+(Se rechaza H0.) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(Interpretación:) Tj
+0 -14 Td
+(Existe evidencia estadísticamente significativa para afirmar) Tj
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents 4 0 R >>
+endobj
+6 0 obj
+<< /Length 1723 >>
+stream
+BT
+/F1 11 Tf
+50 792 Td
+(que los promedios de ambos datasets son diferentes.) Tj
+0 -14 Td
+(============================================================) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(============================================================) Tj
+0 -14 Td
+(ANÁLISIS ANOVA - PRECIPITACIÓN PROMEDIO \(mm\)) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(Hipótesis:) Tj
+0 -14 Td
+(H0: Las medias de ambos datasets son iguales.) Tj
+0 -14 Td
+(H1: Las medias de ambos datasets son diferentes.) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(Dataset Comparado:) Tj
+0 -14 Td
+(Media = 133.1613) Tj
+0 -14 Td
+(N = 120839) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(Dataset Maestro:) Tj
+0 -14 Td
+(Media = 102.5791) Tj
+0 -14 Td
+(N = 3713) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(Resultados del ANOVA:) Tj
+0 -14 Td
+(Estadístico F = 212.8957) Tj
+0 -14 Td
+(p-valor = 3.5153e-48) Tj
+0 -14 Td
+(alpha = 0.05) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(Decisión:) Tj
+0 -14 Td
+(Se rechaza H0.) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(Interpretación:) Tj
+0 -14 Td
+(Existe evidencia estadísticamente significativa para afirmar) Tj
+0 -14 Td
+(que los promedios de ambos datasets son diferentes.) Tj
+0 -14 Td
+(============================================================) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(CONCLUSIÓN GENERAL:) Tj
+0 -14 Td
+(Los resultados indican el rechazo sistemático de la hipótesis nula en todas las variables) Tj
+0 -14 Td
+(continuas) Tj
+0 -14 Td
+(analizadas. Esto demuestra matemáticamente que la submuestra conformada por el 'Dataset) Tj
+0 -14 Td
+(Maestro' no) Tj
+0 -14 Td
+(proviene de la misma distribución estadística que el 'Dataset Comparado', evidenciando un sesgo) Tj
+0 -14 Td
+(de) Tj
+0 -14 Td
+(selección inducido por la eliminación de registros con datos ambientales nulos durante el) Tj
+0 -14 Td
+(proceso de ETL.) Tj
+ET
+endstream
+endobj
+7 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents 6 0 R >>
+endobj
+xref
+0 8
+0000000000 65535 f 
+0000000015 00000 n 
+0000000064 00000 n 
+0000000129 00000 n 
+0000000199 00000 n 
+0000002117 00000 n 
+0000002243 00000 n 
+0000004017 00000 n 
+trailer
+<< /Size 8 /Root 1 0 R >>
+startxref
+4143
+%%EOF

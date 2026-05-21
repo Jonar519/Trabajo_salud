@@ -1563,8 +1563,9 @@ let offset = 0;
 
       try {
         const data = await fetchJSON('/api/dashboardbi_embed');
-        const url = (data && data.embed_url) ? String(data.embed_url).trim() : '';
-        if (!url) {
+        let url = (data && data.embed_url) ? String(data.embed_url) : '';
+        url = url.trim().replace(/^[`"' ]+/, '').replace(/[`"' ]+$/, '').trim();
+        if (!url || !/^https?:\/\//i.test(url)) {
           frame.style.display = 'none';
           msg.style.display = 'block';
           msg.textContent = t('bi.embedMissing');
